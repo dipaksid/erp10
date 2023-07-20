@@ -4,15 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-<<<<<<< HEAD
     "content-hash": "dd11ead90bbaf7fcf050ab3f9031f4fc",
-=======
-    "content-hash": "286367eee480b129ec1d2545ff3883be",
->>>>>>> 1a3068a (Added migrations as per older project)
-=======
-    "content-hash": "66c295d0463322f5326b25e7bed1affc",
->>>>>>> b83d739 (#ERP-001 added migrations)
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1439,7 +1431,6 @@
         },
         {
             "name": "firebase/php-jwt",
-<<<<<<< HEAD
             "version": "v6.8.1",
             "source": {
                 "type": "git",
@@ -1450,18 +1441,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/firebase/php-jwt/zipball/5dbc8959427416b8ee09a100d7a8588c00fb2e26",
                 "reference": "5dbc8959427416b8ee09a100d7a8588c00fb2e26",
-=======
-            "version": "v6.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "48b0210c51718d682e53210c24d25c5a10a2299b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/48b0210c51718d682e53210c24d25c5a10a2299b",
-                "reference": "48b0210c51718d682e53210c24d25c5a10a2299b",
->>>>>>> b83d739 (#ERP-001 added migrations)
                 "shasum": ""
             },
             "require": {
@@ -1509,15 +1488,9 @@
             ],
             "support": {
                 "issues": "https://github.com/firebase/php-jwt/issues",
-<<<<<<< HEAD
                 "source": "https://github.com/firebase/php-jwt/tree/v6.8.1"
             },
             "time": "2023-07-14T18:33:00+00:00"
-=======
-                "source": "https://github.com/firebase/php-jwt/tree/v6.8.0"
-            },
-            "time": "2023-06-20T16:45:35+00:00"
->>>>>>> b83d739 (#ERP-001 added migrations)
         },
         {
             "name": "fruitcake/php-cors",
@@ -4489,7 +4462,6 @@
             "time": "2023-05-02T11:26:24+00:00"
         },
         {
-<<<<<<< HEAD
             "name": "orangehill/iseed",
             "version": "v3.0.3",
             "source": {
@@ -4553,8 +4525,6 @@
             "time": "2023-03-27T06:14:43+00:00"
         },
         {
-=======
->>>>>>> b83d739 (#ERP-001 added migrations)
             "name": "paragonie/constant_time_encoding",
             "version": "v2.6.3",
             "source": {
@@ -5052,7 +5022,6 @@
             "time": "2023-07-09T15:24:48+00:00"
         },
         {
-<<<<<<< HEAD
             "name": "psr/cache",
             "version": "3.0.0",
             "source": {
@@ -5102,8 +5071,6 @@
             "time": "2021-02-03T23:26:27+00:00"
         },
         {
-=======
->>>>>>> b83d739 (#ERP-001 added migrations)
             "name": "psr/clock",
             "version": "1.0.0",
             "source": {
@@ -5517,16 +5484,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.11.18",
+            "version": "v0.11.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "4f00ee9e236fa6a48f4560d1300b9c961a70a7ec"
+                "reference": "1724ceff278daeeac5a006744633bacbb2dc4706"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/4f00ee9e236fa6a48f4560d1300b9c961a70a7ec",
-                "reference": "4f00ee9e236fa6a48f4560d1300b9c961a70a7ec",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/1724ceff278daeeac5a006744633bacbb2dc4706",
+                "reference": "1724ceff278daeeac5a006744633bacbb2dc4706",
                 "shasum": ""
             },
             "require": {
@@ -5587,9 +5554,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.11.18"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.11.19"
             },
-            "time": "2023-05-23T02:31:11+00:00"
+            "time": "2023-07-15T19:42:19+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -5817,10 +5784,6 @@
             "time": "2023-04-15T23:01:58+00:00"
         },
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> b83d739 (#ERP-001 added migrations)
             "name": "sabberworm/php-css-parser",
             "version": "8.4.0",
             "source": {
@@ -5942,11 +5905,6 @@
             "time": "2021-02-08T20:43:55+00:00"
         },
         {
-<<<<<<< HEAD
-=======
->>>>>>> 1a3068a (Added migrations as per older project)
-=======
->>>>>>> b83d739 (#ERP-001 added migrations)
             "name": "spatie/laravel-permission",
             "version": "5.10.2",
             "source": {
@@ -6029,10 +5987,6 @@
             "time": "2023-07-04T13:38:13+00:00"
         },
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> b83d739 (#ERP-001 added migrations)
             "name": "stella-maris/clock",
             "version": "0.1.7",
             "source": {
@@ -6080,11 +6034,6 @@
             "time": "2022-11-25T16:15:06+00:00"
         },
         {
-<<<<<<< HEAD
-=======
->>>>>>> 1a3068a (Added migrations as per older project)
-=======
->>>>>>> b83d739 (#ERP-001 added migrations)
             "name": "symfony/console",
             "version": "v6.3.0",
             "source": {
@@ -9034,7 +8983,6 @@
         },
         {
             "name": "laravel/pint",
-<<<<<<< HEAD
             "version": "v1.10.5",
             "source": {
                 "type": "git",
@@ -9045,18 +8993,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/pint/zipball/a458fb057bfa2f5a09888a8aa349610be807b0c3",
                 "reference": "a458fb057bfa2f5a09888a8aa349610be807b0c3",
-=======
-            "version": "v1.10.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laravel/pint.git",
-                "reference": "f56798088068af8bd75a8f2c4ecae022990fdf75"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pint/zipball/f56798088068af8bd75a8f2c4ecae022990fdf75",
-                "reference": "f56798088068af8bd75a8f2c4ecae022990fdf75",
->>>>>>> b83d739 (#ERP-001 added migrations)
                 "shasum": ""
             },
             "require": {
@@ -9109,11 +9045,7 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
-<<<<<<< HEAD
             "time": "2023-07-14T10:26:01+00:00"
-=======
-            "time": "2023-07-11T15:18:27+00:00"
->>>>>>> b83d739 (#ERP-001 added migrations)
         },
         {
             "name": "laravel/sail",
@@ -9248,37 +9180,33 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "1.6.2",
+            "version": "1.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "13a7fa2642c76c58fa2806ef7f565344c817a191"
+                "reference": "d1413755e26fe56a63455f7753221c86cbb88f66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/13a7fa2642c76c58fa2806ef7f565344c817a191",
-                "reference": "13a7fa2642c76c58fa2806ef7f565344c817a191",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/d1413755e26fe56a63455f7753221c86cbb88f66",
+                "reference": "d1413755e26fe56a63455f7753221c86cbb88f66",
                 "shasum": ""
             },
             "require": {
                 "hamcrest/hamcrest-php": "^2.0.1",
                 "lib-pcre": ">=7.0",
-                "php": "^7.4 || ^8.0"
+                "php": ">=7.4,<8.3"
             },
             "conflict": {
                 "phpunit/phpunit": "<8.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5 || ^9.3",
-                "psalm/plugin-phpunit": "^0.18",
-                "vimeo/psalm": "^5.9"
+                "psalm/plugin-phpunit": "^0.18.4",
+                "symplify/easy-coding-standard": "^11.5.0",
+                "vimeo/psalm": "^5.13.1"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "1.6.x-dev"
-                }
-            },
             "autoload": {
                 "files": [
                     "library/helpers.php",
@@ -9296,12 +9224,20 @@
                 {
                     "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
-                    "homepage": "http://blog.astrumfutura.com"
+                    "homepage": "https://github.com/padraic",
+                    "role": "Author"
                 },
                 {
                     "name": "Dave Marshall",
                     "email": "dave.marshall@atstsolutions.co.uk",
-                    "homepage": "http://davedevelopment.co.uk"
+                    "homepage": "https://davedevelopment.co.uk",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Nathanael Esayeas",
+                    "email": "nathanael.esayeas@protonmail.com",
+                    "homepage": "https://github.com/ghostwriter",
+                    "role": "Lead Developer"
                 }
             ],
             "description": "Mockery is a simple yet flexible PHP mock object framework",
@@ -9319,10 +9255,13 @@
                 "testing"
             ],
             "support": {
+                "docs": "https://docs.mockery.io/",
                 "issues": "https://github.com/mockery/mockery/issues",
-                "source": "https://github.com/mockery/mockery/tree/1.6.2"
+                "rss": "https://github.com/mockery/mockery/releases.atom",
+                "security": "https://github.com/mockery/mockery/security/advisories",
+                "source": "https://github.com/mockery/mockery"
             },
-            "time": "2023-06-07T09:07:52+00:00"
+            "time": "2023-07-19T15:51:02+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -9912,29 +9851,16 @@
         },
         {
             "name": "phpunit/phpunit",
-<<<<<<< HEAD
-            "version": "10.2.5",
+            "version": "10.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "15a89f123d8ca9c1e1598d6d87a56a8bf28c72cd"
+                "reference": "1c17815c129f133f3019cc18e8d0c8622e6d9bcd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/15a89f123d8ca9c1e1598d6d87a56a8bf28c72cd",
-                "reference": "15a89f123d8ca9c1e1598d6d87a56a8bf28c72cd",
-=======
-            "version": "10.2.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "68484779b5a2ed711fbdeba6ca01910d87acdff2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/68484779b5a2ed711fbdeba6ca01910d87acdff2",
-                "reference": "68484779b5a2ed711fbdeba6ca01910d87acdff2",
->>>>>>> b83d739 (#ERP-001 added migrations)
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1c17815c129f133f3019cc18e8d0c8622e6d9bcd",
+                "reference": "1c17815c129f133f3019cc18e8d0c8622e6d9bcd",
                 "shasum": ""
             },
             "require": {
@@ -10006,11 +9932,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-<<<<<<< HEAD
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.2.5"
-=======
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.2.4"
->>>>>>> b83d739 (#ERP-001 added migrations)
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.2.6"
             },
             "funding": [
                 {
@@ -10026,11 +9948,7 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< HEAD
-            "time": "2023-07-14T04:18:47+00:00"
-=======
-            "time": "2023-07-10T04:06:08+00:00"
->>>>>>> b83d739 (#ERP-001 added migrations)
+            "time": "2023-07-17T12:08:28+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -10542,16 +10460,16 @@
         },
         {
             "name": "sebastian/global-state",
-            "version": "6.0.0",
+            "version": "6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/global-state.git",
-                "reference": "aab257c712de87b90194febd52e4d184551c2d44"
+                "reference": "7ea9ead78f6d380d2a667864c132c2f7b83055e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/aab257c712de87b90194febd52e4d184551c2d44",
-                "reference": "aab257c712de87b90194febd52e4d184551c2d44",
+                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/7ea9ead78f6d380d2a667864c132c2f7b83055e4",
+                "reference": "7ea9ead78f6d380d2a667864c132c2f7b83055e4",
                 "shasum": ""
             },
             "require": {
@@ -10591,7 +10509,8 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/global-state/issues",
-                "source": "https://github.com/sebastianbergmann/global-state/tree/6.0.0"
+                "security": "https://github.com/sebastianbergmann/global-state/security/policy",
+                "source": "https://github.com/sebastianbergmann/global-state/tree/6.0.1"
             },
             "funding": [
                 {
@@ -10599,7 +10518,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-03T07:07:38+00:00"
+            "time": "2023-07-19T07:19:23+00:00"
         },
         {
             "name": "sebastian/lines-of-code",
