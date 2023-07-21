@@ -50,6 +50,8 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
+            $login_date = !Auth::user()->hasPermissionTo("ALLOW CHANGE DATE") ? date("d/m/Y") : $request->input('login_date');
+            $request->session()->put('login_date', $login_date );
 
             return redirect()->route('home')->withSuccess('You are successfully logged in.');;
         }

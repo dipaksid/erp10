@@ -1,12 +1,14 @@
-if($("#collapseUsersCog div").html()==""){
-    $("#collapseUsersCog").parent().hide();
-}
-
-if($("#collapseMaintenance div").html()==""){
-    $("#collapseMaintenance").parent().hide();
-}
 $(document).ready(function(evt){
     setTimeout(function(){ $("#userDropdown").click(); },200);
+
+    if($("#collapseUsersCog div").html()==""){
+        $("#collapseUsersCog").parent().hide();
+    }
+
+    if($("#collapseMaintenance div").html()==""){
+        $("#collapseMaintenance").parent().hide();
+    }
+
 });
 function printfile(fileName,filename,tkey,tval,cp) {
     $.get(fileName)

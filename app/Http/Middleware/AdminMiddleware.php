@@ -18,17 +18,19 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if(is_null(Auth::user())) {
+        if(!Auth::check()) {
 
             return redirect('/login');
         } else {
-
+            if(Auth::check() && $request->segment(1) == null){
+                return redirect('/home');
+            }
             if (!Auth::user()->hasPermissionTo($this->getModule($request))) {
                 if($request->segment(1)=="home"){
                     $login_date = $request->session()->get('login_date') ?? now();
                     abort('411', $login_date);
                 } else if($request->segment(1)=="") {
-					return redirect('/login');//view('auth.login');
+					return redirect('/login');
 				} else {
                     abort('401',$request->session()->get('login_date'));
                 }
