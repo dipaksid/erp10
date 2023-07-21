@@ -35,6 +35,7 @@ class AdminMiddleware
             }
         }
         view()->share('request',$request);
+
         return $next($request);
     }
 

@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'ERP10') }}</title>
+    <title>@yield('title', config('app.name', 'ERP10'))</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -26,15 +26,12 @@
 <body id="page-top">
     <div id="app">
         @guest
-            @include('partials/guest-header')
+            @include('partials/guest-home')
             @yield('content')
         @else
             <div id="wrapper">
                 @include('layouts/nav')
                 @include('partials/admin-header')
-                <main class="py-4">
-                    @yield('content')
-                </main>
             </div>
         @endguest
     </div>

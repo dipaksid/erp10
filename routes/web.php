@@ -16,16 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.login');
 });
-
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 //Existing routes
 Route::group(['middleware' => 'auth', 'middleware' => 'isAdmin'], function()
 {
     Route::get('/', 'HomeController@index')->name('landing');
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('home/servicesales', 'HomeController@servicesales')->name('home.servicesales');
     Route::resource('customer', 'CustomerController');
     Route::resource('supplier', 'SupplierController');
