@@ -48,13 +48,21 @@ class LoginController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
-
         if (Auth::attempt($credentials)) {
             $login_date = !Auth::user()->hasPermissionTo("ALLOW CHANGE DATE") ? date("d/m/Y") : $request->input('login_date');
             $request->session()->put('login_date', $login_date );
 
             return redirect()->route('home')->withSuccess('You are successfully logged in.');;
         }
+        //For checking username
+        $credentials = $request->only('name', 'password');
+        if (Auth::attempt($credentials)) {
+            $login_date = !Auth::user()->hasPermissionTo("ALLOW CHANGE DATE") ? date("d/m/Y") : $request->input('login_date');
+            $request->session()->put('login_date', $login_date );
+
+            return redirect()->route('home')->withSuccess('You are successfully logged in.');;
+        }
+
 
         return redirect("login")->withError('Oppes! You have entered invalid credentials');
     }

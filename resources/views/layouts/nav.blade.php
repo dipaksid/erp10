@@ -5,18 +5,21 @@
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-money-check"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">{{ config('app.name', 'ERP') }}</div>
+        <div class="sidebar-brand-text mx-3">{{ config('app.name', 'ERP10') }}</div>
     </a>
+    <!-- Divider -->
+
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="{{ route('home') }}">
+        <a class="nav-link" href="{{ route('login') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
         </a>
     </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider">
 
