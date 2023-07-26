@@ -31,6 +31,20 @@ class LoginController extends Controller
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
+     * Login username to be used by the controller.
+     *
+     * @var string
+     */
+    protected $username;
+
+    /**
+     * Login loginType to be used by the controller.
+     *
+     * @var string
+     */
+    protected $loginType;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -38,6 +52,32 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->loginType = 'email';
+        $this->username = $this->findUsername();
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function findUsername()
+    {
+        $login = request()->input('email');
+        $this->loginType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+        request()->merge([$this->loginType => $login]);
+
+        return $this->loginType;
+    }
+
+    /**
+     * Get username property.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return $this->username;
     }
 
     /**
@@ -47,22 +87,12 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($request->only($this->loginType, 'password'))) {
             $login_date = !Auth::user()->hasPermissionTo("ALLOW CHANGE DATE") ? date("d/m/Y") : $request->input('login_date');
             $request->session()->put('login_date', $login_date );
 
             return redirect()->route('home')->withSuccess('You are successfully logged in.');;
         }
-        //For checking username
-        $credentials = $request->only('name', 'password');
-        if (Auth::attempt($credentials)) {
-            $login_date = !Auth::user()->hasPermissionTo("ALLOW CHANGE DATE") ? date("d/m/Y") : $request->input('login_date');
-            $request->session()->put('login_date', $login_date );
-
-            return redirect()->route('home')->withSuccess('You are successfully logged in.');;
-        }
-
 
         return redirect("login")->withError('Oppes! You have entered invalid credentials');
     }

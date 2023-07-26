@@ -4,33 +4,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <style>
-        .error { font-weight: bold; color: #b31b1b; font-family: arial, verdana, sans-seriff; font-size: 12px; }
-        body {
-            margin: 0;
-            padding: 0;
-        }
-        .sticky-header {
-            left: 0;
-            padding-left: 16%;
-            padding-top: 1%;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-        }
-        .sticky-header {
-            height: 60px;
-        }
-        .headerLogin{
-            vertical-align: top;
-            display: inline-block;
-            padding-top: 95px;
-        }
-
-    </style>
 @endsection
 
 @section('content')
