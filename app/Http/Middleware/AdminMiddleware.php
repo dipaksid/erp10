@@ -2,10 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use Illuminate\Support\Facades\Auth;
 use App;
 use App\Models\User;
+use Closure;
+use Doctrine\Inflector\InflectorFactory;
+use Illuminate\Support\Facades\Auth;
 
 class AdminMiddleware
 {
@@ -26,7 +27,7 @@ class AdminMiddleware
                 return redirect('/home');
             }
             if (!Auth::user()->hasPermissionTo($this->getModule($request))) {
-                if($request->segment(1)=="home"){
+                if($request->segment(1)=="home") {
                     $login_date = $request->session()->get('login_date') ?? now();
                     abort('411', $login_date);
                 } else if($request->segment(1)=="") {
@@ -41,7 +42,8 @@ class AdminMiddleware
         return $next($request);
     }
 
-    protected function getModule($request){
+    protected function getModule($request)
+    {
         $requestSegment = $request->segment(1);
         switch ($requestSegment) {
             case "salesinvoice":
@@ -114,15 +116,23 @@ class AdminMiddleware
                 $classname = "App\\LeaveForm";
                 break;
             default:
-                $classname = "App\\Models\\" . ucfirst($requestSegment);
+                $classname = "App\\Models\\" . ucfirst($this->singularize($requestSegment));
                 break;
         }
 
         if (ucfirst($requestSegment) == "") {
+
             return false;
         } else {
             $method = "getModule";
             return $classname::$method($request);
         }
+    }
+
+    function singularize($pluralWord)
+    {
+        $inflector = InflectorFactory::create()->build();
+
+        return $inflector->singularize($pluralWord);
     }
 }

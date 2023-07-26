@@ -22,9 +22,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //Existing routes
 Route::group(['middleware' => 'auth', 'middleware' => 'isAdmin'], function()
 {
-    Route::get('/', 'HomeController@index')->name('landing');
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('landing');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('home/servicesales', 'HomeController@servicesales')->name('home.servicesales');
+    Route::get('home/servicesales',[App\Http\Controllers\HomeController::class, 'servicesales'])->name('home.servicesales');
     Route::resource('customer', 'CustomerController');
     Route::resource('supplier', 'SupplierController');
     Route::get('stock/customercategorylist', 'StockController@customercategorylist')->name('stock.customercategorylist');
@@ -57,7 +57,7 @@ Route::group(['middleware' => 'auth', 'middleware' => 'isAdmin'], function()
     Route::resource('agent', 'AgentController');
     Route::resource('staff', 'StaffController');
     Route::resource('stockcategory', 'StockCategoryController');
-    Route::resource('user', 'UserController');
+    Route::resource('users', App\Http\Controllers\UsersController::class);
     Route::resource('role', 'RoleController');
     Route::resource('permission', 'PermissionController');
     Route::resource('uom', 'UOMController');

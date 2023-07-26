@@ -20,9 +20,12 @@
     <link href="{{ asset('css/admin/sb-admin-2.min.css') }}" rel="stylesheet">
     <!-- OLD Project CSS END here -->
 
-    @yield('style')
+    @yield('styles')
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <style>
+        .error { font-family: arial, verdana, sans-seriff; font-size: 14px; color: #FF0000; border-color: #FF0000;position: relative; }
+    </style>
 </head>
 <body id="page-top">
     <!-- Page Wrapper -->

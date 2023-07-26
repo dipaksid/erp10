@@ -5,6 +5,8 @@
 @section('content')
     <!-- Begin Page Content -->
     <div class="container-fluid">
+        @include('partials.messages')
+
         @yield('content')
         <div class="modal fade" id="submitProcessModal" tabindex="-1" role="dialog" aria-labelledby="submitProcessModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
