@@ -20,6 +20,7 @@
     <link href="{{ asset('css/admin/sb-admin-2.min.css') }}" rel="stylesheet">
     <!-- OLD Project CSS END here -->
 
+    @include('flatpickr::components.style')
     @yield('styles')
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -57,6 +58,7 @@
     <script src="{{ asset('sp-admin/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('sp-admin/chart.js/Chart.min.js') }}"></script>
     <!--- scripts end ----->
+    @include('flatpickr::components.script')
     @yield('scripts')
 </body>
 </html>

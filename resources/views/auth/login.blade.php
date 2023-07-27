@@ -4,8 +4,6 @@
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
 @endsection
 
-@include('flatpickr::components.style')
-
 @section('content')
 <div class="container @guest() headerLogin @endguest" >
     <div class="row justify-content-center">
@@ -78,7 +76,6 @@
     </div>
 </div>
 @endsection
-@include('flatpickr::components.script')
 @section('scripts')
     <script>
         flatpickr("input[type=datetime-local]", { dateFormat: 'Y-m-d H:i:s' });
