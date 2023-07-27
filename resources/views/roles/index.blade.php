@@ -1,15 +1,14 @@
 @extends('layouts.app')
 
-
 @section('content')
-    <!-- Begin Page Content -->
     <div class="container-fluid">
         <div class="container">
             <!-- Page Heading Start -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-2 text-gray-800">Users
-                    @can('ADD USER')
-                        <a href="{{ url('users/create') }}" class="btn btn-success">
+                <h1 class="h3 mb-2 text-gray-800">
+                    Roles
+                    @can('ADD ROLE')
+                        <a href="{{ url('roles/create') }}" class="btn btn-success">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             Create
                         </a>
@@ -17,56 +16,52 @@
                 </h1>
             </div>
             <!-- Page Heading End -->
-            @include('partials.messages')
+
+            @include('partials/messages')
             <div class="row">
-                {{ $users->links("pagination::bootstrap-4") }}
-                @if($users->hasMorePages() || (isset($filters['searchvalue']) && $filters["searchvalue"]!=""))
-                    <form action="{{ action('UsersController@index') }}">
+                {{ $roles->links("pagination::bootstrap-4") }}
+
+                @if( $roles->hasMorePages() || (isset($filters['searchvalue']) && $filters["searchvalue"]!=""))
+                    <form action="{{action('RoleController@index')}}">
                         <div class="col-12">
-                            <input class="form-control" placeholder="Search" name="searchvalue" value="{{((isset($filters['searchvalue']))?$filters['searchvalue']:'')}}">
+                            <input class="form-control" placeholder="Search" name="searchvalue" value="{{ ((isset($filters['searchvalue'])) ? $filters['searchvalue'] : '') }}">
                         </div>
                     </form>
                 @endif
             </div>
-            <table class="table table-striped mb-4">
+            <table class="table table-striped">
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Roles</th>
-                    <th scope="col">Action</th>
+                    <th>Role</th>
+                    <th>Permissions</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                @if(isset($users) && $users->count()>0)
-                    @foreach ($users as $irow=> $ruser)
+                @if( isset($roles) && $roles->count() > 0 )
+                    @foreach ($roles as $irow=> $rrole)
                         <tr>
                             <th scope="row">{{ $irow+1 }}</th>
-                            <td>{{ $ruser->name }}</td>
-                            <td>{{ $ruser->email }}</td>
-                            <td>{{ $ruser->rolename }}</td>
+                            <td>{{ $rrole->name }}</td>
+                            <td>{{ $rrole->permissionname }}</td>
                             <td class="text-center col-2">
                                 <div class="d-flex">
-
-                                    @can('VIEW USER')
-                                        <a href="{{ action('App\Http\Controllers\UsersController@show',$ruser->id) }}"  class="btn btn-primary">View</a>&nbsp;
+                                    @can('VIEW ROLE')
+                                        <a href="{{ action('App\Http\Controllers\RolesController@show',$rrole->id) }}"  class="btn btn-primary ">View</a>&nbsp;
                                     @endcan
-
-                                    @can('EDIT USER')
-                                        <a href="{{ action('App\Http\Controllers\UsersController@edit',$ruser->id) }}"  class="btn btn-primary">Edit</a>&nbsp;
+                                    @can('EDIT ROLE')
+                                        <a href="{{ action('App\Http\Controllers\RolesController@edit',$rrole->id) }}"  class="btn btn-primary ">Edit</a>&nbsp;
                                     @endcan
-
-                                    @can('DELETE USER')
-                                        <form action="{{action('App\Http\Controllers\UsersController@destroy', $ruser->id)}}" method="post" id="deleteForm">
-                                            {{ csrf_field() }}
+                                    @can('DELETE ROLE')
+                                        <form action="{{ action('App\Http\Controllers\RolesController@destroy', $rrole->id) }}" method="post" id="deleteForm">
+                                            @csrf
                                             <input name="_method" type="hidden" value="DELETE">
                                             <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
                                                 Delete
                                             </button>
                                         </form>
                                     @endcan
-
                                 </div>
                             </td>
                         </tr>
@@ -78,6 +73,8 @@
                 @endif
                 </tbody>
             </table>
+            <div>
+            </div>
         </div>
     </div>
     <!-- Modal -->
@@ -89,7 +86,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this user?
+                    Are you sure you want to delete this role?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -99,7 +96,6 @@
         </div>
     </div>
 @endsection
-
 @section('scripts')
     <script>
         function deleteUser() {

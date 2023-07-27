@@ -18,6 +18,9 @@ class UsersController extends Controller
     {
         $filters = $request->only(['searchvalue']);
         $users = User::searchUsersWithFilters($filters);
+        if(isset($filters['searchvalue'])){
+            $users->withPath('?searchvalue='.(($filters['searchvalue']) ? $filters['searchvalue']: ""));
+        }
 
         return view('users.index', compact('users','filters'));
     }

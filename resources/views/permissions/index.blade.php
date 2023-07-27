@@ -1,15 +1,14 @@
 @extends('layouts.app')
 
-
 @section('content')
-    <!-- Begin Page Content -->
     <div class="container-fluid">
         <div class="container">
             <!-- Page Heading Start -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-2 text-gray-800">Users
-                    @can('ADD USER')
-                        <a href="{{ url('users/create') }}" class="btn btn-success">
+                <h1 class="h3 mb-2 text-gray-800">
+                    Permissions
+                    @can('ADD ROLE')
+                        <a href="{{ url('permissions/create') }}" class="btn btn-success">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             Create
                         </a>
@@ -17,56 +16,49 @@
                 </h1>
             </div>
             <!-- Page Heading End -->
-            @include('partials.messages')
-            <div class="row">
-                {{ $users->links("pagination::bootstrap-4") }}
-                @if($users->hasMorePages() || (isset($filters['searchvalue']) && $filters["searchvalue"]!=""))
-                    <form action="{{ action('UsersController@index') }}">
+            @include('partials/messages')
+
+            <div class="d-flex">
+                {{ $permissions->links("pagination::bootstrap-4") }}
+                @if($permissions->hasMorePages() || (isset($input['searchvalue']) && $input["searchvalue"]!=""))
+                    <form action="{{ action('App\Http\Controllers\PermissionsController@index') }}">
                         <div class="col-12">
-                            <input class="form-control" placeholder="Search" name="searchvalue" value="{{((isset($filters['searchvalue']))?$filters['searchvalue']:'')}}">
+                            <input class="form-control" placeholder="Search" name="searchvalue" value="{{ ((isset($input['searchvalue'])) ? $input['searchvalue'] : '') }}">
                         </div>
                     </form>
                 @endif
             </div>
-            <table class="table table-striped mb-4">
+            <table class="table table-striped">
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Roles</th>
-                    <th scope="col">Action</th>
+                    <th>Permissions</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                @if(isset($users) && $users->count()>0)
-                    @foreach ($users as $irow=> $ruser)
+                @if(isset($permissions) && count($permissions)>0)
+                    @foreach ($permissions as $irow=> $rpermission)
                         <tr>
                             <th scope="row">{{ $irow+1 }}</th>
-                            <td>{{ $ruser->name }}</td>
-                            <td>{{ $ruser->email }}</td>
-                            <td>{{ $ruser->rolename }}</td>
+                            <td>{{$rpermission->name}}</td>
                             <td class="text-center col-2">
                                 <div class="d-flex">
-
-                                    @can('VIEW USER')
-                                        <a href="{{ action('App\Http\Controllers\UsersController@show',$ruser->id) }}"  class="btn btn-primary">View</a>&nbsp;
+                                    @can('VIEW PERMISSION')
+                                        <a href="{{ action('App\Http\Controllers\PermissionsController@show',$rpermission->id)}}"  class="btn btn-primary ">View</a>&nbsp;
                                     @endcan
-
-                                    @can('EDIT USER')
-                                        <a href="{{ action('App\Http\Controllers\UsersController@edit',$ruser->id) }}"  class="btn btn-primary">Edit</a>&nbsp;
+                                    @can('EDIT PERMISSION')
+                                        <a href="{{ action('App\Http\Controllers\PermissionsController@edit',$rpermission->id)}}"  class="btn btn-primary ">Edit</a>&nbsp;
                                     @endcan
-
-                                    @can('DELETE USER')
-                                        <form action="{{action('App\Http\Controllers\UsersController@destroy', $ruser->id)}}" method="post" id="deleteForm">
-                                            {{ csrf_field() }}
+                                    @can('DELETE PERMISSION')
+                                        <form action="{{ action('App\Http\Controllers\PermissionsController@destroy', $rpermission->id)}}" method="post" id="deleteForm">
+                                            @csrf
                                             <input name="_method" type="hidden" value="DELETE">
                                             <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
                                                 Delete
                                             </button>
                                         </form>
                                     @endcan
-
                                 </div>
                             </td>
                         </tr>
@@ -80,7 +72,7 @@
             </table>
         </div>
     </div>
-    <!-- Modal -->
+    <!-- DELETE confirm Modal -->
     <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -89,7 +81,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this user?
+                    Are you sure you want to delete this permission?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -99,7 +91,6 @@
         </div>
     </div>
 @endsection
-
 @section('scripts')
     <script>
         function deleteUser() {

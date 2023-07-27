@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,8 +11,10 @@ class Permission extends Model
     use HasFactory;
 
     protected $table = 'permissions';
-    protected $fillable = ['name'];
 
+    protected $fillable = ['name', 'guard_name'];
+
+    const PERMISSION_PER_PAGE = 15;
     /**
      * Find a permission by its name.
      *
@@ -49,5 +52,14 @@ class Permission extends Model
             $result='PERMISSION LIST';
         }
         return $result;
+    }
+
+    public function scopeSearchPermissionsWithFilters(Builder $query, $filters)
+    {
+        if(isset($filters['searchvalue'])) {
+            $query->where('name','like','%'. $filters['searchvalue'].'%');
+        }
+
+        return $query->orderBy('id', 'desc')->paginate(self::PERMISSION_PER_PAGE);
     }
 }

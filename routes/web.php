@@ -58,8 +58,8 @@ Route::group(['middleware' => 'auth', 'middleware' => 'isAdmin'], function()
     Route::resource('staff', 'StaffController');
     Route::resource('stockcategory', 'StockCategoryController');
     Route::resource('users', App\Http\Controllers\UsersController::class);
-    Route::resource('role', 'RoleController');
-    Route::resource('permission', 'PermissionController');
+    Route::resource('roles', App\Http\Controllers\RolesController::class);
+    Route::resource('permissions', App\Http\Controllers\PermissionsController::class);
     Route::resource('uom', 'UOMController');
     Route::resource('systemsetting', 'SystemSettingController');
     Route::resource('companysetting', 'CompanySettingController');

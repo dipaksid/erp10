@@ -11,8 +11,6 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-
-
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
@@ -66,7 +64,7 @@ class User extends Authenticatable
             })->distinct();
         }
 
-        return $query->orderBy('id', 'desc')->paginate();
+        return $query->orderBy('id', 'desc')->paginate(self::USER_PER_PAGE);
     }
 
     public static function getModule($request)

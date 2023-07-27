@@ -263,8 +263,8 @@
         <div id="collapseUsersCog" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 @can('USER LIST') <a class="collapse-item" href="{{ route('users.index') }}">Users</a> @elsecan('ADD USER') <a class="collapse-item" href="{{ route('user.create') }}">Users</a> @endcan
-                @can('ROLE LIST') <a class="collapse-item" href="{{ route('role.index') }}">Roles</a> @elsecan('ADD ROLE') <a class="collapse-item" href="{{ route('role.create') }}">Roles</a> @endcan
-                @can('PERMISSION LIST') <a class="collapse-item" href="{{ route('permission.index') }}">Permissions</a> @elsecan('ADD PERMISSION') <a class="collapse-item" href="{{ route('permission.create') }}">Permissions</a> @endcan
+                @can('ROLE LIST') <a class="collapse-item" href="{{ route('roles.index') }}">Roles</a> @elsecan('ADD ROLE') <a class="collapse-item" href="{{ route('role.create') }}">Roles</a> @endcan
+                @can('PERMISSION LIST') <a class="collapse-item" href="{{ route('permissions.index') }}">Permissions</a> @elsecan('ADD PERMISSION') <a class="collapse-item" href="{{ route('permission.create') }}">Permissions</a> @endcan
             </div>
         </div>
     </li>
