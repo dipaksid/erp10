@@ -18,12 +18,12 @@
             <!-- Page Heading End -->
             @include('partials/messages')
 
-            <div class="d-flex">
+            <div class="d-flex p-2">
                 {{ $permissions->links("pagination::bootstrap-4") }}
-                @if($permissions->hasMorePages() || (isset($input['searchvalue']) && $input["searchvalue"]!=""))
+                @if($permissions->hasMorePages() || (isset($filters['searchvalue']) && $filters["searchvalue"]!=""))
                     <form action="{{ action('App\Http\Controllers\PermissionsController@index') }}">
                         <div class="col-12">
-                            <input class="form-control" placeholder="Search" name="searchvalue" value="{{ ((isset($input['searchvalue'])) ? $input['searchvalue'] : '') }}">
+                            <input class="form-control" placeholder="Search" name="searchvalue" value="{{ ((isset($filters['searchvalue'])) ? $filters['searchvalue'] : old('searchvalue') ) }}">
                         </div>
                     </form>
                 @endif

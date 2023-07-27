@@ -17,6 +17,9 @@ class PermissionsController extends Controller
     {
         $filters = $request->only(['searchvalue']);
         $permissions = Permission::searchPermissionsWithFilters($filters);
+        if($filters['searchvalue']){
+            $permissions->withPath('?searchvalue='.($filters['searchvalue']) ? $filters['searchvalue'] : '');
+        }
 
         $input=$request->all();
         return view('permissions.index',compact('permissions','filters'));
