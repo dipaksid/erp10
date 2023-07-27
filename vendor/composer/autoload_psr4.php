@@ -46,6 +46,7 @@ return array(
     'Svg\\' => array($vendorDir . '/phenx/php-svg-lib/src/Svg'),
     'StellaMaris\\Clock\\' => array($vendorDir . '/stella-maris/clock/src'),
     'Spatie\\Permission\\' => array($vendorDir . '/spatie/laravel-permission/src'),
+    'Spatie\\LaravelPackageTools\\' => array($vendorDir . '/spatie/laravel-package-tools/src'),
     'Spatie\\LaravelIgnition\\' => array($vendorDir . '/spatie/laravel-ignition/src'),
     'Spatie\\Ignition\\' => array($vendorDir . '/spatie/ignition/src'),
     'Spatie\\FlareClient\\' => array($vendorDir . '/spatie/flare-client-php/src'),
@@ -131,5 +132,7 @@ return array(
     'Barryvdh\\DomPDF\\' => array($vendorDir . '/barryvdh/laravel-dompdf/src'),
     'Barryvdh\\Debugbar\\' => array($vendorDir . '/barryvdh/laravel-debugbar/src'),
     'BaconQrCode\\' => array($vendorDir . '/bacon/bacon-qr-code/src'),
+    'Asdh\\LaravelFlatpickr\\Database\\Factories\\' => array($vendorDir . '/asdh/laravel-flatpickr/database/factories'),
+    'Asdh\\LaravelFlatpickr\\' => array($vendorDir . '/asdh/laravel-flatpickr/src'),
     'App\\' => array($baseDir . '/app', $vendorDir . '/laravel/pint/app'),
 );

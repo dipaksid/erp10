@@ -165,6 +165,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/event-manager" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/orangehill/iseed" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/asdh/laravel-flatpickr" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/laravel-package-tools" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

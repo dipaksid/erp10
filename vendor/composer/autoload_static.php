@@ -101,6 +101,7 @@ class ComposerStaticInit9bd63d2610c4d7f2740807048adb77f4
             'Svg\\' => 4,
             'StellaMaris\\Clock\\' => 18,
             'Spatie\\Permission\\' => 18,
+            'Spatie\\LaravelPackageTools\\' => 27,
             'Spatie\\LaravelIgnition\\' => 23,
             'Spatie\\Ignition\\' => 16,
             'Spatie\\FlareClient\\' => 19,
@@ -225,6 +226,8 @@ class ComposerStaticInit9bd63d2610c4d7f2740807048adb77f4
         ),
         'A' => 
         array (
+            'Asdh\\LaravelFlatpickr\\Database\\Factories\\' => 41,
+            'Asdh\\LaravelFlatpickr\\' => 22,
             'App\\' => 4,
         ),
     );
@@ -389,6 +392,10 @@ class ComposerStaticInit9bd63d2610c4d7f2740807048adb77f4
         'Spatie\\Permission\\' => 
         array (
             0 => __DIR__ . '/..' . '/spatie/laravel-permission/src',
+        ),
+        'Spatie\\LaravelPackageTools\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spatie/laravel-package-tools/src',
         ),
         'Spatie\\LaravelIgnition\\' => 
         array (
@@ -736,6 +743,14 @@ class ComposerStaticInit9bd63d2610c4d7f2740807048adb77f4
         array (
             0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
         ),
+        'Asdh\\LaravelFlatpickr\\Database\\Factories\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/asdh/laravel-flatpickr/database/factories',
+        ),
+        'Asdh\\LaravelFlatpickr\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/asdh/laravel-flatpickr/src',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
@@ -793,7 +808,9 @@ class ComposerStaticInit9bd63d2610c4d7f2740807048adb77f4
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Requests\\LoginRequest' => __DIR__ . '/../..' . '/app/Http/Requests/LoginRequest.php',
         'App\\Http\\Requests\\StoreStaffRequest' => __DIR__ . '/../..' . '/app/Http/Requests/StoreStaffRequest.php',
+        'App\\Http\\Requests\\StoreUserRequest' => __DIR__ . '/../..' . '/app/Http/Requests/StoreUserRequest.php',
         'App\\Http\\Requests\\UpdateStaffRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateStaffRequest.php',
+        'App\\Http\\Requests\\UpdateUserRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateUserRequest.php',
         'App\\Models\\Agent' => __DIR__ . '/../..' . '/app/Models/Agent.php',
         'App\\Models\\Arcn' => __DIR__ . '/../..' . '/app/Models/Arcn.php',
         'App\\Models\\CustomerService' => __DIR__ . '/../..' . '/app/Models/CustomerService.php',
@@ -807,6 +824,8 @@ class ComposerStaticInit9bd63d2610c4d7f2740807048adb77f4
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'Asdh\\LaravelFlatpickr\\Components\\Flatpickr' => __DIR__ . '/..' . '/asdh/laravel-flatpickr/src/Components/Flatpickr.php',
+        'Asdh\\LaravelFlatpickr\\LaravelFlatpickrServiceProvider' => __DIR__ . '/..' . '/asdh/laravel-flatpickr/src/LaravelFlatpickrServiceProvider.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'BaconQrCode\\Common\\BitArray' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/BitArray.php',
         'BaconQrCode\\Common\\BitMatrix' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/BitMatrix.php',
@@ -7742,6 +7761,10 @@ class ComposerStaticInit9bd63d2610c4d7f2740807048adb77f4
         'Spatie\\LaravelIgnition\\Support\\StringComparator' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Support/StringComparator.php',
         'Spatie\\LaravelIgnition\\Views\\BladeSourceMapCompiler' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Views/BladeSourceMapCompiler.php',
         'Spatie\\LaravelIgnition\\Views\\ViewExceptionMapper' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/Views/ViewExceptionMapper.php',
+        'Spatie\\LaravelPackageTools\\Commands\\InstallCommand' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/Commands/InstallCommand.php',
+        'Spatie\\LaravelPackageTools\\Exceptions\\InvalidPackage' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/Exceptions/InvalidPackage.php',
+        'Spatie\\LaravelPackageTools\\Package' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/Package.php',
+        'Spatie\\LaravelPackageTools\\PackageServiceProvider' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/PackageServiceProvider.php',
         'Spatie\\Permission\\Commands\\CacheReset' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Commands/CacheReset.php',
         'Spatie\\Permission\\Commands\\CreatePermission' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Commands/CreatePermission.php',
         'Spatie\\Permission\\Commands\\CreateRole' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Commands/CreateRole.php',

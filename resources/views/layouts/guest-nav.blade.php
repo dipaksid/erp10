@@ -30,7 +30,7 @@
             <!-- Branding Image -->
             <header class="sticky-header">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <strong>{{ config('app.name', 'ERP') }}</strong>
+                    <strong>{{ config('app.name', 'ERP10') }}</strong>
                 </a>
             </header>
             <!-- Collapsed Hamburger -->

@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('style')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@section('styles')
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 @endsection
+
+@include('flatpickr::components.style')
 
 @section('content')
 <div class="container @guest() headerLogin @endguest" >
@@ -78,11 +78,12 @@
     </div>
 </div>
 @endsection
-
+@include('flatpickr::components.script')
 @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script  type="module">
+    <script>
         flatpickr("input[type=datetime-local]", { dateFormat: 'Y-m-d H:i:s' });
+    </script>
+    <script  type="module">
         $(function(){
             let loginForm = $("#login_form");
             if (loginForm.length > 0) {

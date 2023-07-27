@@ -49,7 +49,6 @@
     </div>
     <!-- End of Page Wrapper -->
     @include('layouts/modal')
-
     <!--- scripts start ----->
     <script src="{{ asset('sp-admin/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('sp-admin/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

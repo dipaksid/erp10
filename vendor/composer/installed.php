@@ -3,13 +3,22 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '9c8d429b4c9d52f6d609cce26c22fab6a18c86fb',
+        'reference' => 'ab1b11ed5b0fcd4f1ebd1dbeaf41f6dfe26e0c81',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
+        'asdh/laravel-flatpickr' => array(
+            'pretty_version' => '2.0.1',
+            'version' => '2.0.1.0',
+            'reference' => '5b5631162ee54acd4280bee26953febbba403fe1',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../asdh/laravel-flatpickr',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'bacon/bacon-qr-code' => array(
             'pretty_version' => '2.0.8',
             'version' => '2.0.8.0',
@@ -526,7 +535,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '9c8d429b4c9d52f6d609cce26c22fab6a18c86fb',
+            'reference' => 'ab1b11ed5b0fcd4f1ebd1dbeaf41f6dfe26e0c81',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1375,6 +1384,15 @@
             'install_path' => __DIR__ . '/../spatie/laravel-ignition',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'spatie/laravel-package-tools' => array(
+            'pretty_version' => '1.15.0',
+            'version' => '1.15.0.0',
+            'reference' => 'efab1844b8826443135201c4443690f032c3d533',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../spatie/laravel-package-tools',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'spatie/laravel-permission' => array(
             'pretty_version' => '5.10.2',
