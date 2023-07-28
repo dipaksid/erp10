@@ -37,6 +37,7 @@ class AdminMiddleware
                 }
             }
         }
+
         view()->share('request',$request);
 
         return $next($request);
@@ -97,8 +98,8 @@ class AdminMiddleware
             case "totalpayapp":
                 $classname = "App\\TotalpayApp";
                 break;
-            case "companysetting":
-                $classname = "App\\CompanySetting";
+            case "company_settings":
+                $classname = "App\\Models\\CompanySetting";
                 break;
             case "softwaresrvupload":
                 $classname = "App\\SoftwareService";
@@ -125,6 +126,7 @@ class AdminMiddleware
             return false;
         } else {
             $method = "getModule";
+
             return $classname::$method($request);
         }
     }
@@ -135,4 +137,5 @@ class AdminMiddleware
 
         return $inflector->singularize($pluralWord);
     }
+
 }

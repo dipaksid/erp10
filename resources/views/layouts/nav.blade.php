@@ -287,7 +287,7 @@
 
     @can('COMPANY SETTING')
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('companysetting.index') }}">
+            <a class="nav-link" href="{{ route('company_settings.index') }}">
                 <i class="fas fa-fw fa-building"></i>
                 <span>Company Setting</span></a>
         </li>

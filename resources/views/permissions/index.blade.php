@@ -53,7 +53,7 @@
                                     @can('DELETE PERMISSION')
                                         <form action="{{ action('App\Http\Controllers\PermissionsController@destroy', $rpermission->id)}}" method="post" id="deleteForm">
                                             @csrf
-                                            <input name="_method" type="hidden" value="DELETE">
+                                            @method('DELETE')
                                             <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
                                                 Delete
                                             </button>
