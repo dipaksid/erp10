@@ -54,10 +54,10 @@
                                         <a href="{{ action('App\Http\Controllers\RolesController@edit',$rrole->id) }}"  class="btn btn-primary ">Edit</a>&nbsp;
                                     @endcan
                                     @can('DELETE ROLE')
-                                        <form action="{{ action('App\Http\Controllers\RolesController@destroy', $rrole->id) }}" method="post" id="deleteForm">
+                                        <form action="{{ action('App\Http\Controllers\RolesController@destroy', $rrole->id) }}" method="post" id="deleteForm_{{ $rrole->id }}">
                                             @csrf
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" onclick="showConfirmDeleteModal({{ $rrole->id }})">
                                                 Delete
                                             </button>
                                         </form>
@@ -89,17 +89,14 @@
                     Are you sure you want to delete this role?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="removeModalBackdrop()">Cancel</button>
                     <button type="button" class="btn btn-danger" onclick="deleteUser()">Delete</button>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
 @section('scripts')
-    <script>
-        function deleteUser() {
-            document.getElementById('deleteForm').submit();
-        }
-    </script>
+    <script src="{{ asset('js/common.js') }}"></script>
 @endsection

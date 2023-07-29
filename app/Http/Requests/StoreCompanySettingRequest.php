@@ -22,7 +22,7 @@ class StoreCompanySettingRequest extends FormRequest
      */
     public function rules(): array
     {
-        $companyId = $this->route('companySetting')->id;
+        $companyId = isset($this->route('company_setting')->id) ? $this->route('company_setting')->id : null;
 
         return [
             'companycode' => [

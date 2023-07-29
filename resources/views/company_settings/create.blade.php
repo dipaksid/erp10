@@ -172,7 +172,7 @@
             $("#companyform").validate({
                 rules: {
                     companycode: {
-                        //required: true,
+                        required: true,
                         maxlength: 20
                     },
                     companyname: {

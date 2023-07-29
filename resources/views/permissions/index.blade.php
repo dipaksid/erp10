@@ -51,10 +51,10 @@
                                         <a href="{{ action('App\Http\Controllers\PermissionsController@edit',$rpermission->id)}}"  class="btn btn-primary ">Edit</a>&nbsp;
                                     @endcan
                                     @can('DELETE PERMISSION')
-                                        <form action="{{ action('App\Http\Controllers\PermissionsController@destroy', $rpermission->id)}}" method="post" id="deleteForm">
+                                        <form action="{{ action('App\Http\Controllers\PermissionsController@destroy', $rpermission->id)}}" method="post" id="deleteForm_{{ $rpermission->id }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" onclick="showConfirmDeleteModal({{ $rpermission->id }})">
                                                 Delete
                                             </button>
                                         </form>
@@ -84,17 +84,14 @@
                     Are you sure you want to delete this permission?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="removeModalBackdrop()">Cancel</button>
                     <button type="button" class="btn btn-danger" onclick="deleteUser()">Delete</button>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
 @section('scripts')
-    <script>
-        function deleteUser() {
-            document.getElementById('deleteForm').submit();
-        }
-    </script>
+    <script src="{{ asset('js/common.js') }}"></script>
 @endsection

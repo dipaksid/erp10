@@ -21,7 +21,7 @@
             <div class="row">
                 {{ $users->links("pagination::bootstrap-4") }}
                 @if($users->hasMorePages() || (isset($filters['searchvalue']) && $filters["searchvalue"]!=""))
-                    <form action="{{ action('UsersController@index') }}">
+                    <form action="{{ action('App\Http\Controllers\UsersController@index') }}">
                         <div class="col-12">
                             <input class="form-control" placeholder="Search" name="searchvalue" value="{{((isset($filters['searchvalue']))?$filters['searchvalue']:'')}}">
                         </div>
@@ -45,7 +45,7 @@
                             <th scope="row">{{ $irow+1 }}</th>
                             <td>{{ $ruser->name }}</td>
                             <td>{{ $ruser->email }}</td>
-                            <td>{{ $ruser->rolename }}</td>
+                            <td> {{ $ruser->getRoleNames()->first() }}</td>
                             <td class="text-center col-2">
                                 <div class="d-flex">
 
@@ -58,10 +58,10 @@
                                     @endcan
 
                                     @can('DELETE USER')
-                                        <form action="{{action('App\Http\Controllers\UsersController@destroy', $ruser->id)}}" method="post" id="deleteForm">
+                                        <form action="{{action('App\Http\Controllers\UsersController@destroy', $ruser->id)}}" method="post" id="deleteForm_{{ $ruser->id }}">
                                             {{ csrf_field() }}
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" onclick="showConfirmDeleteModal({{ $ruser->id }})">
                                                 Delete
                                             </button>
                                         </form>
@@ -92,7 +92,7 @@
                     Are you sure you want to delete this user?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="removeModalBackdrop()">Cancel</button>
                     <button type="button" class="btn btn-danger" onclick="deleteUser()">Delete</button>
                 </div>
             </div>
@@ -101,9 +101,5 @@
 @endsection
 
 @section('scripts')
-    <script>
-        function deleteUser() {
-            document.getElementById('deleteForm').submit();
-        }
-    </script>
+    <script src="{{ asset('js/common.js') }}"></script>
 @endsection

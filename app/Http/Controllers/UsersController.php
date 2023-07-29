@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Staff;
+
 class UsersController extends Controller
 {
     /**
@@ -45,9 +47,10 @@ class UsersController extends Controller
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
+            'staff_id' => $request->get('staff_id'),
         ]);
 
-        $user->assignRole(Role::where('name', $validatedData['rolesid'])->first());
+        $this->updateRole($user, $validatedData['rolesid']);
 
         return redirect()->route('users.index')->with('success', 'User ('.$user->name.') has been created!!');
     }
@@ -78,13 +81,10 @@ class UsersController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $validatedData = $request->validated();
+        $validatedData['staff_id'] = $request->get('staff_id');
         $user->update($validatedData);
-        $roles = $request['rolesid'];
-        if (isset($roles)) {
-            $user->roles()->sync($roles);  //If one or more role is selected associate user to roles
-        } else {
-            $user->roles()->detach(); //If no role is selected remove exisiting role associated to a user
-        }
+
+        $this->updateRole($user, $request->get('rolesid'), true);
 
         return redirect()->route('users.index')->with('success', 'User ('.$user->name.') has been updated!!');
     }
@@ -107,4 +107,21 @@ class UsersController extends Controller
         return $data;
     }
 
+    protected function updateRole($user, $role_id, $update = false){
+        $role = Role::where('id', $role_id)->first();
+        if($update) {
+            if (isset($role)) {
+                $user->roles()->sync($role);  //If one or more role is selected associate user to roles
+            } else {
+                $user->roles()->detach(); //If no role is selected remove exisiting role associated to a user
+            }
+        }else{
+            if ($role) {
+                $user->assignRole($role->name);
+                $user->save();
+            } else {
+                Log::error('Role Not Found for ID: ' . $validatedData['rolesid']);
+            }
+        }
+    }
 }

@@ -55,7 +55,6 @@
             <a href="{{ action('App\Http\Controllers\UsersController@index') }}" class="btn btn-secondary btn-xs">Back</a>
             <button type="submit" seq="4" class="btn btn-primary enterseq">Update</button>
         </form>
-
     </div>
 @endsection
 

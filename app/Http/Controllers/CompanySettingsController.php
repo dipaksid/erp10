@@ -9,6 +9,7 @@ use App\Models\CompanySetting;
 use App\Traits\FileUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class CompanySettingsController extends Controller
 {
@@ -96,20 +97,59 @@ class CompanySettingsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified CompanySetting in the database.
+     *
+     * @param StoreCompanySettingRequest $request The incoming HTTP request containing the form data and validation rules.
+     * @param CompanySetting $companySetting The CompanySetting instance to be updated.
+     *
+     * @return \Illuminate\Http\RedirectResponse Redirects back to the index page with a success message upon successful update.
      */
     public function update(StoreCompanySettingRequest $request, CompanySetting $companySetting)
     {
-        //
+        $validatedData = $request->validated();
+        $postData      = $this->preparePostData($validatedData);
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        $b_updoth = false;
+        if($request->input("b_default")){
+            $b_updoth = true;
+            $companySetting->b_default = "Y";
+        } else {
+            $companySetting->b_default = "N";
+        }
+        $companySetting->update($postData);
+        if(isset($companySetting) && $companySetting->id){
+            $companyltrheaderfileName = $this->uploadFile($request, 'companyltrheader', "company/{$companySetting->id}", 'bwheader.jpg');
+            $companyltrfooterFileName = $this->uploadFile($request, 'companyltrfooter', "company/{$companySetting->id}", 'bwfooter.jpg');
+        }
+        if(isset($companyltrheaderfileName) && isset($companyltrfooterFileName)) {
+            $companySetting->update(['companyltrheader'=>$companyltrheaderfileName, 'companyltrfooter'=>$companyltrfooterFileName]);
+        }
+        if($b_updoth){
+            $this->updateBUpdoth($companySetting);
+        }
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+        return redirect()->route('company_settings.index')->with('success','Permission'. $companySetting->companyname.' updated!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified CompanySetting from storage.
+     *
+     * @param CompanySetting $companySetting The CompanySetting instance to be deleted.
+     *
+     * @return \Illuminate\Http\RedirectResponse Redirects back to the index page with a success message upon successful deletion.
      */
-    public function destroy(string $id)
+    public function destroy(CompanySetting $companySetting)
     {
-        //
+        $directoryPath = public_path("company/{$companySetting->id}");
+        if (File::exists($directoryPath)) {
+            File::deleteDirectory($directoryPath); // Delete the entire directory and its contents.
+        }
+        $companySetting->delete();
+
+        return redirect('/company_settings')->with('success', 'Company Setting Code ('.$companySetting->companycode.') has been deleted!!');
     }
+
     protected function getData() {
         $data["area"] = Area::where('isactive', 1)->get();
         $data["bank"] = Bank::get();
@@ -150,5 +190,13 @@ class CompanySettingsController extends Controller
         }
 
         return $companySettings;
+    }
+
+    protected function updateBUpdoth($companysetting) {
+        $companysetting1 = CompanySetting::where("b_default","Y")->where("id","!=",$companysetting->id)->get();
+        if($companysetting1->count()>0) foreach($companysetting1 as $rcompset){
+            $rcompset->b_default="N";
+            $rcompset->save();
+        }
     }
 }

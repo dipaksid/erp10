@@ -31,7 +31,7 @@
                     <select class="form-control enterseq" seq="3" name="rolesid">
                         <option value=""> -- Selection --</option>
                         @foreach ($data["roles"] as $rroles)
-                            <option value="{{ $rroles['id']}}" @if (old('staff_id') == $rroles['id']) selected @endif>
+                            <option value="{{ $rroles['id']}}" @if (old('rolesid') == $rroles['id']) selected @endif>
                                 {{ $rroles['name'] }}
                             </option>
                         @endforeach

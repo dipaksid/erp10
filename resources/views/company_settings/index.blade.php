@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container-fluid">
-        <div class="container">
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Company Settings
@@ -14,6 +13,7 @@
                 @endcan
             </h1>
         </div>
+        <div class="">
         @include('partials/messages')
         <div class="row pt-2 pb-2 w-50">
             {{ $companySettings->links("pagination::bootstrap-4") }}
@@ -25,7 +25,6 @@
                 </form>
             @endif
         </div>
-
         <table class="table table-striped">
             <thead class="thead-light">
                 <tr>
@@ -53,18 +52,19 @@
                             <td>{{ $rcompanySettings->phoneno1 }}</td>
                             <td>{{ $rcompanySettings->b_default }}</td>
                             <td class="text-center col-2">
-                                <div class="d-flex">
-                                    @can('VIEW COMPANY')
+                                <div class="d-flex justify-content-center align-items-center">
+                                    @can('VIEW COMPANY SETTINGS')
                                         <a href="{{ action('App\Http\Controllers\CompanySettingsController@show',$rcompanySettings->id) }}" class="btn btn-primary">View</a>&nbsp;
                                     @endcan
-                                    @can('EDIT COMPANY')
+                                    @can('EDIT COMPANY SETTINGS')
                                         <a href="{{ action('App\Http\Controllers\CompanySettingsController@edit',$rcompanySettings->id) }}" class="btn btn-primary">Edit</a>&nbsp;
                                     @endcan
-                                    @can('DELETE COMPANY')
-                                        <form class="deletefrom" action="{{ action('App\Http\Controllers\CompanySettingsController@destroy', $rcompanySettings->id)}}" method="post" id="deleteForm">
+                                    @can('DELETE COMPANY SETTINGS')
+                                        <form class="deletefrom" action="{{ action('App\Http\Controllers\CompanySettingsController@destroy', $rcompanySettings->id)}}" method="post" id="deleteForm_{{ $rcompanySettings->id }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                                            <input type="hidden" id="delete_id" value="{{ $rcompanySettings->id }}" />
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" onclick="showConfirmDeleteModal({{ $rcompanySettings->id }})">
                                                 Delete
                                             </button>
                                         </form>
@@ -82,12 +82,29 @@
             </table>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this company setting?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="removeModalBackdrop()">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteUser()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
-    <script>
-        function deleteUser() {
-            document.getElementById('deleteForm').submit();
-        }
-    </script>
+    <script src="{{ asset('js/common.js') }}"></script>
 @endsection
+
+
+
