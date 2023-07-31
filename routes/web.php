@@ -61,7 +61,7 @@ Route::group(['middleware' => 'auth', 'middleware' => 'isAdmin'], function()
     Route::resource('roles', App\Http\Controllers\RolesController::class);
     Route::resource('permissions', App\Http\Controllers\PermissionsController::class);
     Route::resource('uom', 'UOMController');
-    Route::resource('systemsetting', 'SystemSettingController');
+    Route::resource('system_settings', App\Http\Controllers\SystemSettingsController::class);
     Route::resource('company_settings', App\Http\Controllers\CompanySettingsController::class);
     Route::resource('servicesrate','ServiceRateProfileController');
     Route::resource('solutionprofile','SolutionProfileController');

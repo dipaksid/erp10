@@ -80,8 +80,8 @@ class AdminMiddleware
             case "customerpwspgapp":
                 $classname = "App\\CustomerPwspgapp";
                 break;
-            case "systemsetting":
-                $classname = "App\\SystemSetting";
+            case "system_settings":
+                $classname = "App\\Models\\SystemSetting";
                 break;
             case "servicesrate":
                 $classname = "App\\ServiceRate";

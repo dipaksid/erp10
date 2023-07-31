@@ -279,7 +279,7 @@
 
     @can('SYSTEM SETTING')
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('systemsetting.index') }}">
+            <a class="nav-link" href="{{ route('system_settings.index') }}">
                 <i class="fas fa-fw fa-sticky-note"></i>
                 <span>System Setting</span></a>
         </li>
