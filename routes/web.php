@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth', 'middleware' => 'isAdmin'], function()
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('landing');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('home/servicesales',[App\Http\Controllers\HomeController::class, 'servicesales'])->name('home.servicesales');
-    Route::resource('customer', 'CustomerController');
+    Route::resource('customers', App\Http\Controllers\CustomersController::class);
     Route::resource('supplier', 'SupplierController');
     Route::get('stock/customercategorylist', 'StockController@customercategorylist')->name('stock.customercategorylist');
     Route::post('/stock/updseq', 'StockController@updseq')->name('stock.updseq');

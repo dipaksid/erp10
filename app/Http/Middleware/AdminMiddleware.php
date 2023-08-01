@@ -2,11 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App;
-use App\Models\User;
 use Closure;
 use Doctrine\Inflector\InflectorFactory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class AdminMiddleware
 {
@@ -17,125 +16,74 @@ class AdminMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        if(!Auth::check()) {
-
+        if (!Auth::check()) {
             return redirect('/login');
-        } else {
-            if(Auth::check() && $request->segment(1) == null){
-                return redirect('/home');
-            }
-            if (!Auth::user()->hasPermissionTo($this->getModule($request))) {
-                if($request->segment(1)=="home") {
-                    $login_date = $request->session()->get('login_date') ?? now();
-                    abort('411', $login_date);
-                } else if($request->segment(1)=="") {
-					return redirect('/login');
-				} else {
-                    abort('401',$request->session()->get('login_date'));
-                }
+        }
+
+        if (Auth::check() && $request->segment(1) === null) {
+            return redirect('/home');
+        }
+
+        if (!$this->hasPermission($request)) {
+            if ($request->segment(1) === "home") {
+                $loginDate = $request->session()->get('login_date') ?? now();
+                abort(411, "Unauthorized access. Last login date: {$loginDate}");
+            } elseif ($request->segment(1) === "") {
+                return redirect('/login');
+            } else {
+                abort(401, "Unauthorized access. Last login date: {$request->session()->get('login_date')}");
             }
         }
 
-        view()->share('request',$request);
-
+        view()->share('request', $request);
         return $next($request);
     }
 
-    protected function getModule($request)
+    protected function hasPermission(Request $request)
     {
-        $requestSegment = $request->segment(1);
-        switch ($requestSegment) {
-            case "salesinvoice":
-                $classname = "App\\SalesInvoice";
-                break;
-            case "customercategory":
-                $classname = "App\\CustomerCategory";
-                break;
-            case "stockcategory":
-                $classname = "App\\StockCategory";
-                break;
-            case "receivepayment":
-                $classname = "App\\ReceivePayment";
-                break;
-            case "paymentvoucher":
-                $classname = "App\\PaymentVoucher";
-                break;
-            case "creditnote":
-                $classname = "App\\CreditNote";
-                break;
-            case "purchaseorder":
-                $classname = "App\\PurchaseOrder";
-                break;
-            case "uom":
-                $classname = "App\\UOMs";
-                break;
-            case "customergroup":
-                $classname = "App\\CustomerGroup";
-                break;
-            case "customerservice":
-                $classname = "App\\CustomerService";
-                break;
-            case "customerpwspgapp":
-                $classname = "App\\CustomerPwspgapp";
-                break;
-            case "system_settings":
-                $classname = "App\\Models\\SystemSetting";
-                break;
-            case "servicesrate":
-                $classname = "App\\ServiceRate";
-                break;
-            case "solutionprofile":
-                $classname = "App\\SolutionProfile";
-                break;
-            case "softwareservice":
-                $classname = "App\\SoftwareService";
-                break;
-            case "serviceform":
-                $classname = "App\\ServiceForm";
-                break;
-            case "totalpayapp":
-                $classname = "App\\TotalpayApp";
-                break;
-            case "company_settings":
-                $classname = "App\\Models\\CompanySetting";
-                break;
-            case "softwaresrvupload":
-                $classname = "App\\SoftwareService";
-                break;
-            case "bankdocs":
-                $classname = "App\\Bankdoc";
-                break;
-            case "trainingform":
-                $classname = "App\\TrainingForm";
-                break;
-            case "evaluationform":
-                $classname = "App\\EvaluationForm";
-                break;
-            case "leaveform":
-                $classname = "App\\LeaveForm";
-                break;
-            default:
-                $classname = "App\\Models\\" . ucfirst($this->singularize($requestSegment));
-                break;
+        $module = $this->getModule($request);
+        if (!$module) {
+            return false;
         }
 
-        if (ucfirst($requestSegment) == "") {
+        return Auth::user()->hasPermissionTo($module);
+    }
 
+    protected function getModule(Request $request)
+    {
+        $requestSegment = $request->segment(1);
+        $singularSegment = $this->getSingularSegment($requestSegment);
+
+        if ($singularSegment === "") {
             return false;
         } else {
+            $classname = "App\\Models\\" . ucfirst($singularSegment);
             $method = "getModule";
-
             return $classname::$method($request);
         }
     }
 
-    function singularize($pluralWord)
+    protected function getSingularSegment($pluralSegment)
+    {
+        $singularMapping = [
+            'salesinvoices' => 'salesinvoice',
+            'customercategories' => 'customercategory',
+            'stockcategories' => 'stockcategory',
+            // Add other plural/singular mappings as needed
+        ];
+
+        if (isset($singularMapping[$pluralSegment])) {
+            return $singularMapping[$pluralSegment];
+        }
+
+        return $this->str_singular($pluralSegment);
+    }
+    function str_singular($pluralWord)
     {
         $inflector = InflectorFactory::create()->build();
 
         return $inflector->singularize($pluralWord);
     }
-
 }

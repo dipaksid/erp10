@@ -151,8 +151,8 @@
         </a>
         <div id="collapseCustomer" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                @can('CUSTOMER LIST') <a class="collapse-item" href="{{ route('customer.index') }}">Customers</a>
-                @elsecan('ADD CUSTOMER') <a class="collapse-item" href="{{ route('customer.create') }}">Customers</a>
+                @can('CUSTOMER LIST') <a class="collapse-item" href="{{ route('customers.index') }}">Customers</a>
+                @elsecan('ADD CUSTOMER') <a class="collapse-item" href="{{ route('customers.create') }}">Customers</a>
                 @endcan
                 @can('CUSTOMER GROUP LIST') <a class="collapse-item" href="{{ route('customergroup.index') }}">Customer Groups</a>
                 @elsecan('ADD CUSTOMER GROUP') <a class="collapse-item" href="{{ route('customergroup.create') }}">Customer Groups</a>
