@@ -12,6 +12,8 @@ class Customer extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['companyname', 'companycode', 'registrationno', 'registrationno2', 'address1', 'address2', 'address3', 'address4', 'contactperson', 'phoneno1', 'phoneno2', 'faxno1', 'faxno2', 'email', 'email2', 'email3', 'homepage', 'categoryid', 'areas_id', 'terms_id', 'status', 'startdate', 'zipcode','bandar','shortname','foldername','remarks','b_aiservice','serviceremarks'];
+
     public static function getModule($request){
         if($request->segment(2)=="create"){
             $result='ADD CUSTOMER';
@@ -128,5 +130,10 @@ class Customer extends Model
     public function getStartDateFormattedAttribute($value)
     {
         return date('d/m/Y', strtotime($value));
+    }
+
+    public function customerGroupsCustomer()
+    {
+        return $this->hasMany(customerGroupsCustomer::class, 'customers_id');
     }
 }

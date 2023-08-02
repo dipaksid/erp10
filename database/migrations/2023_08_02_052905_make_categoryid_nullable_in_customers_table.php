@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('service_rates', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('customers', function (Blueprint $table) {
+            $table->char('customerid', 200)->nullable()->change();
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('service_rates');
+        Schema::table('customerid', function (Blueprint $table) {
+            //
+        });
     }
 };

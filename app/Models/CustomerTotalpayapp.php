@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class customerGroupsCustomer extends Model
+class CustomerTotalpayapp extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_groups_id', 'customers_id'];
-
+    protected $table = 'customer_total_pay_apps';
 }

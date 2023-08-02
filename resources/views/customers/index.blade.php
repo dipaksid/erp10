@@ -6,7 +6,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Customer
             @can('ADD CUSTOMER')
-                <a href="{{ url('customer/create') }}" class="btn btn-success">
+                <a href="{{ url('customers/create') }}" class="btn btn-success">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                     Create
                 </a>
@@ -61,7 +61,7 @@
                         <th scope="row">{{ $irow+1 }}</th>
                         <td style="word-wrap:anywhere; font-size:x-small;">{{$rcus->companyname}}</td>
                         <td style="word-wrap:anywhere; font-size:x-small;">{{$rcus->description}}</td>
-                        <td>{{$rcus->companycode}}</td>
+                        <td>{{ $rcus->companycode }}</td>
                         <td style="word-wrap:anywhere">{{$rcus->registrationno}}</td>
                         <td style="word-wrap:anywhere">{{$rcus->registrationno2}}</td>
                         <td style="word-wrap:anywhere">{{$rcus->contactperson}}</td>
@@ -78,11 +78,13 @@
                                     <a href="{{action('App\Http\Controllers\CustomersController@edit',$rcus->id)}}?searchvalue={{((isset($input['searchvalue']))?$input['searchvalue']:'')}}&page={{((isset($input['page']))?$input['page']:'')}}"  class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>&nbsp;
                                 @endcan
                                 @can('DELETE CUSTOMER')
-                                    <form action="{{action('App\Http\Controllers\CustomersController@destroy', $rcus->id)}}" method="post">
+                                    <form action="{{action('App\Http\Controllers\CustomersController@destroy', $rcus->id)}}" method="post" id="deleteForm_{{ $rcus->id }}">
                                         @csrf
                                         @method('DELETE')
                                         <input name="_method" type="hidden" value="DELETE">
-                                        <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i></button>
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" onclick="showConfirmDeleteModal({{ $rcus->id }})">
+                                            Delete
+                                        </button>
                                     </form>
                                 @endcan
                             </div>
@@ -99,9 +101,28 @@
         {{ $customers->links("pagination::bootstrap-4") }}
     </div>
     </div>
+    <!-- DELETE confirm Modal -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this customer?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="removeModalBackdrop()">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteUser()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('js/common.js') }}"></script>
     <script type="text/javascript" type="module">
         $(document).ready(function(evt){
             $("select[name='srch_area']").change(function(evt){
