@@ -40,6 +40,7 @@ class CustomersController extends Controller
         $pdffile = null;
         if ($request->has('btnpdf') && $request->input('btnpdf') !== "") {
             $pdffile = url("/pdf/".$this->generatePdf($customers));
+            session()->flash('success', 'Filtered PDF generated successfully created!');
         }
         $input = $request->all();
         $area = Area::get();

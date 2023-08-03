@@ -13,7 +13,7 @@
             @endcan
         </h1>
     </div>
-    <div style="overflow-x:auto;">
+    <div style="overflow-x:auto;" class="horizontal-scroll">
         @include('partials/messages')
         <div class="d-flex p-2">
             {{ $customers->links("pagination::bootstrap-4") }}

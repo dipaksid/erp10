@@ -16,3 +16,6 @@ function deleteUser() {
 function removeModalBackdrop() {
     $('.modal-backdrop').remove();
 }
+function hideSuccessMessage() {
+    document.getElementById('success-message').style.display = 'none';
+}

@@ -1,6 +1,9 @@
 @if(session('success'))
-    <div class="alert alert-success">
+    <div id="success-message" class="alert alert-success">
         {{ session('success') }}
+        <button type="button" class="close close-position" onclick="hideSuccessMessage()">
+            <span>&times;</span>
+        </button>
     </div>
 @endif
 
