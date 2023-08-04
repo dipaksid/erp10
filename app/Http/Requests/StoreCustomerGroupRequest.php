@@ -11,7 +11,7 @@ class StoreCustomerGroupRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class StoreCustomerGroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'groupcode' => 'required|unique:customer_groups|max:10',
+            'description' => 'required|max:200',
+            'category_id' => 'required',
+            'companyid' => 'required',
         ];
     }
 }

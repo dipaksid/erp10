@@ -55,12 +55,29 @@ class AdminMiddleware
     {
         $requestSegment = $request->segment(1);
         $singularSegment = $this->getSingularSegment($requestSegment);
-
+        //dd($singularSegment);
         if ($singularSegment === "") {
             return false;
         } else {
-            $classname = "App\\Models\\" . ucfirst($singularSegment);
-            $method = "getModule";
+            switch ($singularSegment){
+                case 'customer-group':
+                    $classname = "App\\Models\\CustomerGroup";
+                    $method = "getModule";
+                    break;
+                case 'company_setting':
+                    $classname = "App\\Models\\CompanySetting";
+                    $method = "getModule";
+                    break;
+                case 'system_setting':
+                    $classname = "App\\Models\\SystemSetting";
+                    $method = "getModule";
+                    break;
+                default:
+                    $classname = "App\\Models\\" . ucfirst($singularSegment);
+                    $method = "getModule";
+                    break;
+            }
+
             return $classname::$method($request);
         }
     }

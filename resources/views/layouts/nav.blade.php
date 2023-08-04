@@ -154,8 +154,8 @@
                 @can('CUSTOMER LIST') <a class="collapse-item" href="{{ route('customers.index') }}">Customers</a>
                 @elsecan('ADD CUSTOMER') <a class="collapse-item" href="{{ route('customers.create') }}">Customers</a>
                 @endcan
-                @can('CUSTOMER GROUP LIST') <a class="collapse-item" href="{{ route('customergroup.index') }}">Customer Groups</a>
-                @elsecan('ADD CUSTOMER GROUP') <a class="collapse-item" href="{{ route('customergroup.create') }}">Customer Groups</a>
+                @can('CUSTOMER GROUP LIST') <a class="collapse-item" href="{{ route('customer-groups.index') }}">Customer Groups</a>
+                @elsecan('ADD CUSTOMER GROUP') <a class="collapse-item" href="{{ route('customer-groups.create') }}">Customer Groups</a>
                 @endcan
                 @can('CUSTOMER SERVICE LIST') <a class="collapse-item" href="{{ route('customerservice.index') }}">Customer Service</a>
                 @elsecan('ADD CUSTOMER SERVICE') <a class="collapse-item" href="{{ route('customerservice.create') }}">Customer Service</a>
