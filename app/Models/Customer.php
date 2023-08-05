@@ -136,4 +136,9 @@ class Customer extends Model
     {
         return $this->hasMany(customerGroupsCustomer::class, 'customers_id');
     }
+
+    public function customerServices()
+    {
+        return $this->hasMany(CustomerService::class, 'customers_id', 'customers_id');
+    }
 }

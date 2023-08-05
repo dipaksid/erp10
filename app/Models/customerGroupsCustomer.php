@@ -9,28 +9,31 @@ class customerGroupsCustomer extends Model
 {
     use HasFactory;
 
+    protected $table = 'customer_groups_customers';
+
+
     protected $fillable = ['customer_groups_id', 'customers_id'];
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class, 'customers_id', 'id');
+        return $this->belongsTo(Customer::class, 'customerid');
     }
 
-    public function customerService()
+//    public function customerServices()
+//    {
+//        return $this->hasOne(CustomerService::class, 'customers_id')->where('customer_categories_id', $this->customerGroup->customer_categories_id);
+//    }
+
+    public function customerServices()
     {
-        return $this->belongsTo(CustomerService::class, 'customers_id', 'customers_id');
+        $customerServices = $this->hasOne(CustomerService::class, 'customers_id')
+                                 ->where('customer_categories_id', optional($this->customerGroup)->customer_categories_id);
+
+        return $customerServices;
     }
 
-    public function customergroup()
+    public function customerGroup()
     {
-        return $this->belongsTo(CustomerGroup::class, 'customer_groups_id', 'id');
+        return $this->belongsTo(CustomerGroup::class, 'customer_groups_id'); // Update the column name here
     }
-
-    public function scopeByCategory($query, $categoryid)
-    {
-        return $query->whereHas('customerService', function ($q) use ($categoryid) {
-            $q->where('customer_categories_id', $categoryid);
-        });
-    }
-
 }

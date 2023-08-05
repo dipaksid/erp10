@@ -12,4 +12,12 @@ class CustomerService extends Model
 
     protected $guarded = [];
 
+    public function customercategory()
+    {
+        return $this->belongsTo('App\Models\CustomerCategory', 'customer_categories_id', 'id');
+    }
+    public function customer()
+    {
+        return $this->belongsTo('App\Models\Customer', 'customers_id', 'id');
+    }
 }

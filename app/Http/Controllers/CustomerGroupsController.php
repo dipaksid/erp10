@@ -9,6 +9,8 @@ use App\Models\CompanySetting;
 use App\Models\customerGroupsCustomer;
 use App\Serialization;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 class CustomerGroupsController extends Controller
 {
@@ -233,37 +235,45 @@ class CustomerGroupsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\CustomerGroup $customerGroup
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-//    public function show(CustomerGroup $customerGroup)
-//    {
-//        $groupdetail = customerGroupsCustomer::
-//                        select('customer_groups_customers.id as id', 'customer_groups_customers.customers_id as customeres_id', 'customers.companyname as companyname', 'customers.companycode as companycode')
-//                        ->join('customers', 'customers.id', '=', 'customer_groups_customers.customers_id')
-//                        ->where('customer_groups_customers.customer_groups_id', $customerGroup->id)
-//                        ->orderBy('companycode', 'ASC')
-//                        ->get();
-//        $categorylist = CustomerCategory::get();
-//        $companylist = CompanySetting::get();
-//
-//        return view('customer_groups.show', compact('customerGroup', 'groupdetail', 'categorylist', 'companylist'));
-//    }
-    public function show(CustomerGroup $customerGroup)
+    public function show($id)
     {
-        $groupdetail = customerGroupsCustomer::with('customer', 'customerService')
-            ->byCategory($customerGroup->customeres_id)
-            ->select('customer_groups_customers.id as id', 'customer_groups_customers.customers_id as customeres_id', 'customers.companyname as companyname', 'customers.companycode as companycode')
-            ->join('customers', 'customers.id', '=', 'customer_groups_customers.customers_id')
-            ->where('customer_groups_customers.customer_groups_id', $customerGroup->id)
-            ->orderBy('companycode', 'ASC')
+        $group = CustomerGroup::find($id);
+        if (!$group) {
+            abort(404);
+        }
+
+        $groupdetail = DB::table('customer_groups_customers')
+            ->leftJoin('customers', 'customers.id', '=', 'customer_groups_customers.customers_id')
+            ->leftJoin('customer_services AS cs', function ($join) use ($group) {
+                $join->on('customers.id', '=', 'cs.customers_id')
+                    ->where('cs.customer_categories_id', '=', $group->customer_categories_id);
+            })
+            ->selectRaw('customer_groups_customers.id AS id')
+            ->selectRaw('customer_groups_customers.customers_id AS customerid')
+            ->selectRaw('customers.companyname AS companyname')
+            ->selectRaw('customers.companycode AS companycode')
+            ->selectRaw('cs.contract_typ AS contract_typ')
+            ->selectRaw('cs.amount AS amount')
+            ->selectRaw('cs.inc_hw AS inc_hw')
+            ->selectRaw('cs.pay_before AS pay_before')
+            ->selectRaw('cs.start_date AS start_date')
+            ->selectRaw('cs.end_date AS end_date')
+            ->selectRaw('cs.service_date AS service_date')
+            ->selectRaw('cs.soft_license AS soft_license')
+            ->selectRaw('cs.active AS active')
+            ->where('customer_groups_customers.customer_groups_id', $id)
+            ->orderBy('customers.companycode', 'ASC')
             ->get();
 
         $categorylist = CustomerCategory::get();
         $companylist = CompanySetting::get();
 
-        return view('customer_groups.show', compact('customerGroup', 'groupdetail', 'categorylist', 'companylist'));
+        return view('customer_groups.show', compact('group', 'groupdetail', 'id', 'categorylist', 'companylist'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

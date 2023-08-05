@@ -82,7 +82,7 @@
         </table>
     </div>
     </div>
-    @include('partials/delete-confirm')
+    @include('partials/delete-confirm', ['title' => 'Customer Group'])
 @endsection
 
 @section('scripts')

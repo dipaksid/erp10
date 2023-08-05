@@ -66,4 +66,9 @@ class CustomerGroup extends Model
         return $query->groupBy("customer_groups.id")
             ->orderBy("customer_groups.groupcode")->paginate(self::CUSTOMER_GROUPS_PER_PAGE);
     }
+
+    public function customerGroupsCustomer()
+    {
+        return $this->hasMany(customerGroupsCustomer::class, 'customer_groups_id');
+    }
 }
