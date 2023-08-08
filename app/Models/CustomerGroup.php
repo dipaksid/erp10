@@ -28,7 +28,7 @@ class CustomerGroup extends Model
 
     public function agent()
     {
-        return $this->belongsTo('App\Agent', 'agentid', 'id');
+        return $this->belongsTo('App\Models\Agent', 'agents_id', 'id');
     }
 
     public static function getModule($request)

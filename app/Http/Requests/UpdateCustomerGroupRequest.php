@@ -11,7 +11,7 @@ class UpdateCustomerGroupRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class UpdateCustomerGroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'groupcode' => 'required|unique:customer_groups,groupcode,'.$this->id.'|max:20',
+            'description' => 'required|max:200',
+            'category_id' => 'required',
+            'companyid' => 'required',
         ];
     }
 }

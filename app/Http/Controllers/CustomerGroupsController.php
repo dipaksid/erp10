@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCustomerGroupRequest;
+use App\Http\Requests\UpdateCustomerGroupRequest;
 use App\Models\CustomerGroup;
 use App\Models\CustomerCategory;
 use App\Models\CompanySetting;
@@ -277,18 +278,96 @@ class CustomerGroupsController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
-    public function edit(string $id)
+    public function edit(Request $request, $id)
     {
-        //
+        $group = CustomerGroup::findOrFail($id);
+        $groupdetail = customerGroupsCustomer::where('customer_groups_id', $id);
+
+        if ($group->category) {
+            $tempFilePath = public_path("cfg/consolidate/{$group->groupcode}/{$group->category->categorycode}_TEMP.CFG");
+            if (file_exists($tempFilePath)) {
+                @unlink($tempFilePath);
+            }
+        }
+        $group->load(['category', 'category.companySetting']);
+        $categorylist = CustomerCategory::get();
+        $companylist = CompanySetting::get();
+        $input = $request->all();
+
+        return view('customer_groups.edit', compact('group', 'groupdetail' ,'id', 'categorylist', 'input', 'companylist'));
     }
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param  UpdateCustomerGroupRequest  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCustomerGroupRequest $request, $id)
     {
-        //
+        // Fetch the CustomerGroup by its ID
+        $group = CustomerGroup::find($id);
+        if (!$group) {
+            return redirect('/customer_groups')->with('error', 'Customer Group not found!');
+        }
+
+        // Handle file operations if needed
+        $companycode = $request->input('groupcode');
+        $system_id = $request->input('categorycode');
+        $file_path = public_path("/cfg/consolidate/{$companycode}/{$system_id}.CFG");
+        if (file_exists($file_path)) {
+            $obj_serial = new Serialization();
+            $arr_ret = $obj_serial->New_DecP($file_path, "", "", "", "", "", "", "", "", "", "");
+            $group->serial_no = $arr_ret["M_Chk_Ser"];
+            $group->exp_dat = $arr_ret["M_Exp_Dat"];
+            $group->cfgpassword = trim($arr_ret["M_Act_Pass"]);
+            $group->cfgfile = "/cfg/consolidate/{$companycode}/{$system_id}.CFG";
+        }
+
+        // Update the CustomerGroup attributes
+        $group->groupcode = $request->input('groupcode');
+        $group->description = $request->input('description');
+        $group->foldername = $request->input('foldername');
+        $group->categoryid = $request->input('category_id');
+        $group->agentid = $request->input('agentid');
+        $group->companyid = $request->input('companyid');
+        $group->save();
+
+        // Update or create CustomerGroupsCustomer records
+        $this->updateOrCreateGroupCustomers($id, $request->input('cust'));
+
+        return redirect('/customergroup')->with('success', 'Customer Group ('.$request->input('groupcode').') has been updated!!');
+    }
+
+    /**
+     * Update or create CustomerGroupsCustomer records.
+     *
+     * @param int $groupId
+     * @param array $customers
+     * @return void
+     */
+    private function updateOrCreateGroupCustomers($groupId, array $customers)
+    {
+        customerGroupsCustomer::where('customergroupid', $groupId)
+            ->whereNotIn('id', request()->input('detid', []))
+            ->delete();
+
+        foreach ($customers as $key => $customerId) {
+            $detId = request()->input('detid.'.$key);
+            $groupDetail = customerGroupsCustomer::updateOrCreate(
+                ['id' => $detId], // Update if ID exists, or create if it doesn't
+                [
+                    'customergroupid' => $groupId,
+                    'customerid' => $customerId,
+                ]
+            );
+        }
     }
 
     /**
