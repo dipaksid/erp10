@@ -11,22 +11,29 @@
 
         @include('partials/messages')
 
-        <form id="groupform" method="post" action="{{ action('App\Http\Controllers\CustomerGroupsController@update', $id) }}">
+        <form id="groupform" method="post" action="{{ route('customer-groups.update', ['customer_group' => $customer_group->id]) }}">
             @csrf
             @method('PATCH')
-            <input name="lastrunno" type="hidden" value="{{ (($group->category)?$group->category->lastrunno:"") }}">
-            <input name="categorycode" type="hidden" value="{{ (($group->category)?$group->category->categorycode:"") }}">
+
+            <div class="container mt-5">
+                <div classs="form-group">
+                    <input type="text" id="search" name="search" placeholder="Search" class="form-control" />sfsf
+                </div>
+            </div>
+
+            <input name="lastrunno" type="hidden" value="{{ (($customer_group->category)?$customer_group->category->lastrunno:"") }}">
+            <input name="categorycode" type="hidden" value="{{ (($customer_group->category)?$customer_group->category->categorycode:"") }}">
             <div class="row form-group">
                 <div class="col-6">
                     <label for="groupcode">Group Code:</label>
-                    <input type="text" seq="1" class="form-control enterseq" name="groupcode" value="{{$group->groupcode}}" maxlength="20" />
+                    <input type="text" seq="1" class="form-control enterseq" name="groupcode" value="{{$customer_group->groupcode}}" maxlength="20" />
                     <span class="text-danger">{{ $errors->first('groupcode') }}</span>
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-6">
                     <label for="title">Description:</label>
-                    <input type="text" seq="2" class="form-control enterseq" name="description" value="{{$group->description}}" maxlength="200" />
+                    <input type="text" seq="2" class="form-control enterseq" name="description" value="{{$customer_group->description}}" maxlength="200" />
                     <span class="text-danger">{{ $errors->first('description') }}</span>
                 </div>
             </div>
@@ -37,7 +44,7 @@
                         <option value=""> -- Selection --</option>
                         @if($categorylist)
                             @foreach ($categorylist as $rcatg)
-                                <option value="{{$rcatg['id']}}" {{ (($rcatg['id']==$group['categoryid'])?"selected":"") }}>{{$rcatg['description']}}</option>
+                                <option value="{{$rcatg['id']}}" {{ (($rcatg['id']==$customer_group['customer_categories_id'])?"selected":"") }}>{{$rcatg['description']}}</option>
                             @endforeach
                         @endif
                     </select>
@@ -50,7 +57,7 @@
                         <option value=""> -- Selection --</option>
                         @if($companylist)
                             @foreach ($companylist as $rcompany)
-                                <option value="{{$rcompany['id']}}" {{ (($rcompany['id']==$group['companyid'])?"selected":"") }}>{{$rcompany['companycode']." - ".$rcompany['companyname']}}</option>
+                                <option value="{{$rcompany['id']}}" {{ (($rcompany['id']==$customer_group['companyid'])?"selected":"") }}>{{$rcompany['companycode']." - ".$rcompany['companyname']}}</option>
                             @endforeach
                         @endif
                     </select>
@@ -59,7 +66,7 @@
             <div class="row form-group">
                 <div class="col-6">
                     <label for="companyid">Service Form Folder Name: :</label>
-                    <input type="text" seq="5" class="form-control enterseq" name="foldername" value="{{$group->foldername}}" maxlength="200" />
+                    <input type="text" seq="5" class="form-control enterseq" name="foldername" value="{{$customer_group->foldername}}" maxlength="200" />
                 </div>
             </div>
             <div class="row form-group">
@@ -73,9 +80,9 @@
                 <div class="col-4">
                     <br>
                     <label for="title"><span class="cfgpass">
-                    @if($group->cfgpassword!="")
-                        <a href="javascript:void(0);" onclick="js_openfile('{{ url('/').$group->cfgfile }}');">{{$group->cfgpassword}}</a>
-                        <a href="javascript:void(0);" onclick="js_remove_cfg('{{$group->id}}')" class="btn btn-danger">Remove</a>
+                    @if($customer_group->cfgpassword!="")
+                        <a href="javascript:void(0);" onclick="js_openfile('{{ url('/').$customer_group->cfgfile }}');">{{$customer_group->cfgpassword}}</a>
+                        <a href="javascript:void(0);" onclick="js_remove_cfg('{{$customer_group->id}}')" class="btn btn-danger">Remove</a>
                         </span>  &nbsp; &nbsp; &nbsp; &nbsp;</label>
                     @else
                         </span>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
@@ -154,21 +161,21 @@
                                     @endphp
                                     <tr>
                                         <td scope="row"><input type='hidden' name='detid[]' value='{{$rdet->id}}'><input type='hidden' name='cust[]' value='{{$rdet->customerid}}'><span>{{$ilp}}</span></td>
-                                        @if($rdet->customerservices($group->categoryid)->exists())
-                                            <td><a href="javascript:void(0);" onclick="js_edit_service('{{(($rdet->customerservices($group->categoryid)->exists())?$rdet->customerservices($group->categoryid)->first()->id:"")}}')">{{ (($rdet->customer->exists())?$rdet->customer->companycode."-".$rdet->customer->companyname:"") }}</a></td>
+                                        @if($rdet->customerservices($customer_group->customer_categories_id)->exists())
+                                            <td><a href="javascript:void(0);" onclick="js_edit_service('{{(($rdet->customerservices($customer_group->customer_categories_id)->exists())?$rdet->customerservices($customer_group->customer_categories_id)->first()->id:"")}}')">{{ (($rdet->customer->exists())?$rdet->customer->companycode."-".$rdet->customer->companyname:"") }}</a></td>
                                         @else
                                             <td>{{ (($rdet->customer->exists())?$rdet->customer->companycode."-".$rdet->customer->companyname:"") }}</td>
                                         @endif
-                                        <td>{{ (($rdet->customerservices($group->categoryid)->exists())?(($rdet->customerservices($group->categoryid)->first()->contract_typ==1)?"Yearly":(($rdet->customerservices($group->categoryid)->first()->contract_typ==2)?"Monthly":(($rdet->customerservices($group->categoryid)->first()->contract_typ==3)?"Bi-Monthly":(($rdet->customerservices($group->categoryid)->first()->contract_typ==4)?"Half Yearly":(($rdet->customerservices($group->categoryid)->first()->contract_typ==5)?"Quarterly":""))))):"") }}</td>
-                                        <td>{{ (($rdet->customerservices($group->categoryid)->exists())?$rdet->customerservices($group->categoryid)->first()->amount:"")}}</td>
-                                        <td>{{ (($rdet->customerservices($group->categoryid)->exists())?$rdet->customerservices($group->categoryid)->first()->inc_hw:"")}}</td>
-                                        <td>{{ (($rdet->customerservices($group->categoryid)->exists())?$rdet->customerservices($group->categoryid)->first()->pay_before:"")}}</td>
-                                        <td>{{ (($rdet->customerservices($group->categoryid)->exists())?$rdet->customerservices($group->categoryid)->first()->start_date:"")}}</td>
-                                        <td>{{ (($rdet->customerservices($group->categoryid)->exists())?$rdet->customerservices($group->categoryid)->first()->end_date:"")}}</td>
-                                        <td>{{ (($rdet->customerservices($group->categoryid)->exists())?$rdet->customerservices($group->categoryid)->first()->service_date:"")}}</td>
-                                        <td>{{ (($rdet->customerservices($group->categoryid)->exists())?$rdet->customerservices($group->categoryid)->first()->soft_license:"")}}</td>
-                                        <td>{{ (($rdet->customerservices($group->categoryid)->exists())?$rdet->customerservices($group->categoryid)->first()->vpnaddress:"")}}</td>
-                                        <td>{{ (($rdet->customerservices($group->categoryid)->exists())?$rdet->customerservices($group->categoryid)->first()->active:"")}}</td>
+                                        <td>{{ (($rdet->customerservices($customer_group->customer_categories_id)->exists())?(($rdet->customerservices($customer_group->customer_categories_id)->first()->contract_typ==1)?"Yearly":(($rdet->customerservices($customer_group->customer_categories_id)->first()->contract_typ==2)?"Monthly":(($rdet->customerservices($customer_group->customer_categories_id)->first()->contract_typ==3)?"Bi-Monthly":(($rdet->customerservices($customer_group->customer_categories_id)->first()->contract_typ==4)?"Half Yearly":(($rdet->customerservices($customer_group->customer_categories_id)->first()->contract_typ==5)?"Quarterly":""))))):"") }}</td>
+                                        <td>{{ (($rdet->customerservices($customer_group->customer_categories_id)->exists())?$rdet->customerservices($customer_group->customer_categories_id)->first()->amount:"")}}</td>
+                                        <td>{{ (($rdet->customerservices($customer_group->customer_categories_id)->exists())?$rdet->customerservices($customer_group->customer_categories_id)->first()->inc_hw:"")}}</td>
+                                        <td>{{ (($rdet->customerservices($customer_group->customer_categories_id)->exists())?$rdet->customerservices($customer_group->customer_categories_id)->first()->pay_before:"")}}</td>
+                                        <td>{{ (($rdet->customerservices($customer_group->customer_categories_id)->exists())?$rdet->customerservices($customer_group->customer_categories_id)->first()->start_date:"")}}</td>
+                                        <td>{{ (($rdet->customerservices($customer_group->customer_categories_id)->exists())?$rdet->customerservices($customer_group->customer_categories_id)->first()->end_date:"")}}</td>
+                                        <td>{{ (($rdet->customerservices($customer_group->customer_categories_id)->exists())?$rdet->customerservices($customer_group->customer_categories_id)->first()->service_date:"")}}</td>
+                                        <td>{{ (($rdet->customerservices($customer_group->customer_categories_id)->exists())?$rdet->customerservices($customer_group->customer_categories_id)->first()->soft_license:"")}}</td>
+                                        <td>{{ (($rdet->customerservices($customer_group->customer_categories_id)->exists())?$rdet->customerservices($customer_group->customer_categories_id)->first()->vpnaddress:"")}}</td>
+                                        <td>{{ (($rdet->customerservices($customer_group->customer_categories_id)->exists())?$rdet->customerservices($customer_group->customer_categories_id)->first()->active:"")}}</td>
                                         <td class="text-center ">
                                             <button class="btn btn-danger" type="button" onclick="js_delete(this);">Delete</button>
                                         </td>
@@ -347,13 +354,13 @@
                             <div class="row form-group">
                                 <div class="col-12">
                                     <label for="serial_no">Serial Number: <span style="color:red;">*</span></label>
-                                    <input type="text" class="form-control" name="serial_no" value="{{$group->serial_no}}">
+                                    <input type="text" class="form-control" name="serial_no" value="{{$customer_group->serial_no}}">
                                 </div>
                             </div>
                             <div class="row form-group">
                                 <div class="col-12">
                                     <label for="exp_dat">Expire Date: <span style="color:red;">*</span></label>
-                                    <input type="text" class="form-control" name="exp_dat" value="{{$group->exp_dat}}">
+                                    <input type="text" class="form-control" name="exp_dat" value="{{$customer_group->exp_dat}}">
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -365,19 +372,19 @@
                             <div class="row form-group">
                                 <div class="col-12">
                                     <label for="soft_lic">Software License: <span style="color:red;">*</span>:</label>
-                                    <input type="text" class="form-control" name="soft_lic" value="{{$group->soft_lic}}">
+                                    <input type="text" class="form-control" name="soft_lic" value="{{$customer_group->soft_lic}}">
                                 </div>
                             </div>
                             <div class="row form-group">
                                 <div class="col-12">
                                     <label for="curpassword">Current password:</label>
-                                    <input type="text" class="form-control" name="curpassword" value="{{$group->cfgpassword}}" readOnly="readOnly">
+                                    <input type="text" class="form-control" name="curpassword" value="{{$customer_group->cfgpassword}}" readOnly="readOnly">
                                 </div>
                             </div>
                             <div class="row form-group">
                                 <div class="col-12">
                                     <label for="newpassword">New password:</label>
-                                    <input type="text" class="form-control" name="newpassword" value="{{$group->cfgpassword}}" readOnly="readOnly">
+                                    <input type="text" class="form-control" name="newpassword" value="{{$customer_group->cfgpassword}}" readOnly="readOnly">
                                 </div>
                             </div>
                         </form>
@@ -394,6 +401,20 @@
 @endsection
 
 @section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js">
+    </script>
+    <script type="text/javascript">
+        var route = "{{action('App\Http\Controllers\CustomerGroupsController@customerList')}}";
+        $('#search').typeahead({
+            source: function (query, process) {
+                return $.get(route, {
+                    query: query
+                }, function (data) {
+                    return process(data);
+                });
+            }
+        });
+    </script>
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap-autocomplete.min.js') }}"></script>
     <script type="text/javascript">
@@ -696,7 +717,7 @@
                 data +="&newpassword="+$("input[name='newpassword']").val();
                 data +="&companyname="+$("input[name='description']").val();
                 data +="&soft_lic="+$("input[name='soft_lic']").val();
-                data +="&groupid={{$id}}";
+                data +="&groupid={{$customer_group->id}}";
                 if($("input[name='serial_no']").val()==""){
                     $("input[name='serial_no']").select();
                     return false;
@@ -895,7 +916,7 @@
                 data+="&amount="+$("input[name='allamount']").val();
                 data+="&inc_hw="+$("input[name='allinc_hw']").val();
                 data+="&pay_before="+$("input[name='allpay_before']").val();
-                data+="&groupid={{$id}}";
+                data+="&groupid={{$customer_group->id}}";
                 data+="&categoryid="+$("select[name='category_id']").val();
                 $.ajax({
                     url: "{{action('App\Http\Controllers\CustomerGroupsController@savegroupcustservice')}}",
@@ -1076,9 +1097,9 @@
             if($("input[name='serial_no']").val()!="") {
                 $("input[name='serial_no']").prop("readOnly",true);
                 $("input[name='exp_dat']").prop("readOnly",true);
-                if("{{$group->agentid}}"!="") {
-                    $("input[name='agentid']").val("{{$group->agentid}}");
-                    $(".agentAutoSelect").val("{{(($group->agent)?$group->agent->agentcode."-".$group->agent->name:"")}}");
+                if("{{$customer_group->agentid}}"!="") {
+                    $("input[name='agentid']").val("{{$customer_group->agentid}}");
+                    $(".agentAutoSelect").val("{{(($customer_group->agent)?$customer_group->agent->agentcode."-".$customer_group->agent->name:"")}}");
                     $("input[name='agentid']").prop("readOnly",true);
                     $(".agentAutoSelect").prop("readOnly",true);
                 } else {
@@ -1223,7 +1244,7 @@
             });
         };
         function js_print_page(){
-            window.open("{{url('/')}}/customergroup/printpdffile/{{$id}}"+"?"+Math.random().toString(36).substring(7));
+            window.open("{{url('/')}}/customergroup/printpdffile/{{$customer_group->id}}"+"?"+Math.random().toString(36).substring(7));
         }
     </script>
 @endsection

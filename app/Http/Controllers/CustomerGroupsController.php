@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateCustomerGroupRequest;
 use App\Models\CustomerGroup;
 use App\Models\CustomerCategory;
 use App\Models\CompanySetting;
+use App\Models\CustomerService;
+use App\Models\Customer;
 use App\Models\customerGroupsCustomer;
 use App\Serialization;
 use Illuminate\Http\Request;
@@ -275,72 +277,73 @@ class CustomerGroupsController extends Controller
         return view('customer_groups.show', compact('group', 'groupdetail', 'id', 'categorylist', 'companylist'));
     }
 
-
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\CustomerGroup  $customer_group
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, CustomerGroup $customer_group)
     {
-        $group = CustomerGroup::findOrFail($id);
-        $groupdetail = customerGroupsCustomer::where('customer_groups_id', $id);
-
-        if ($group->category) {
-            $tempFilePath = public_path("cfg/consolidate/{$group->groupcode}/{$group->category->categorycode}_TEMP.CFG");
+        $groupdetail = customerGroupsCustomer::where('customer_groups_id', $customer_group->id);
+        if ($customer_group->category) {
+            $tempFilePath = public_path("cfg/consolidate/{$customer_group->groupcode}/{$customer_group->category->categorycode}_TEMP.CFG");
             if (file_exists($tempFilePath)) {
                 @unlink($tempFilePath);
             }
         }
-        $group->load(['category', 'category.companySetting']);
+        $customer_group->load(['category', 'category.companySetting']);
         $categorylist = CustomerCategory::get();
         $companylist = CompanySetting::get();
         $input = $request->all();
 
-        return view('customer_groups.edit', compact('group', 'groupdetail' ,'id', 'categorylist', 'input', 'companylist'));
+        return view('customer_groups.edit', compact('customer_group', 'groupdetail' , 'categorylist', 'input', 'companylist'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  UpdateCustomerGroupRequest  $request
-     * @param  int  $id
+     * @param  \App\Models\CustomerGroup  $customer_group
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCustomerGroupRequest $request, $id)
+    public function update(UpdateCustomerGroupRequest $request, CustomerGroup $customer_group)
     {
         // Fetch the CustomerGroup by its ID
-        $group = CustomerGroup::find($id);
-        if (!$group) {
+        if (!$customer_group->exists()) {
             return redirect('/customer_groups')->with('error', 'Customer Group not found!');
         }
-
         // Handle file operations if needed
         $companycode = $request->input('groupcode');
         $system_id = $request->input('categorycode');
         $file_path = public_path("/cfg/consolidate/{$companycode}/{$system_id}.CFG");
+        $temfile_path=public_path()."/cfg/consolidate/".$companycode."/".$system_id."_TEMP.CFG";
+        if(file_exists($temfile_path)){
+            if(file_exists($file_path)){
+                @unlink($file_path);
+            }
+            @rename($temfile_path, $file_path);
+        }
         if (file_exists($file_path)) {
             $obj_serial = new Serialization();
             $arr_ret = $obj_serial->New_DecP($file_path, "", "", "", "", "", "", "", "", "", "");
-            $group->serial_no = $arr_ret["M_Chk_Ser"];
-            $group->exp_dat = $arr_ret["M_Exp_Dat"];
-            $group->cfgpassword = trim($arr_ret["M_Act_Pass"]);
-            $group->cfgfile = "/cfg/consolidate/{$companycode}/{$system_id}.CFG";
+            $customer_group->serial_no = $arr_ret["M_Chk_Ser"];
+            $customer_group->exp_dat = $arr_ret["M_Exp_Dat"];
+            $customer_group->cfgpassword = trim($arr_ret["M_Act_Pass"]);
+            $customer_group->cfgfile = "/cfg/consolidate/{$companycode}/{$system_id}.CFG";
         }
-
         // Update the CustomerGroup attributes
-        $group->groupcode = $request->input('groupcode');
-        $group->description = $request->input('description');
-        $group->foldername = $request->input('foldername');
-        $group->categoryid = $request->input('category_id');
-        $group->agentid = $request->input('agentid');
-        $group->companyid = $request->input('companyid');
-        $group->save();
+        $customer_group->groupcode = $request->input('groupcode');
+        $customer_group->description = $request->input('description');
+        $customer_group->foldername = $request->input('foldername');
+        $customer_group->categoryid = $request->input('category_id');
+        $customer_group->agentid = $request->input('agentid');
+        $customer_group->companyid = $request->input('companyid');
+        $customer_group->save();
 
         // Update or create CustomerGroupsCustomer records
-        $this->updateOrCreateGroupCustomers($id, $request->input('cust'));
+        $this->updateOrCreateGroupCustomers($customer_group, $request->input('cust'));
 
         return redirect('/customergroup')->with('success', 'Customer Group ('.$request->input('groupcode').') has been updated!!');
     }
@@ -348,13 +351,13 @@ class CustomerGroupsController extends Controller
     /**
      * Update or create CustomerGroupsCustomer records.
      *
-     * @param int $groupId
+     * @param  \App\Models\CustomerGroup  $customer_group
      * @param array $customers
      * @return void
      */
-    private function updateOrCreateGroupCustomers($groupId, array $customers)
+    private function updateOrCreateGroupCustomers($customer_group, array $customers)
     {
-        customerGroupsCustomer::where('customergroupid', $groupId)
+        customerGroupsCustomer::where('customergroupid', $customer_group->id)
             ->whereNotIn('id', request()->input('detid', []))
             ->delete();
 
@@ -363,7 +366,7 @@ class CustomerGroupsController extends Controller
             $groupDetail = customerGroupsCustomer::updateOrCreate(
                 ['id' => $detId], // Update if ID exists, or create if it doesn't
                 [
-                    'customergroupid' => $groupId,
+                    'customergroupid' => $customer_group->id,
                     'customerid' => $customerId,
                 ]
             );
@@ -380,7 +383,7 @@ class CustomerGroupsController extends Controller
 
     public function customerList(Request $request)
     {
-        $query = Customer::select('id', 'companycode', 'companyname', 'contactperson', 'termid')->orderBy('companycode', 'asc');
+        $query = Customer::select('id', 'companycode', 'companyname', 'contactperson', 'terms_id')->orderBy('companycode', 'asc');
         $searchTerm = $request->input("q");
         if (strlen($searchTerm) > 5) {
             $query->where('companyname', 'like', '%' . $searchTerm . '%');
@@ -406,8 +409,8 @@ class CustomerGroupsController extends Controller
         if ($serviceId) {
             $data = CustomerService::find($serviceId);
         } else {
-            $data = CustomerService::where("customerid", $customerId)
-                                    ->where('categoryid', $categoryId)
+            $data = CustomerService::where("customers_id", $customerId)
+                                    ->where('customer_categories_id', $categoryId)
                                     ->first();
         }
         if (!$data) {

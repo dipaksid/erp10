@@ -17,6 +17,7 @@
         "vite": "^4.4.1"
     },
     "dependencies": {
+        "bootstrap-autocomplete": "^2.3.7",
         "flatpickr": "^4.6.13",
         "jquery-validation": "^1.19.5"
     }
