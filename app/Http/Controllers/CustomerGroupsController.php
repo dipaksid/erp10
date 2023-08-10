@@ -345,7 +345,7 @@ class CustomerGroupsController extends Controller
         // Update or create CustomerGroupsCustomer records
         $this->updateOrCreateGroupCustomers($customer_group, $request->input('cust'));
 
-        return redirect('/customergroup')->with('success', 'Customer Group ('.$request->input('groupcode').') has been updated!!');
+        return redirect('/customer-group')->with('success', 'Customer Group ('.$request->input('groupcode').') has been updated!!');
     }
 
     /**
@@ -381,10 +381,22 @@ class CustomerGroupsController extends Controller
         //
     }
 
+    public function autocomplete(Request $request)
+    {
+        $term = $request->input('term');
+
+        $suggestions = Customer::where('name', 'LIKE', '%' . $term . '%')
+            ->select('name') // Modify this based on your model and column names
+            ->limit(10)
+            ->get();
+
+        return response()->json($suggestions);
+    }
+
     public function customerList(Request $request)
     {
         $query = Customer::select('id', 'companycode', 'companyname', 'contactperson', 'terms_id')->orderBy('companycode', 'asc');
-        $searchTerm = $request->input("q");
+        $searchTerm = $request->input("term");
         if (strlen($searchTerm) > 5) {
             $query->where('companyname', 'like', '%' . $searchTerm . '%');
         } else {
@@ -398,6 +410,28 @@ class CustomerGroupsController extends Controller
             ];
         })->toArray();
 
+        return $arr_return;
+    }
+
+    public function categorylist(Request $request){
+
+        $arr_return = CustomerCategory::select('id','categorycode','description','lastrunno')
+                                        ->where('id', $request->input("categoryid"))->first();
+
+        return $arr_return;
+    }
+
+    public function agentList(Request $request){
+        //$data = Customer::select('id','companycode','companyname','contactperson','termid')->where('companyname', 'like', '%'.$request->input("q").'%')->orWhere('companycode', 'like', '%'.$request->input("q").'%')->get();
+        if(strlen($request->input("q"))>5){
+            $data = Agent::select('id','agentcode','name')->where('name', 'like', '%'.$request->input("q").'%')->orderBy('name','asc')->get();
+        } else {
+            $data = Agent::select('id','agentcode','name')->where('agentcode', 'like', '%'.$request->input("q").'%')->orderBy('agentcode','asc')->get();
+        }
+        $arr_return=array();
+        foreach($data as $rdt){
+            array_push($arr_return,array("value"=>$rdt["id"],"text"=>$rdt["agentcode"]."-".$rdt["name"]));
+        }
         return $arr_return;
     }
 
@@ -442,6 +476,25 @@ class CustomerGroupsController extends Controller
         $customerservice->update($attributes);
 
         return array("msg" => "Updated Customer Services!");
+    }
+
+    public function savegroupcustservice(Request $request) {
+        $customergroupdetail = CustomerGroupDetail::where("customergroupid",$request->input("groupid"));
+        if($customergroupdetail->count()>0) {
+            foreach($customergroupdetail->get() as $rcustgrpdetail){
+                if($rcustgrpdetail->customerservices($request->input("categoryid"))->exists()){
+                    $customerservice = CustomerService::find($rcustgrpdetail->customerservices($request->input("categoryid"))->first()->id);
+                    $customerservice->contract_typ = $request->input("contract_typ");
+                    if($request->input("amount")!=""){
+                        $customerservice->amount = $request->input("amount");
+                    }
+                    $customerservice->inc_hw = $request->input("inc_hw");
+                    $customerservice->pay_before = $request->input("pay_before");
+                    $customerservice->save();
+                }
+            }
+        }
+        return array("msg"=>"Updated Customer Services!");
     }
 
 }

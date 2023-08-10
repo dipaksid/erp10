@@ -34,3 +34,5 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 import jQuery from 'jquery';
 window.$ = jQuery;
 
+//require('bootstrap');
+//require('bootstrap-autocomplete/docs/js/typeahead.js');
