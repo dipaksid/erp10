@@ -12,7 +12,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <div class="container">
+        <div class="">
         <!-- Page Heading Start -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Customer Groups</h1>
@@ -76,8 +76,7 @@
                 <div class="col-5">
                     <label for="title">Customers:</label>
                     <select class="form-control customerAutoSelect enterseq overflow-ellipsis" seq="6" name="customerid"
-                            placeholder="Customer search"
-                             }}"></select>
+                            placeholder="Customer search"></select>
 {{--                    <input type="text" class="form-control customerAutoSelect2" placeholder="Search for a customer..." id="autocomplete-input">--}}
 {{--                    <input type="hidden" id="hidden-values">
 
@@ -88,7 +87,7 @@
                     <input type="hidden" class="form-control customerAutoSelect2" placeholder="Search for a customer..." style="width: 100%;" multiple>
                     <ul id="selected-customers" class="selected-items"></ul>
 
-                    <input type="text" class="customerAutoSelectize" placeholder="Search for customers..." /> --}}}
+                    <input type="text" class="customerAutoSelectize" placeholder="Search for customers..." /> --}}
                     <input type="text" class="customerAutoSelectize" placeholder="Search for customers..." />
 
 
