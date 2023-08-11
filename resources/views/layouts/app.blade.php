@@ -56,7 +56,6 @@
     <script src="{{ asset('sp-admin/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('sp-admin/jquery-easing/jquery.easing.min.js') }}"></script>
     <script type="module" src="{{ asset('js/sb-admin-2.min.js') }}"></script>
-    <script src="{{ asset('sp-admin/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('sp-admin/chart.js/Chart.min.js') }}"></script>
     <!--- scripts end ----->
     @include('flatpickr::components.script')

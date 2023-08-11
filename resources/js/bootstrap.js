@@ -31,8 +31,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
 // });
-import jQuery from 'jquery';
-window.$ = jQuery;
+// import jQuery from 'jquery';
+// window.$ = jQuery;
 
 //require('bootstrap');
 //require('bootstrap-autocomplete/docs/js/typeahead.js');

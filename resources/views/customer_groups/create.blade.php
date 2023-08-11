@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
+@section('styles')
+{{--    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">--}}
+{{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css">--}}
+{{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.default.min.css">--}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
+
+
+@endsection
+
 @section('content')
     <div class="container-fluid">
         <div class="container">
@@ -67,7 +77,22 @@
                     <label for="title">Customers:</label>
                     <select class="form-control customerAutoSelect enterseq overflow-ellipsis" seq="6" name="customerid"
                             placeholder="Customer search"
-                            data-url="{{ action('App\Http\Controllers\CustomerGroupsController@customerList') }}"></select>
+                             }}"></select>
+{{--                    <input type="text" class="form-control customerAutoSelect2" placeholder="Search for a customer..." id="autocomplete-input">--}}
+{{--                    <input type="hidden" id="hidden-values">
+
+                    <input type="text" class="form-control customerAutoSelect2" placeholder="Search for a customer..." id="autocomplete-input">
+                    <input type="hidden" id="selected-companycode">
+                    <input type="hidden" class="form-control customerAutoSelect2"  placeholder="Search for a customer..."  id="autocomplete-input" multiple>
+
+                    <input type="hidden" class="form-control customerAutoSelect2" placeholder="Search for a customer..." style="width: 100%;" multiple>
+                    <ul id="selected-customers" class="selected-items"></ul>
+
+                    <input type="text" class="customerAutoSelectize" placeholder="Search for customers..." /> --}}}
+                    <input type="text" class="customerAutoSelectize" placeholder="Search for customers..." />
+
+
+
                 </div>
             </div>
             <div class="row form-group">
@@ -233,10 +258,21 @@
 
 @section('scripts')
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-autocomplete.min.js') }}"></script>
+
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--}}
+
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>--}}
+
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>--}}
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>--}}
+
+
+
     <script type="text/javascript">
-        if ($("#groupform").length > 0) {
-            $("#groupform").validate({
+        var $j = jQuery.noConflict();
+
+        if ($j("#groupform").length > 0) {
+            $j("#groupform").validate({
                 rules: {
                     groupcode: {
                         required: true,
@@ -270,247 +306,247 @@
                     }
                 },
             })
-            $("#groupform").submit(function(evt){
-                $("input[type='text']").each(function(i){
-                    $(this).val($(this).val().toUpperCase());
+            $j("#groupform").submit(function(evt){
+                $j("input[type='text']").each(function(i){
+                    $j(this).val($j(this).val().toUpperCase());
                 })
             })
         }
-        $(document).ready(function(evt){
-            $(".enterseq").each(function(i){
-                $(this).keydown(function(event){
+        $j(document).ready(function(evt){
+            $j(".enterseq").each(function(i){
+                $j(this).keydown(function(event){
                     var keycode = (event.keyCode ? event.keyCode : event.which);
                     switch(keycode) {
                         case 13:
-                            if($(this).is("input")) {
-                                $(this).val($(this).val().toUpperCase());
-                            } else if($(this).is("button[type='submit']")) {
-                                $(this).click();
+                            if($j(this).is("input")) {
+                                $j(this).val($j(this).val().toUpperCase());
+                            } else if($j(this).is("button[type='submit']")) {
+                                $j(this).click();
                                 return false;
                             }
-                            if($(this).attr("name")=="description"){
-                                $(".customerAutoSelect").select();
+                            if($j(this).attr("name")=="description"){
+                                $j(".customerAutoSelect").select();
                             } else {
-                                var dd = parseInt($(this).attr("seq"),10)+1;
-                                if( $(".enterseq").filter("[seq='"+dd+"']").length>0){
-                                    if($(".enterseq").filter("[seq='"+dd+"']").is("input")) {
-                                        $("input[type='text']").filter("[seq='"+dd+"']").select();
-                                    } else if($(".enterseq").filter("[seq='"+dd+"']").is("select")){
-                                        $("select").filter("[seq='"+dd+"']").focus();
-                                    } else if($(".enterseq").filter("[seq='"+dd+"']").is("checkbox")){
-                                        $("checkbox").filter("[seq='"+dd+"']").select();
-                                    } else if($(".enterseq").filter("[seq='"+dd+"']").is("button")){
-                                        $("button").filter("[seq='"+dd+"']").focus();
+                                var dd = parseInt($j(this).attr("seq"),10)+1;
+                                if( $j(".enterseq").filter("[seq='"+dd+"']").length>0){
+                                    if($j(".enterseq").filter("[seq='"+dd+"']").is("input")) {
+                                        $j("input[type='text']").filter("[seq='"+dd+"']").select();
+                                    } else if($j(".enterseq").filter("[seq='"+dd+"']").is("select")){
+                                        $j("select").filter("[seq='"+dd+"']").focus();
+                                    } else if($j(".enterseq").filter("[seq='"+dd+"']").is("checkbox")){
+                                        $j("checkbox").filter("[seq='"+dd+"']").select();
+                                    } else if($j(".enterseq").filter("[seq='"+dd+"']").is("button")){
+                                        $j("button").filter("[seq='"+dd+"']").focus();
                                     }
                                 }
                             }
                             break;
                         case 38:
-                            var dd = (parseInt($(this).attr("seq"),10)>0)?(parseInt($(this).attr("seq"),10)-1):parseInt($(this).attr("seq"),10);
-                            if($("input[type='text']").filter("[seq='"+dd+"']").length>0){
-                                $("input[type='text']").filter("[seq='"+dd+"']").select();;
-                            } else if($("select").filter("[seq='"+dd+"']").length>0){
-                                $("select").filter("[seq='"+dd+"']").focus();;
+                            var dd = (parseInt($j(this).attr("seq"),10)>0)?(parseInt($j(this).attr("seq"),10)-1):parseInt($j(this).attr("seq"),10);
+                            if($j("input[type='text']").filter("[seq='"+dd+"']").length>0){
+                                $j("input[type='text']").filter("[seq='"+dd+"']").select();;
+                            } else if($j("select").filter("[seq='"+dd+"']").length>0){
+                                $j("select").filter("[seq='"+dd+"']").focus();;
                             }
                     }
                     if(keycode==13)
                         return false;
                 })
             })
-            if($(".enterseq").filter("[seq='1']").is("input")) {
-                $("input[type='text']").filter("[seq='1']").select();
-            } else if($(".enterseq").filter("[seq='1']").is("select")){
-                $("select").filter("[seq='1']").focus();
-            } else if($(".enterseq").filter("[seq='1']").is("checkbox")){
-                $("checkbox").filter("[seq='1']").select();
-            } else if($(".enterseq").filter("[seq='1']").is("button")){
-                $("button").filter("[seq='1']").focus();
+            if($j(".enterseq").filter("[seq='1']").is("input")) {
+                $j("input[type='text']").filter("[seq='1']").select();
+            } else if($j(".enterseq").filter("[seq='1']").is("select")){
+                $j("select").filter("[seq='1']").focus();
+            } else if($j(".enterseq").filter("[seq='1']").is("checkbox")){
+                $j("checkbox").filter("[seq='1']").select();
+            } else if($j(".enterseq").filter("[seq='1']").is("button")){
+                $j("button").filter("[seq='1']").focus();
             }
 
-            $('.customerAutoSelect').autoComplete({minLength:2,
-                events: {
-                    searchPost: function (resultFromServer) {
-                        setTimeout(function(){
-                            $('.customerAutoSelect').next().find('a').eq(0).addClass("active");
-                        },100)
-                        return resultFromServer;
-                    }
-                }
-            });
-            $('.customerAutoSelect').keydown(function(event){
+            {{--$j('.customerAutoSelect').autocomplete({minLength:2,--}}
+            {{--    events: {--}}
+            {{--        searchPost: function (resultFromServer) {--}}
+            {{--            setTimeout(function(){--}}
+            {{--                $j('.customerAutoSelect').next().find('a').eq(0).addClass("active");--}}
+            {{--            },100)--}}
+            {{--            return resultFromServer;--}}
+            {{--        }--}}
+            {{--    }--}}
+            {{--});--}}
+            {{--$j('.customerAutoSelect').keydown(function(event){--}}
+            {{--    var keycode = (event.keyCode ? event.keyCode : event.which);--}}
+            {{--    if(keycode==13){--}}
+            {{--        if($j(this).val()==""){--}}
+            {{--            setTimeout(function(){--}}
+            {{--                $j("button").filter("[seq='4']").focus();--}}
+            {{--            },500);--}}
+            {{--        }--}}
+            {{--        return false;--}}
+            {{--    }--}}
+            {{--})--}}
+            {{--$j('.customerAutoSelect').on('change', function (e, datum) {--}}
+            {{--    if($j("input[name='customerid']").val()!=""){--}}
+            {{--        var data="categoryid="+$j("select[name='category_id']").val()+"&customerid="+$j("input[name='customerid']").val();--}}
+            {{--        $j.ajax({--}}
+            {{--            url: "{{ action('App\Http\Controllers\CustomerGroupsController@custservice') }}",--}}
+            {{--            type:'get',--}}
+            {{--            dataType: 'json',--}}
+            {{--            data:data,--}}
+            {{--            beforeSend: function(){--}}
+            {{--                $j('#modalLoading').modal('show');--}}
+            {{--            },--}}
+            {{--            success: function(json){--}}
+            {{--                setTimeout(function(){ $j("#modalLoading .close").click(); },500);--}}
+            {{--                js_add_customer(json,$j('.customerAutoSelect').val());--}}
+            {{--                $j('.customerAutoSelect').select();--}}
+            {{--                $j('.customerAutoSelect').next().find("a").remove();--}}
+
+            {{--                return false;--}}
+            {{--            },--}}
+            {{--            error: function (xhr, ajaxOptions, thrownError) {--}}
+            {{--                setTimeout(function(){ $j("#modalLoading .close").click(); },500);--}}
+            {{--                $j('.customerAutoSelect').blur();--}}
+            {{--                $j('.customerAutoSelect').next().find("a").remove();--}}
+            {{--                $j("input[name='customerid_text']").val('');--}}
+            {{--                $j("span.errormsg").html("This customer didnt have "+$j("select[name='category_id'] option:selected").text()+" service! Please add customer service!");--}}
+            {{--                $j('#modalErrorMsg').modal('show');--}}
+
+            {{--                return false;--}}
+            {{--            }--}}
+            {{--        })--}}
+            {{--    } else {--}}
+            {{--        alert("Invalid Customer!");--}}
+            {{--    }--}}
+            {{--    return false;--}}
+            {{--});--}}
+            {{--$j('#modalErrorMsg').on('hidden.bs.modal', function () {--}}
+            {{--    $j('.customerAutoSelect').select();--}}
+            {{--    return false;--}}
+            {{--});--}}
+            {{--$j('.customerAutoSelect').on('autocomplete.select', function (e, datum) {--}}
+            {{--    $j(this).change();--}}
+            {{--    return false;--}}
+            {{--})--}}
+            {{--$j(".custom-switch").click(function(evt){--}}
+            {{--    if($j("input[name='"+$j(this).find("input[type='checkbox']").attr("name")+"']").prop("checked")){--}}
+            {{--        $j("input[name='"+$j(this).find("input[type='checkbox']").attr("name")+"']").prop("checked",false);--}}
+            {{--        $j(this).find("input[type='hidden']").val("N");--}}
+            {{--    } else {--}}
+            {{--        $j("input[name='"+$j(this).find("input[type='checkbox']").attr("name")+"']").prop("checked",true);--}}
+            {{--        $j(this).find("input[type='hidden']").val("Y");--}}
+            {{--    }--}}
+            {{--    return false;--}}
+            {{--})--}}
+            $j("select[name='contract_typ']").keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
-                    if($(this).val()==""){
-                        setTimeout(function(){
-                            $("button").filter("[seq='4']").focus();
-                        },500);
-                    }
+                    $j("input[name='amount']").select();
                     return false;
                 }
             })
-            $('.customerAutoSelect').on('change', function (e, datum) {
-                if($("input[name='customerid']").val()!=""){
-                    var data="categoryid="+$("select[name='category_id']").val()+"&customerid="+$("input[name='customerid']").val();
-                    $.ajax({
-                        url: "{{ action('App\Http\Controllers\CustomerGroupsController@custservice') }}",
-                        type:'get',
-                        dataType: 'json',
-                        data:data,
-                        beforeSend: function(){
-                            $('#modalLoading').modal('show');
-                        },
-                        success: function(json){
-                            setTimeout(function(){ $("#modalLoading .close").click(); },500);
-                            js_add_customer(json,$('.customerAutoSelect').val());
-                            $('.customerAutoSelect').select();
-                            $('.customerAutoSelect').next().find("a").remove();
-
-                            return false;
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            setTimeout(function(){ $("#modalLoading .close").click(); },500);
-                            $('.customerAutoSelect').blur();
-                            $('.customerAutoSelect').next().find("a").remove();
-                            $("input[name='customerid_text']").val('');
-                            $("span.errormsg").html("This customer didnt have "+$("select[name='category_id'] option:selected").text()+" service! Please add customer service!");
-                            $('#modalErrorMsg').modal('show');
-
-                            return false;
-                        }
-                    })
-                } else {
-                    alert("Invalid Customer!");
-                }
-                return false;
-            });
-            $('#modalErrorMsg').on('hidden.bs.modal', function () {
-                $('.customerAutoSelect').select();
-                return false;
-            });
-            $('.customerAutoSelect').on('autocomplete.select', function (e, datum) {
-                $(this).change();
-                return false;
-            })
-            $(".custom-switch").click(function(evt){
-                if($("input[name='"+$(this).find("input[type='checkbox']").attr("name")+"']").prop("checked")){
-                    $("input[name='"+$(this).find("input[type='checkbox']").attr("name")+"']").prop("checked",false);
-                    $(this).find("input[type='hidden']").val("N");
-                } else {
-                    $("input[name='"+$(this).find("input[type='checkbox']").attr("name")+"']").prop("checked",true);
-                    $(this).find("input[type='hidden']").val("Y");
-                }
-                return false;
-            })
-            $("select[name='contract_typ']").keydown(function(event){
+            $j("input[name='amount']").keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
-                    $("input[name='amount']").select();
-                    return false;
-                }
-            })
-            $("input[name='amount']").keydown(function(event){
-                var keycode = (event.keyCode ? event.keyCode : event.which);
-                if(keycode==13){
-                    $("input[name='start_date']").select();
+                    $j("input[name='start_date']").select();
                     return false;
                 } else if(keycode==38){
-                    $("select[name='contract_typ']").select();
+                    $j("select[name='contract_typ']").select();
                     return false;
                 }
             })
-            $("input[name='start_date']").keydown(function(event){
+            $j("input[name='start_date']").keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
-                    js_date_format($(this));
-                    if($(this).val()!=""){
-                        if($("select[name='contract_typ']").val()=="1") {
-                            var dt = new Date($(this).val().substr(6,4),(parseInt($(this).val().substr(3,2),10)-1),$(this).val().substr(0,2) );
+                    js_date_format($j(this));
+                    if($j(this).val()!=""){
+                        if($j("select[name='contract_typ']").val()=="1") {
+                            var dt = new Date($j(this).val().substr(6,4),(parseInt($j(this).val().substr(3,2),10)-1),$j(this).val().substr(0,2) );
                             var ndt = add_years(dt,1);
-                            $("input[name='end_date']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
-                        } else if($("select[name='contract_typ").val()=="2") {
-                            var dt = new Date($(this).val().substr(6,4),(parseInt($(this).val().substr(3,2),10)-1),$(this).val().substr(0,2) );
+                            $j("input[name='end_date']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
+                        } else if($j("select[name='contract_typ").val()=="2") {
+                            var dt = new Date($j(this).val().substr(6,4),(parseInt($j(this).val().substr(3,2),10)-1),$j(this).val().substr(0,2) );
                             var ndt = add_months(dt,1);
-                            $("input[name='end_date']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
-                        } else if($("select[name='contract_typ']").val()=="3") {
-                            var dt = new Date($(this).val().substr(6,4),(parseInt($(this).val().substr(3,2),10)-1),$(this).val().substr(0,2) );
+                            $j("input[name='end_date']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
+                        } else if($j("select[name='contract_typ']").val()=="3") {
+                            var dt = new Date($j(this).val().substr(6,4),(parseInt($j(this).val().substr(3,2),10)-1),$j(this).val().substr(0,2) );
                             var ndt = add_months(dt,2);
-                            $("input[name='end_date']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
-                        } else if($("select[name='contract_typ']").val()=="4") {
-                            var dt = new Date($(this).val().substr(6,4),(parseInt($(this).val().substr(3,2),10)-1),$(this).val().substr(0,2) );
+                            $j("input[name='end_date']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
+                        } else if($j("select[name='contract_typ']").val()=="4") {
+                            var dt = new Date($j(this).val().substr(6,4),(parseInt($j(this).val().substr(3,2),10)-1),$j(this).val().substr(0,2) );
                             var ndt = add_months(dt,6);
-                            $("input[name='end_date']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
-                        } else if($("select[name='contract_typ']").val()=="5") {
-                            var dt = new Date($(this).val().substr(6,4),(parseInt($(this).val().substr(3,2),10)-1),$(this).val().substr(0,2) );
+                            $j("input[name='end_date']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
+                        } else if($j("select[name='contract_typ']").val()=="5") {
+                            var dt = new Date($j(this).val().substr(6,4),(parseInt($j(this).val().substr(3,2),10)-1),$j(this).val().substr(0,2) );
                             var ndt = add_months(dt,3);
-                            $("input[name='end_date']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
+                            $j("input[name='end_date']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
                         }
                     }
-                    if($("input[name='pay_before']").val()=="Y"){
-                        $("input[name='service_date']").val($(this).val());
+                    if($j("input[name='pay_before']").val()=="Y"){
+                        $j("input[name='service_date']").val($j(this).val());
                     } else {
-                        var dt = new Date($("input[name='end_date']").val().substr(6,4),(parseInt($("input[name='end_date']").val().substr(3,2),10)-1),$("input[name='end_date']").val().substr(0,2));
+                        var dt = new Date($j("input[name='end_date']").val().substr(6,4),(parseInt($j("input[name='end_date']").val().substr(3,2),10)-1),$j("input[name='end_date']").val().substr(0,2));
                         var ndt = add_dates(dt,1);
-                        $("input[name='service_date']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
+                        $j("input[name='service_date']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
                     }
-                    $("input[name='end_date']").select();
+                    $j("input[name='end_date']").select();
                     return false;
                 } else if(keycode==38){
-                    $("input[name='amount']").select();
+                    $j("input[name='amount']").select();
                     return false;
                 }
             })
-            $("input[name='end_date']").keydown(function(event){
+            $j("input[name='end_date']").keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
-                    js_date_format($(this));
-                    $("input[name='service_date']").select();
+                    js_date_format($j(this));
+                    $j("input[name='service_date']").select();
                     return false;
                 } else if(keycode==38){
-                    $("input[name='start_date']").select();
+                    $j("input[name='start_date']").select();
                     return false;
                 }
             })
-            $("input[name='service_date']").keydown(function(event){
+            $j("input[name='service_date']").keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
-                    js_date_format($(this));
-                    $("input[name='soft_license']").select();
+                    js_date_format($j(this));
+                    $j("input[name='soft_license']").select();
                     return false;
                 } else if(keycode==38){
-                    $("input[name='end_date']").select();
+                    $j("input[name='end_date']").select();
                     return false;
                 }
             })
-            $("input[name='soft_license']").keydown(function(event){
+            $j("input[name='soft_license']").keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
-                    $("#btnSaveServices").focus();
+                    $j("#btnSaveServices").focus();
                     return false;
                 } else if(keycode==38){
-                    $("input[name='service_date']").select();
+                    $j("input[name='service_date']").select();
                     return false;
                 }
             })
-            $("#btnSaveServices").keydown(function(event){
+            $j("#btnSaveServices").keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
-                    $(this).click();
+                    $j(this).click();
                     return false;
                 } else if(keycode==38){
-                    $("input[name='soft_license']").select();
+                    $j("input[name='soft_license']").select();
                     return false;
                 }
             })
-            $("#btnSaveServices").click(function(event){
-                var data=$('#custservices').serialize();
+            $j("#btnSaveServices").click(function(event){
+                var data=$j('#custservices').serialize();
 
-                $.ajax({
+                $j.ajax({
                     url: "{{ action('App\Http\Controllers\CustomerGroupsController@savecustservice') }}",
                     type:'post',
                     dataType: 'json',
                     data:data,
                     success: function(json){
-                        $("#servicesModal .close").click();
+                        $j("#servicesModal .close").click();
                         alert(json.msg);
                         window.location.reload();
                         return false;
@@ -526,59 +562,59 @@
         function js_edit_service(id){
             if(id!=""){
                 var data="serviceid="+id;
-                $.ajax({
+                $j.ajax({
                     url: "{{ action('App\Http\Controllers\CustomerGroupsController@custservice') }}",
                     type:'get',
                     dataType: 'json',
                     data:data,
                     beforeSend: function(){
-                        //$('#modalLoading').modal('show');
+                        //$j('#modalLoading').modal('show');
                     },
                     success: function(json){
-                        //$("#modalLoading .close").click();
-                        $("#servicesModal").modal("show");
-                        $("select[name='contract_typ']").val(json.contract_typ);
-                        $("input[name='amount']").val(json.amount);
-                        $("input[name='serviceid']").val(json.id);
-                        $("input[name='inc_hw']").val(json.inc_hw);
+                        //$j("#modalLoading .close").click();
+                        $j("#servicesModal").modal("show");
+                        $j("select[name='contract_typ']").val(json.contract_typ);
+                        $j("input[name='amount']").val(json.amount);
+                        $j("input[name='serviceid']").val(json.id);
+                        $j("input[name='inc_hw']").val(json.inc_hw);
                         if(json.inc_hw=="Y"){
-                            if(!$("input[name='cinc_hw']").prop("checked")) {
-                                $("input[name='cinc_hw']").parent().click();
+                            if(!$j("input[name='cinc_hw']").prop("checked")) {
+                                $j("input[name='cinc_hw']").parent().click();
                             }
                         } else {
-                            if($("input[name='cinc_hw']").prop("checked")) {
-                                $("input[name='cinc_hw']").parent().click();
+                            if($j("input[name='cinc_hw']").prop("checked")) {
+                                $j("input[name='cinc_hw']").parent().click();
                             }
                         }
-                        $("input[name='pay_before']").val(json.pay_before);
+                        $j("input[name='pay_before']").val(json.pay_before);
                         if(json.pay_before=="Y"){
-                            if(!$("input[name='cpay_before']").prop("checked")) {
-                                $("input[name='cpay_before']").parent().click();
+                            if(!$j("input[name='cpay_before']").prop("checked")) {
+                                $j("input[name='cpay_before']").parent().click();
                             }
                         } else {
-                            if($("input[name='cpay_before']").prop("checked")) {
-                                $("input[name='cpay_before']").parent().click();
+                            if($j("input[name='cpay_before']").prop("checked")) {
+                                $j("input[name='cpay_before']").parent().click();
                             }
                         }
-                        $("input[name='start_date']").val(json.start_date);
-                        $("input[name='end_date']").val(json.end_date);
-                        $("input[name='service_date']").val(json.service_date);
-                        $("input[name='soft_license']").val(json.soft_license);
-                        $("input[name='active']").val(json.active);
+                        $j("input[name='start_date']").val(json.start_date);
+                        $j("input[name='end_date']").val(json.end_date);
+                        $j("input[name='service_date']").val(json.service_date);
+                        $j("input[name='soft_license']").val(json.soft_license);
+                        $j("input[name='active']").val(json.active);
                         if(json.active=="Y"){
-                            if(!$("input[name='cactive']").prop("checked")) {
-                                $("input[name='cactive']").parent().click();
+                            if(!$j("input[name='cactive']").prop("checked")) {
+                                $j("input[name='cactive']").parent().click();
                             }
                         } else {
-                            if($("input[name='cactive']").prop("checked")) {
-                                $("input[name='cactive']").parent().click();
+                            if($j("input[name='cactive']").prop("checked")) {
+                                $j("input[name='cactive']").parent().click();
                             }
                         }
-                        setTimeout(function(){ $("select[name='contract_typ']").focus(); },500);
+                        setTimeout(function(){ $j("select[name='contract_typ']").focus(); },500);
                         return false;
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
-                        setTimeout(function(){ $("#modalLoading .close").click(); },500);
+                        setTimeout(function(){ $j("#modalLoading .close").click(); },500);
                         alert("Invalid Services!");
                         return false;
                     }
@@ -586,17 +622,17 @@
             }
         }
         function js_add_customer(data,name){
-            if( $("table#tblcust tbody tr.empty").length>0){
-                $("table#tblcust tbody tr.empty").remove();
+            if( $j("table#tblcust tbody tr.empty").length>0){
+                $j("table#tblcust tbody tr.empty").remove();
             }
             var bcheck=false;
-            $("input[name='cust[]']").each(function(i){
-                if($(this).val()==data.customerid){
+            $j("input[name='cust[]']").each(function(i){
+                if($j(this).val()==data.customerid){
                     bcheck=true;
                 }
             })
             if(!bcheck) {
-                var ncount=$("table#tblcust tbody tr").length;
+                var ncount=$j("table#tblcust tbody tr").length;
                 var trrow="<tr>";
                 trrow+="<td scope=\"row\"><input type='hidden' name='cust[]' value='"+data.customerid+"'><span>"+(ncount+1)+"</span></td>";
                 if(data.id!="") {
@@ -617,54 +653,54 @@
                 trrow+="<button class=\"btn btn-danger\" type=\"button\" onclick=\"js_delete(this);\">Delete</button>";
                 trrow+="</td>";
                 trrow+="</tr>";
-                $("table#tblcust tbody").append(trrow);
-                $(".customerAutoSelect").select();
-                $('.customerAutoSelect').autoComplete('clear');
-                $('.customerAutoSelect').val('');
-                $(".dropdown-menu").empty();
+                $j("table#tblcust tbody").append(trrow);
+                $j(".customerAutoSelect").select();
+                $j('.customerAutoSelect').autocomplete('clear');
+                $j('.customerAutoSelect').val('');
+                $j(".dropdown-menu").empty();
             }
-            $(".customerAutoSelect").val('');
-            $("input[name='customerid']").val('');
+            $j(".customerAutoSelect").val('');
+            $j("input[name='customerid']").val('');
 
             return false;
         }
         function js_delete(obj){
-            $(obj).parent().parent().remove();
-            if($("table#tblcust tbody tr").length>0){
-                $("table#tblcust tbody tr").each(function(i){
-                    $(this).find("td").eq(0).find('span').html((i+1));
+            $j(obj).parent().parent().remove();
+            if($j("table#tblcust tbody tr").length>0){
+                $j("table#tblcust tbody tr").each(function(i){
+                    $j(this).find("td").eq(0).find('span').html((i+1));
                 })
             } else {
                 var trrow = "<tr class=\"empty\">";
                 trrow += "<td class=\"text-center\" colspan=\"12\">No Record Found</td>";
                 trrow += "</tr>";
-                $("table#tblcust tbody").append(trrow);
+                $j("table#tblcust tbody").append(trrow);
             }
             return false;
         }
         function js_date_format(obj,check18) {
             check18 = (check18==undefined)?"N":check18;
-            if($(obj).val().length>=1){
-                if($(obj).val().length==8){
-                    $(obj).val($(obj).val().substr(0,2)+"/"+$(obj).val().substr(2,2)+"/"+$(obj).val().substr(4,4));
+            if($j(obj).val().length>=1){
+                if($j(obj).val().length==8){
+                    $j(obj).val($j(obj).val().substr(0,2)+"/"+$j(obj).val().substr(2,2)+"/"+$j(obj).val().substr(4,4));
                 }
-                if(!checkdate($(obj).val()) && $(obj).val()!="") {
-                    $(obj).parent().find("label.error").empty().text('Please enter a correct date');
-                    setTimeout(function(){$(obj).select();},500);
+                if(!checkdate($j(obj).val()) && $j(obj).val()!="") {
+                    $j(obj).parent().find("label.error").empty().text('Please enter a correct date');
+                    setTimeout(function(){$j(obj).select();},500);
                 } else {
-                    $(obj).parent().find("label.error").empty();
+                    $j(obj).parent().find("label.error").empty();
                 }
-                if ($(obj).val().length!=10){
-                    $(obj).val('');
+                if ($j(obj).val().length!=10){
+                    $j(obj).val('');
                 }
             }
             if(check18=="Y"){
-                var age = system_datetime.substr(6,4)-$(obj).val().substr(6,4);
-                var age_mth = system_datetime.substr(3,2)-$(obj).val().substr(3,2);
-                var age_day = system_datetime.substr(0,2)-$(obj).val().substr(0,2);
+                var age = system_datetime.substr(6,4)-$j(obj).val().substr(6,4);
+                var age_mth = system_datetime.substr(3,2)-$j(obj).val().substr(3,2);
+                var age_day = system_datetime.substr(0,2)-$j(obj).val().substr(0,2);
                 if(age<P_Blkag || (age==P_Blkag && age_mth<0) || (age==P_Blkag && age_mth==0 && age_day<0) ){
                     if(!alert("Customer Under Age !!!")) {
-                        ddd = $(obj);
+                        ddd = $j(obj);
                         setTimeout("ddd.select()",500);
                         return false;
                     }
@@ -675,7 +711,7 @@
         // validate date
         function checkdate(value) {
             var check = false;
-            var re = /^\d{1,2}\/\d{1,2}\/\d{4}$/
+            var re = /^\d{1,2}\/\d{1,2}\/\d{4}$j/
             if( re.test(value)){
                 var adata = value.split('/');
                 var gg = parseInt(adata[0],10);
@@ -704,56 +740,56 @@
         function js_validate_amt_dec(e){
             if( e.which!=8 && e.which!=0 && e.which!=46 && (e.which<48 || e.which>57))
                 return false;
-            //if( e.keyCode=="46" && $(e.target).val().substr($(e.target).getCursorPosition(),1)=="." )
+            //if( e.keyCode=="46" && $j(e.target).val().substr($j(e.target).getCursorPosition(),1)=="." )
             //return false;
             setTimeout(function() {
-                js_delay_validate_amt_dec($(e.target),e.keyCode,e.which);
+                js_delay_validate_amt_dec($j(e.target),e.keyCode,e.which);
             }, 100)
-            //setTimeout("js_delay_validate_amt_dec('"+$(e.target)+"','"+e.keyCode+"','"+e.which+"');",100);
+            //setTimeout("js_delay_validate_amt_dec('"+$j(e.target)+"','"+e.keyCode+"','"+e.which+"');",100);
             if(e.which==46)
                 return false;
         }
         function js_delay_validate_amt_dec(nam,keycode,keywhich,dec_point) {
             dec_point=(dec_point==undefined)?2:dec_point;
-            var ss = $(nam).val().split(".");
-            if( (keycode=="46" || keycode=="8" || keycode=="0") && $(nam).val()=="" ) {
-                $(nam).val("0.00");
-                ss = $(nam).val().split(".");
+            var ss = $j(nam).val().split(".");
+            if( (keycode=="46" || keycode=="8" || keycode=="0") && $j(nam).val()=="" ) {
+                $j(nam).val("0.00");
+                ss = $j(nam).val().split(".");
             }
             if(ss[1]==undefined || ss[1].length<dec_point){
-                $(nam).val((isNaN(parseFloat($(nam).val()).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat($(nam).val()).toFixed(dec_point));
-                $(nam).selectRange(ss[0].length);
+                $j(nam).val((isNaN(parseFloat($j(nam).val()).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat($j(nam).val()).toFixed(dec_point));
+                $j(nam).selectRange(ss[0].length);
             } else if(ss[1].length>=dec_point) {
-                if( ($(nam)[0].selectionStart>ss[0].length && keycode!="37") || ($(nam)[0].selectionStart-1)>ss[0].length){
+                if( ($j(nam)[0].selectionStart>ss[0].length && keycode!="37") || ($j(nam)[0].selectionStart-1)>ss[0].length){
                     if(keycode=="37") {
-                        $(nam).selectRange( ($(nam)[0].selectionStart-1), ($(nam)[0].selectionStart) );
+                        $j(nam).selectRange( ($j(nam)[0].selectionStart-1), ($j(nam)[0].selectionStart) );
                     }else if(keycode=="110" || keycode=="190"){
 
                     } else {
                         if(ss[1].length>=dec_point) {
-                            var ssdd = $(nam).val().split(".");
+                            var ssdd = $j(nam).val().split(".");
                             if(dec_point=="1") {
-                                $(nam).val( (isNaN(parseFloat(Math.floor($(nam).val()*100)/100).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat((Math.floor($(nam).val())+String(ssdd[1])+"0")/100).toFixed(dec_point) );
+                                $j(nam).val( (isNaN(parseFloat(Math.floor($j(nam).val()*100)/100).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat((Math.floor($j(nam).val())+String(ssdd[1])+"0")/100).toFixed(dec_point) );
                             } else {
-                                $(nam).val( (isNaN(parseFloat(Math.floor($(nam).val()*100)/100).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat(Math.floor($(nam).val())+String(ssdd[1])/100).toFixed(dec_point) );
+                                $j(nam).val( (isNaN(parseFloat(Math.floor($j(nam).val()*100)/100).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat(Math.floor($j(nam).val())+String(ssdd[1])/100).toFixed(dec_point) );
                             }
-                            $(nam).selectRange(($(nam).val().length-1),$(nam).val().length);
+                            $j(nam).selectRange(($j(nam).val().length-1),$j(nam).val().length);
                         } else {
-                            $(nam).selectRange($(nam)[0].selectionStart, ($(nam)[0].selectionStart+1) );
+                            $j(nam).selectRange($j(nam)[0].selectionStart, ($j(nam)[0].selectionStart+1) );
                         }
                     }
-                } else if(keycode=="37" && $(nam)[0].selectionStart>ss[0].length) {
-                    $(nam).selectRange(ss[0].length);
+                } else if(keycode=="37" && $j(nam)[0].selectionStart>ss[0].length) {
+                    $j(nam).selectRange(ss[0].length);
                 } else if(ss[1].length>dec_point) {
-                    $(nam).val( (isNaN(parseFloat(Math.floor($(nam).val()*100)/100).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat(Math.floor($(nam).val()*100)/100).toFixed(dec_point) );
-                    $(nam).selectRange($(nam).val().length);
+                    $j(nam).val( (isNaN(parseFloat(Math.floor($j(nam).val()*100)/100).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat(Math.floor($j(nam).val()*100)/100).toFixed(dec_point) );
+                    $j(nam).selectRange($j(nam).val().length);
                 }
             }
             if(keywhich=="46"){
-                $(nam).selectRange(ss[0].length+1, (ss[0].length+2) );
+                $j(nam).selectRange(ss[0].length+1, (ss[0].length+2) );
             }
         }
-        $.fn.selectRange = function(start, end) {
+        $j.fn.selectRange = function(start, end) {
             if(!end) end = start;
             return this.each(function() {
                 if (this.setSelectionRange) {
@@ -768,5 +804,198 @@
                 }
             });
         };
+
+        $j(document).ready(function() {
+            {{--$j('.customerAutoSelect2').autocomplete({--}}
+            {{--    source: function(request, response) {--}}
+            {{--        // Make an API call to your Laravel endpoint--}}
+            {{--        $j.ajax({--}}
+            {{--            url: "{{ action('App\Http\Controllers\CustomerGroupsController@customerList') }}",--}}
+            {{--            dataType: 'json',--}}
+            {{--            data: {--}}
+            {{--                term: request.term--}}
+            {{--            },--}}
+            {{--            success: function(data) {--}}
+            {{--                response(data); // Pass the data to the autocomplete response--}}
+            {{--            }--}}
+            {{--        });--}}
+            {{--    },--}}
+            {{--    minLength: 2 // Minimum characters to trigger autocomplete--}}
+            {{--});--}}
+            {{--$j("#autocomplete-input").autocomplete({--}}
+            {{--    source: function(request, response) {--}}
+            {{--        $j.ajax({--}}
+            {{--            url: "{{ action('App\Http\Controllers\CustomerGroupsController@customerList') }}",--}}
+            {{--            dataType: "json",--}}
+            {{--            success: function(data) {--}}
+            {{--                response(data);--}}
+            {{--            }--}}
+            {{--        });--}}
+            {{--    },--}}
+            {{--    select: function(event, ui) {--}}
+            {{--        event.preventDefault();--}}
+            {{--        $(this).val(ui.item.text); // Set the input value to the text of the selected suggestion--}}
+            {{--    }--}}
+            {{--    // select: function(event, ui) {--}}
+            {{--    //     event.preventDefault();--}}
+            {{--    //     var selectedItem = ui.item;--}}
+            {{--    //     var hiddenValues = $j("#hidden-values").val().split(",");--}}
+            {{--    //     hiddenValues.push(selectedItem.value);--}}
+            {{--    //     $j("#hidden-values").val(hiddenValues.join(","));--}}
+            {{--    //     $j(this).val("");--}}
+            {{--    //     updateDisplay();--}}
+            {{--    // }--}}
+            {{--});--}}
+            {{--function updateDisplay() {--}}
+            {{--    var hiddenValues = $j("#hidden-values").val().split(",");--}}
+            {{--    var displayText = hiddenValues.map(function(value) {--}}
+            {{--        var item = availableTags.find(function(tag) {--}}
+            {{--            return tag.value === value;--}}
+            {{--        });--}}
+            {{--        return item ? item.label : "";--}}
+            {{--    }).join(", ");--}}
+            {{--    $j("#selected-items").text(displayText);--}}
+            {{--}--}}
+            {{--$j("#autocomplete-input").autocomplete({--}}
+            {{--    source: function(request, response) {--}}
+            {{--        $j.ajax({--}}
+            {{--            url: "{{ action('App\Http\Controllers\CustomerGroupsController@customerList') }}",--}}
+            {{--            dataType: "json",--}}
+            {{--            success: function(data) {--}}
+            {{--                response(data);--}}
+            {{--            }--}}
+            {{--        });--}}
+            {{--    },--}}
+            {{--    select: function(event, ui) {--}}
+            {{--        event.preventDefault();--}}
+            {{--        $j(this).val(ui.item.text); // Set the input value to the selected hint--}}
+            {{--        $j("#selected-companycode").val(ui.item.value); // Set the hidden input value to the selected companycode--}}
+            {{--    },--}}
+            {{--    focus: function(event, ui) {--}}
+            {{--        // Prevent the input field from being populated with the focused item's text--}}
+            {{--        event.preventDefault();--}}
+            {{--    },--}}
+            {{--    minLength: 2 // Minimum characters to trigger autocomplete--}}
+            {{--});--}}
+
+            {{--$j(document).ready(function() {--}}
+            {{--    $j('.customerAutoSelect2').select2({--}}
+            {{--        ajax: {--}}
+            {{--            url: "{{ action('App\Http\Controllers\CustomerGroupsController@customerList') }}",--}}
+            {{--            dataType: 'json',--}}
+            {{--            delay: 250,--}}
+            {{--            processResults: function (data) {--}}
+            {{--                return {--}}
+            {{--                    results: data--}}
+            {{--                };--}}
+            {{--            },--}}
+            {{--            cache: true--}}
+            {{--        },--}}
+            {{--        minimumInputLength: 2, // Minimum characters to trigger autocomplete--}}
+            {{--        templateResult: function(data) {--}}
+            {{--            if (!data.id) { return data.text; } // Display the placeholder when no result is selected--}}
+            {{--            return $j('<span>').text(data.text);--}}
+            {{--        }--}}
+            {{--    });--}}
+            {{--});--}}
+        });
+        {{--$j(document).ready(function() {--}}
+
+        {{--    var selectElement = $j('.customerAutoSelect2');--}}
+        {{--    selectElement.on('select2:selecting', function(e) {--}}
+        {{--        // Handle the selection process here--}}
+        {{--        var selectedCustomer = e.params.args.data;--}}
+        {{--        // Populate the input with the selected value--}}
+        {{--        selectElement.val(selectedCustomer.id).trigger('change');--}}
+        {{--        // Close the suggestion dropdown--}}
+        {{--        selectElement.select2('close');--}}
+        {{--    });--}}
+
+        {{--    selectElement.select2({--}}
+        {{--        ajax: {--}}
+        {{--            url: "{{ action('App\Http\Controllers\CustomerGroupsController@customerList') }}",--}}
+        {{--            dataType: 'json',--}}
+        {{--            delay: 250,--}}
+        {{--            processResults: function (data) {--}}
+        {{--                return {--}}
+        {{--                    results: data--}}
+        {{--                };--}}
+        {{--            },--}}
+        {{--            cache: true--}}
+        {{--        },--}}
+        {{--        minimumInputLength: 2, // Minimum characters to trigger autocomplete--}}
+        {{--        templateResult: function(data) {--}}
+        {{--            if (!data.id) { return data.text; } // Display the placeholder when no result is selected--}}
+        {{--            return $j('<span>').text(data.text);--}}
+        {{--        }--}}
+        {{--    });--}}
+
+        {{--    // Display selected items--}}
+        {{--    selectElement.on('select2:select', function(e) {--}}
+        {{--        var selectedCustomer = e.params.data;--}}
+        {{--        var listItem = $j('<li>').text(selectedCustomer.text);--}}
+        {{--        $j('#selected-customers').append(listItem);--}}
+        {{--    });--}}
+
+        {{--    // Remove item from the list when unselected--}}
+        {{--    selectElement.on('select2:unselect', function(e) {--}}
+        {{--        var removedCustomer = e.params.data;--}}
+        {{--        $j('#selected-customers li:contains("' + removedCustomer.text + '")').remove();--}}
+        {{--    });--}}
+        {{--});--}}
+        {{--$j(document).ready(function() {--}}
+        {{--    $j('.customerAutoSelectize').selectize({--}}
+        {{--        valueField: 'id',--}}
+        {{--        labelField: 'text',--}}
+        {{--        searchField: ['companycode', 'companyname'], // Customize fields for searching--}}
+        {{--        options: [], // Empty options array--}}
+        {{--        load: function(query, callback) {--}}
+        {{--            if (!query.length) return callback();--}}
+
+        {{--            // Make an AJAX request to fetch customer data--}}
+        {{--            $j.get("{{ action('App\Http\Controllers\CustomerGroupsController@customerList') }}", { term: query }, function(data) {--}}
+        {{--                callback(data);--}}
+        {{--            });--}}
+        {{--        },--}}
+        {{--        render: {--}}
+        {{--            option: function(item, escape) {--}}
+        {{--                return '<div>' +--}}
+        {{--                    '<span class="title">' +--}}
+        {{--                    '<span class="company-code">' + escape(item.companycode) + '</span> - ' +--}}
+        {{--                    '<span class="company-name">' + escape(item.companyname) + '</span>' +--}}
+        {{--                    '</span>' +--}}
+        {{--                    '</div>';--}}
+        {{--            }--}}
+        {{--        }--}}
+        {{--    });--}}
+        {{--});--}}
+        $(document).ready(function() {
+            $('.customerAutoSelectize').selectize({
+                valueField: 'id',
+                labelField: 'text',
+                searchField: ['companycode', 'companyname'], // Customize fields for searching
+                options: [],
+                load: function(query, callback) {
+                    if (!query.length) return callback();
+
+                    $.get("{{ action('App\Http\Controllers\CustomerGroupsController@customerList') }}", { term: query }, function(data) {
+                        callback(data);
+                    });
+                },
+                render: {
+                    option: function(item, escape) {
+                        return '<div>' +
+                            '<span class="title">' +
+                            '<span class="company-code">' + escape(item.companycode) + '</span> - ' +
+                            '<span class="company-name">' + escape(item.companyname) + '</span>' +
+                            '</span>' +
+                            '</div>';
+                    }
+                }
+            });
+        });
+
+
+
     </script>
 @endsection

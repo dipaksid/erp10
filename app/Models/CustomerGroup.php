@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Agent;
 
 class CustomerGroup extends Model
 {
@@ -28,7 +29,11 @@ class CustomerGroup extends Model
 
     public function agent()
     {
+<<<<<<< Updated upstream
         return $this->belongsTo('App\Models\Agent', 'agents_id', 'id');
+=======
+        return $this->belongsTo('App\Models\Agent', 'agentid', 'id');
+>>>>>>> Stashed changes
     }
 
     public static function getModule($request)

@@ -14,6 +14,8 @@ use App\Serialization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
+
 
 class CustomerGroupsController extends Controller
 {
@@ -345,7 +347,11 @@ class CustomerGroupsController extends Controller
         // Update or create CustomerGroupsCustomer records
         $this->updateOrCreateGroupCustomers($customer_group, $request->input('cust'));
 
+<<<<<<< Updated upstream
         return redirect('/customer-group')->with('success', 'Customer Group ('.$request->input('groupcode').') has been updated!!');
+=======
+        return redirect('/customer-groups')->with('success', 'Customer Group ('.$request->input('groupcode').') has been updated!!');
+>>>>>>> Stashed changes
     }
 
     /**
@@ -376,9 +382,31 @@ class CustomerGroupsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request,CustomerGroup $customer_group)
     {
-        //
+        if (!empty($customer_group->cfgfile)) {
+            $cfgDirectory = public_path("cfg/consolidate/{$customer_group->groupcode}");
+
+            if (File::exists($cfgDirectory)) {
+                File::deleteDirectory($cfgDirectory);
+            }
+        }
+        $customer_group->delete();
+        customerGroupsCustomer::where("customer_groups_id", $customer_group->id)->delete();
+
+        return redirect('/customer-groups')->with('success', "Customer Group ({$customer_group->groupcode}) has been deleted!!");
+    }
+
+    public function autocomplete(Request $request)
+    {
+        $term = $request->input('term');
+
+        $suggestions = Customer::where('name', 'LIKE', '%' . $term . '%')
+            ->select('name') // Modify this based on your model and column names
+            ->limit(10)
+            ->get();
+
+        return response()->json($suggestions);
     }
 
     public function autocomplete(Request $request)
@@ -395,28 +423,44 @@ class CustomerGroupsController extends Controller
 
     public function customerList(Request $request)
     {
+<<<<<<< Updated upstream
         $query = Customer::select('id', 'companycode', 'companyname', 'contactperson', 'terms_id')->orderBy('companycode', 'asc');
         $searchTerm = $request->input("term");
+=======
+        $searchTerm = $request->input("term");
+        $query = Customer::select('id', 'companycode', 'companyname', 'contactperson', 'terms_id')
+            ->orderBy('companycode', 'asc');
+
+>>>>>>> Stashed changes
         if (strlen($searchTerm) > 5) {
             $query->where('companyname', 'like', '%' . $searchTerm . '%');
         } else {
             $query->where('companycode', 'like', '%' . $searchTerm . '%');
         }
+
         $data = $query->get();
-        $arr_return = $data->map(function ($rdt) {
+
+        $arr_return = $data->map(function ($customer) {
             return [
-                "value" => $rdt->id,
-                "text" => $rdt->companycode . "-" . $rdt->companyname,
+                "value" => $customer->id,
+                "text" => "{$customer->companycode} - {$customer->companyname}",
             ];
         })->toArray();
 
         return $arr_return;
     }
 
+<<<<<<< Updated upstream
     public function categorylist(Request $request){
 
         $arr_return = CustomerCategory::select('id','categorycode','description','lastrunno')
                                         ->where('id', $request->input("categoryid"))->first();
+=======
+    public function categoryList(Request $request){
+
+        $arr_return = CustomerCategory::select('id','categorycode','description','lastrunno')
+            ->where('id', $request->input("categoryid"))->first();
+>>>>>>> Stashed changes
 
         return $arr_return;
     }
@@ -444,8 +488,13 @@ class CustomerGroupsController extends Controller
             $data = CustomerService::find($serviceId);
         } else {
             $data = CustomerService::where("customers_id", $customerId)
+<<<<<<< Updated upstream
                                     ->where('customer_categories_id', $categoryId)
                                     ->first();
+=======
+                ->where('customer_categories_id', $categoryId)
+                ->first();
+>>>>>>> Stashed changes
         }
         if (!$data) {
             return response()->json(['error' => 'Data not found'], 404);
