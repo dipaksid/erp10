@@ -1,8 +1,31 @@
 @extends('layouts.app')
 
+@section('styles')
+    <style>
+        .centered-table-container {
+            display: flex;
+            justify-content: center;
+            overflow-x: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .horizontal-table {
+            width: auto;
+            table-layout: auto;
+            border-collapse: separate;
+            border-spacing: 10px; /* Adjust spacing between cells */
+        }
+        .horizontal-table td {
+            min-width: 100px; /* Adjust this width as needed */
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    </style>
+@endsection
+
 @section('content')
-    <div class="container-fluid">
-        <div class="container">
+    <div class="container-fluid mt-4">
+        <div class="container centered-list-container">
         <!-- Page Heading Start-->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Customer Groups
@@ -28,7 +51,7 @@
             @endif
         </div>
 
-        <table class="table table-striped">
+        <table class="table table-striped horizontal-table">
             <thead class="thead-light">
             <tr>
                 <th scope="col">#</th>

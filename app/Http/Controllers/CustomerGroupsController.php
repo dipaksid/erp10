@@ -347,11 +347,7 @@ class CustomerGroupsController extends Controller
         // Update or create CustomerGroupsCustomer records
         $this->updateOrCreateGroupCustomers($customer_group, $request->input('cust'));
 
-<<<<<<< Updated upstream
-        return redirect('/customer-group')->with('success', 'Customer Group ('.$request->input('groupcode').') has been updated!!');
-=======
         return redirect('/customer-groups')->with('success', 'Customer Group ('.$request->input('groupcode').') has been updated!!');
->>>>>>> Stashed changes
     }
 
     /**
@@ -409,29 +405,12 @@ class CustomerGroupsController extends Controller
         return response()->json($suggestions);
     }
 
-    public function autocomplete(Request $request)
-    {
-        $term = $request->input('term');
-
-        $suggestions = Customer::where('name', 'LIKE', '%' . $term . '%')
-            ->select('name') // Modify this based on your model and column names
-            ->limit(10)
-            ->get();
-
-        return response()->json($suggestions);
-    }
-
     public function customerList(Request $request)
     {
-<<<<<<< Updated upstream
-        $query = Customer::select('id', 'companycode', 'companyname', 'contactperson', 'terms_id')->orderBy('companycode', 'asc');
-        $searchTerm = $request->input("term");
-=======
         $searchTerm = $request->input("term");
         $query = Customer::select('id', 'companycode', 'companyname', 'contactperson', 'terms_id')
             ->orderBy('companycode', 'asc');
 
->>>>>>> Stashed changes
         if (strlen($searchTerm) > 5) {
             $query->where('companyname', 'like', '%' . $searchTerm . '%');
         } else {
@@ -450,22 +429,15 @@ class CustomerGroupsController extends Controller
         return $arr_return;
     }
 
-<<<<<<< Updated upstream
-    public function categorylist(Request $request){
-
-        $arr_return = CustomerCategory::select('id','categorycode','description','lastrunno')
-                                        ->where('id', $request->input("categoryid"))->first();
-=======
-    public function categoryList(Request $request){
-
-        $arr_return = CustomerCategory::select('id','categorycode','description','lastrunno')
-            ->where('id', $request->input("categoryid"))->first();
->>>>>>> Stashed changes
-
-        return $arr_return;
+    public function categoryList(Request $request)
+    {
+        return CustomerCategory::select('id','categorycode','description','lastrunno')
+                                ->where('id', $request->input("categoryid"))
+                                ->first();
     }
 
-    public function agentList(Request $request){
+    public function agentList(Request $request)
+    {
         //$data = Customer::select('id','companycode','companyname','contactperson','termid')->where('companyname', 'like', '%'.$request->input("q").'%')->orWhere('companycode', 'like', '%'.$request->input("q").'%')->get();
         if(strlen($request->input("q"))>5){
             $data = Agent::select('id','agentcode','name')->where('name', 'like', '%'.$request->input("q").'%')->orderBy('name','asc')->get();
@@ -488,13 +460,8 @@ class CustomerGroupsController extends Controller
             $data = CustomerService::find($serviceId);
         } else {
             $data = CustomerService::where("customers_id", $customerId)
-<<<<<<< Updated upstream
                                     ->where('customer_categories_id', $categoryId)
                                     ->first();
-=======
-                ->where('customer_categories_id', $categoryId)
-                ->first();
->>>>>>> Stashed changes
         }
         if (!$data) {
             return response()->json(['error' => 'Data not found'], 404);

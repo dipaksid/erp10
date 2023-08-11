@@ -29,11 +29,7 @@ class CustomerGroup extends Model
 
     public function agent()
     {
-<<<<<<< Updated upstream
         return $this->belongsTo('App\Models\Agent', 'agents_id', 'id');
-=======
-        return $this->belongsTo('App\Models\Agent', 'agentid', 'id');
->>>>>>> Stashed changes
     }
 
     public static function getModule($request)
