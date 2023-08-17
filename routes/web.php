@@ -46,9 +46,9 @@ Route::group(['middleware' => 'auth', 'middleware' => 'isAdmin'], function()
     Route::post('customer-groups/custservice', 'App\Http\Controllers\CustomerGroupsController@savecustservice')->name('customer-groups.savecustservice');
     Route::post('customer-groups/savegroupcustservice', 'App\Http\Controllers\CustomerGroupsController@savegroupcustservice')->name('customer-groups.savegroupcustservice');
     Route::resource('customer-groups', App\Http\Controllers\CustomerGroupsController::class);
-    Route::get('customerservice/serviceslist', 'CustomerServiceController@serviceslist')->name('customerservice.serviceslist');
-    Route::get('customerservice/agentlist', 'CustomerServiceController@agentlist')->name('customerservice.agentlist');
-    Route::resource('customerservice', 'CustomerServiceController');
+    Route::get('customer-services/serviceslist', 'App\Http\Controllers\CustomerServiceController@serviceslist')->name('customerservice.serviceslist');
+    Route::get('customer-services/agentlist', 'App\Http\Controllers\CustomerServiceController@agentlist')->name('customerservice.agentlist');
+    Route::resource('customer-services', 'App\Http\Controllers\CustomerServicesController');
     Route::get('customerpwspgapp/customerlist', 'CustomerPGAppController@customerlist')->name('customerpwspgapp.customerlist');
     Route::resource('customerpwspgapp', 'CustomerPGAppController');
     Route::get('totalpayapp/customerlist', 'TotalpayAppController@customerlist')->name('totalpayapp.customerlist');

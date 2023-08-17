@@ -157,8 +157,8 @@
                 @can('CUSTOMER GROUP LIST') <a class="collapse-item" href="{{ route('customer-groups.index') }}">Customer Groups</a>
                 @elsecan('ADD CUSTOMER GROUP') <a class="collapse-item" href="{{ route('customer-groups.create') }}">Customer Groups</a>
                 @endcan
-                @can('CUSTOMER SERVICE LIST') <a class="collapse-item" href="{{ route('customerservice.index') }}">Customer Service</a>
-                @elsecan('ADD CUSTOMER SERVICE') <a class="collapse-item" href="{{ route('customerservice.create') }}">Customer Service</a>
+                @can('CUSTOMER SERVICE LIST') <a class="collapse-item" href="{{ route('customer-services.index') }}">Customer Service</a>
+                @elsecan('ADD CUSTOMER SERVICE') <a class="collapse-item" href="{{ route('customer-services.create') }}">Customer Service</a>
                 @endcan
                 @can('PWS PG APP SERVICE LIST') <a class="collapse-item" href="{{ route('customerpwspgapp.index') }}">PWS PG APP Services</a>
                 @elsecan('ADD PWS PG APP SERVICE') <a class="collapse-item" href="{{ route('customerpwspgapp.create') }}">PWS PG APP Services</a>
