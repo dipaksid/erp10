@@ -49,10 +49,10 @@ Route::group(['middleware' => 'auth', 'middleware' => 'isAdmin'], function()
     Route::get('customer-services/serviceslist', 'App\Http\Controllers\CustomerServiceController@serviceslist')->name('customerservice.serviceslist');
     Route::get('customer-services/agentlist', 'App\Http\Controllers\CustomerServiceController@agentlist')->name('customerservice.agentlist');
     Route::resource('customer-services', 'App\Http\Controllers\CustomerServicesController');
-    Route::get('customerpwspgapp/customerlist', 'CustomerPGAppController@customerlist')->name('customerpwspgapp.customerlist');
-    Route::resource('customerpwspgapp', 'CustomerPGAppController');
-    Route::get('totalpayapp/customerlist', 'TotalpayAppController@customerlist')->name('totalpayapp.customerlist');
-    Route::resource('totalpayapp', 'TotalpayAppController');
+    Route::get('customer-pwspg-app/customerlist', 'App\Http\Controllers\CustomerPGAppsController@customerlist')->name('customerPwspgApp.customerlist');
+    Route::resource('customer-pwspg-app', 'App\Http\Controllers\CustomerPGAppsController');
+    Route::get('totalpayapp/customerlist', 'App\Http\Controllers\TotalpayAppsController@customerlist')->name('totalpayapp.customerlist');
+    Route::resource('totalpayapp', App\Http\Controllers\TotalpayAppsController::class);
     Route::resource('bank', 'BankController');
     Route::resource('agent', 'AgentController');
     Route::resource('staff', 'StaffController');

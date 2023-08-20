@@ -160,8 +160,8 @@
                 @can('CUSTOMER SERVICE LIST') <a class="collapse-item" href="{{ route('customer-services.index') }}">Customer Service</a>
                 @elsecan('ADD CUSTOMER SERVICE') <a class="collapse-item" href="{{ route('customer-services.create') }}">Customer Service</a>
                 @endcan
-                @can('PWS PG APP SERVICE LIST') <a class="collapse-item" href="{{ route('customerpwspgapp.index') }}">PWS PG APP Services</a>
-                @elsecan('ADD PWS PG APP SERVICE') <a class="collapse-item" href="{{ route('customerpwspgapp.create') }}">PWS PG APP Services</a>
+                @can('PWS PG APP SERVICE LIST') <a class="collapse-item" href="{{ route('customer-pwspg-app.index') }}">PWS PG APP Services</a>
+                @elsecan('ADD PWS PG APP SERVICE') <a class="collapse-item" href="{{ route('customer-pwspg-app.create') }}">PWS PG APP Services</a>
                 @endcan
                 @can('TOTALPAY APP SERVICE LIST') <a class="collapse-item" href="{{ route('totalpayapp.index') }}">Totalpay APP Services</a>
                 @elsecan('ADD TOTALPAY APP SERVICE') <a class="collapse-item" href="{{ route('totalpayapp.create') }}">Totalpay APP Services</a>

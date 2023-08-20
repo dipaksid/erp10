@@ -139,6 +139,6 @@ class Customer extends Model
 
     public function customerServices()
     {
-        return $this->hasMany(CustomerService::class, 'customers_id', 'customers_id');
+        return $this->hasMany(CustomerService::class, 'customers_id', 'id');
     }
 }

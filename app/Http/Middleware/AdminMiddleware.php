@@ -76,6 +76,14 @@ class AdminMiddleware
                     $classname = "App\\Models\\CustomerService";
                     $method = "getModule";
                     break;
+                case 'customer-pwspg-app':
+                    $classname = "App\\Models\\CustomerService";
+                    $method = "getModule";
+                    break;
+                case 'totalpayapp':
+                    $classname = "App\\Models\\CustomerTotalPayApp";
+                    $method = "getModule";
+                    break;
                 default:
                     $classname = "App\\Models\\" . ucfirst($singularSegment);
                     $method = "getModule";

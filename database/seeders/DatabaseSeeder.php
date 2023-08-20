@@ -74,5 +74,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UomsTableSeeder::class);
         $this->call(PermissionsTableSeeder::class);
         $this->call(UserHasRolesTableSeeder::class);
+        $this->call(ApiOauthUsersTableSeeder::class);
     }
 }

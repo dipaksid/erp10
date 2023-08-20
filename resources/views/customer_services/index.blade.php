@@ -43,7 +43,7 @@
                             <td class="text-center col-2">
                                 <div class="d-flex">
                                     @can('EDIT CUSTOMER SERVICE')
-                                        <a href="{{ action('App\Http\Controllers\CustomerServicesController@edit',$rservice->id) }} ? searchvalue={{ ((isset($input['searchvalue'])) ? $input['searchvalue'] : '') }}&page={{ ((isset($input['page']))?$input['page']:'') }}"  class="btn btn-primary">
+                                        <a href="{{ action('App\Http\Controllers\CustomerServicesController@edit',$rservice->id) }}?searchvalue={{ ((isset($input['searchvalue'])) ? $input['searchvalue'] : '') }}&page={{ ((isset($input['page']))?$input['page']:'') }}"  class="btn btn-primary">
                                             Modify
                                         </a>&nbsp;
                                     @endcan
