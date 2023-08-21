@@ -11,6 +11,7 @@ use App\Models\CustomerService;
 use App\Models\Customer;
 use App\Models\customerGroupsCustomer;
 use App\Serialization;
+use App\Services\DataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
@@ -19,6 +20,18 @@ use Illuminate\Support\Facades\File;
 
 class CustomerGroupsController extends Controller
 {
+
+    const ITEM_PER_PAGES = 15;
+
+    /**
+     * Constructor for the class.
+     *
+     * @param App\Services\DataService $dataService An instance of the DataService class used for data operations.
+     */
+    public function __construct(DataService $dataService)
+    {
+        $this->dataService = $dataService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -45,7 +58,9 @@ class CustomerGroupsController extends Controller
             'companylist' => CompanySetting::get()
         ];
 
-        return view('customer_groups.create', compact('data'));
+        $customers = $this->dataService->fetchCustomers(request());
+
+        return view('customer_groups.create', compact('data', 'customers'));
     }
 
     /**
@@ -299,8 +314,9 @@ class CustomerGroupsController extends Controller
         $categorylist = CustomerCategory::get();
         $companylist = CompanySetting::get();
         $input = $request->all();
+        $customers = $this->dataService->fetchCustomers(request());
 
-        return view('customer_groups.edit', compact('customer_group', 'groupdetail' , 'categorylist', 'input', 'companylist'));
+        return view('customer_groups.edit', compact('customer_group', 'groupdetail' , 'categorylist', 'input', 'companylist', 'customers'));
     }
 
     /**

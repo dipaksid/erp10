@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\CustomerService;
 use App\Models\CustomerCategory;
+use App\Models\UserDetail;
+use App\Services\DataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +14,10 @@ use Illuminate\Support\Facades\DB;
 class CustomerServicesController extends Controller
 {
     const SERVICES_PER_PAGE = 15;
+    public function __construct(DataService $dataService)
+    {
+        $this->dataService = $dataService;
+    }
 
     /**
      * Display a listing of customer services.
@@ -35,7 +41,9 @@ class CustomerServicesController extends Controller
      */
     public function create()
     {
-        return view('customer_services.create');
+        $customers = $this->dataService->fetchCustomers($request);
+
+        return view('customer_services.create', compact('customers'));
     }
 
     /**
@@ -101,8 +109,9 @@ class CustomerServicesController extends Controller
             $file_path = "{$companyCfgPath}/{$rcategory->categorycode}_TEMP.CFG";
             @unlink($file_path);
         }
+        $customers = $this->dataService->fetchCustomers($request);
 
-        return view('customer_services.edit', compact('customer', 'serviceByCategory', 'id', 'categories', 'input'));
+        return view('customer_services.edit', compact('customer', 'serviceByCategory', 'id', 'categories', 'input', 'customers'));
     }
 
     /**
@@ -144,20 +153,45 @@ class CustomerServicesController extends Controller
             }
         }
         // Update API Live OAuth user if exists
-        $apiliveuser = ApiLiveOauthUser::where("serviceid", $id)->first();
-        if ($apiliveuser) {
-            $arr_post = [
-                "mode" => "edit",
-                "active" => $service->active,
-                "type" => "customer",
-                "id" => $apiliveuser->id,
-                "updated_at" => $apiliveuser->updated_at,
-            ];
-            $this->submitCompUser($arr_post);
-        }
+//        $apiliveuser = ApiLiveOauthUser::where("serviceid", $id)->first();
+//        if ($apiliveuser) {
+//            $arr_post = [
+//                "mode" => "edit",
+//                "active" => $service->active,
+//                "type" => "customer",
+//                "id" => $apiliveuser->id,
+//                "updated_at" => $apiliveuser->updated_at,
+//            ];
+//            $this->submitCompUser($arr_post);
+//        }
 
         return ["msg" => "Customer Services Updated!"];
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $service = CustomerService::find($id);
+
+        if (!$service) {
+            return response()->json(['error' => 'Service not found'], 404);
+        }
+
+        $service->delete();
+
+//        $apiliveuser = ApiLiveOauthUser::where("serviceid", $id)->first();
+//        if ($apiliveuser) {
+//            $apiliveuser->delete();
+//        }
+
+        return response()->json(['message' => 'Customer Service deleted successfully']);
+    }
+
 
     public function agentlist(Request $request)
     {
@@ -178,5 +212,80 @@ class CustomerServicesController extends Controller
         }
 
         return $arr_return;
+    }
+
+    private function submitCompUser($arr_post)
+    {
+        $tokenUrl = "https://liveupdate.brightwin.com/liveapi/TOKEN";
+        $updateUrl = "https://liveupdate.brightwin.com/liveapi/UPDATECOMP";
+
+        $tokenData = [
+            "username" => "bwerp",
+            "password" => "TgG234hgbJH54HB344gbHfWgv",
+            "client_id" => "BWERP",
+            "client_secret" => "EojnU33J2J90MOJ9o340",
+            "grant_type" => "password"
+        ];
+
+        // Request token
+        $tokenResponse = $this->performCurlRequest($tokenUrl, $tokenData);
+
+        if ($tokenResponse === false) {
+            // Handle error
+            return;
+        }
+
+        $tokenData = json_decode($tokenResponse, true);
+        $arr_post["access_token"] = $tokenData["access_token"];
+
+        // Submit data
+        $updateResponse = $this->performCurlRequest($updateUrl, $arr_post);
+
+        if ($updateResponse === false) {
+            // Handle error
+            return;
+        }
+
+        // Process $updateResponse if needed
+
+        // Cleanup
+        unset($arr_post);
+    }
+
+    private function performCurlRequest($url, $data)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => 1,
+            CURLOPT_HEADER => 0,
+            CURLOPT_URL => $url,
+            CURLOPT_POSTFIELDS => http_build_query($data),
+            CURLOPT_CONNECTTIMEOUT => 3600,
+            CURLOPT_TIMEOUT => 3600,
+            CURLOPT_SSL_VERIFYHOST => 0
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        return $response;
+    }
+
+    public function updatecfgfile(){
+        $obj_serial = new Serialization();
+        $custcatg = CustomerCategory::find($request->input('categoryid'));
+        $cust = Customer::find($request->input('customerid'));
+        $file_path=public_path()."/cfg/".$cust->companycode."/".$custcatg->categorycode.".CFG";
+        $arr_return = $obj_serial->New_DecP($file_path, "", "", "", "", "", "", "", "", "", "");
+        $m_fac = "0000000000"; # not in use
+        $mpas = "2";
+        $Ra1 = trim($obj_serial->Irand(10,99));
+        $Rb1 = trim($obj_serial->Irand(10,99));
+        $Rc1 = trim($obj_serial->Irand(10,99));
+        //var_dump($arr_return);
+        //echo "<br><br><br><br>";
+        $arr_return = $obj_serial->New_EncP($arr_return["M_Pri"].$arr_return["M_Sec"].$arr_return["M_Tet"].$arr_return["M_Frt"].$arr_return["M_Sth"], $custcatg->categorycode, $arr_return["M_Exp_Dat"], $arr_return["M_Chk_Ser"], $mpas, $m_fac, $arr_return["M_Act_Pass"], $file_path, $Ra1, $Rb1, $Rc1,$service->soft_license);
     }
 }

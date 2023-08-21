@@ -1,12 +1,9 @@
 @extends('layouts.app')
 
-<<<<<<< Updated upstream
 @section('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link href="{{ asset('js/select2/dist/css/select2.min.css') }}" rel="stylesheet">
 @endsection
 
-=======
->>>>>>> Stashed changes
 @section('content')
     <div class="container-fluid">
         <div class="container">
@@ -18,14 +15,9 @@
             @include('partials/messages')
 
             <form id="groupform" method="post" action="{{ action('App\Http\Controllers\CustomerGroupsController@update', $customer_group->id) }}" >
-<<<<<<< Updated upstream
-                {{csrf_field()}}
-=======
-
                 @csrf
                 @method('PUT')
 
->>>>>>> Stashed changes
                 <input name="_method" type="hidden" value="PATCH">
                 <input name="lastrunno" type="hidden" value="{{(($customer_group->category)?$customer_group->category->lastrunno:"")}}">
                 <input name="categorycode" type="hidden" value="{{(($customer_group->category)?$customer_group->category->categorycode:"")}}">
@@ -80,7 +72,8 @@
                         <label for="title">Customers:</label>
                         <select class="form-control customerAutoSelect enterseq overflow-ellipsis" seq="6" name="customerid"
                                 placeholder="Customer search"
-                                data-url="{{ action('App\Http\Controllers\CustomerGroupsController@customerList') }}"></select>
+                                autocomplete="off">
+                        </select>
                     </div>
                     <div class="col-4">
                         <br>
@@ -129,12 +122,6 @@
                                     </div>
                                 </th>
                                 <th>
-<<<<<<< Updated upstream
-                                    <input type="text" class="form-control customerAutoSelect2"  id="autocomplete-input" placeholder="Search for a customer...">
-
-=======
-                                    {{--<input type="text" class="form-control customerAutoSelect2"  id="autocomplete-input" placeholder="Search for a customer...">--}}
->>>>>>> Stashed changes
                                     <button type="button" class="btn btn-primary" id="btnSaveAllServ">Save</button>
                                 </th>
                                 <th></th>
@@ -210,77 +197,7 @@
 
 @section('scripts')
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-<<<<<<< Updated upstream
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script>
-        // var $j = jQuery.noConflict();
-        // $j(document).ready(function() {
-        //     // $("#autocomplete-input").autocomplete({
-        //     //     source: ["Apple", "Banana", "Baan", "Cherry", "Date", "Fig", "Grape", "Lemon"],
-        //     //     minLength: 2 // Minimum characters before autocomplete suggestions appear
-        //     // });
-        //     $j("#autocomplete-input").autocomplete({
-        //         source: function(request, response) {
-        //             $j.ajax({
-        //                 url: "/customer-groups/customerlist",
-        //                 dataType: "json",
-        //                 data: {
-        //                     term: request.term
-        //                 },
-        //                 success: function(data) {
-        //                     response(data);
-        //                 }
-        //             });
-        //         },
-        //         minLength: 2 // Minimum characters before autocomplete suggestions appear
-        //     });
-        // });
-        var $j = jQuery.noConflict();
-        $j(document).ready(function() {
-            // $("#autocomplete-input").autocomplete({
-            //     source: ["Apple", "Banana", "Baan", "Cherry", "Date", "Fig", "Grape", "Lemon"],
-            //     minLength: 2 // Minimum characters before autocomplete suggestions appear
-            // });
-            $j('#autocomplete-input').autocomplete({
-                source: "{{ route('customer-groups.customerlist') }}",
-                display: ['name'], // Adjust this based on your data structure
-                templates: {
-                    suggestion: function (suggestion) {
-                        return suggestion.name; // Adjust this based on your data structure
-                    }
-                },
-                minLength:2,
-                events: {
-                    searchPost: function (resultFromServer) {
-                        setTimeout(function(){
-                            if(!$('#autocomplete-input').next().find('a').eq(0).hasClass("disabled")){
-                                $('#autocomplete-input').next().find('a').eq(0).addClass("active");
-                            }
-                        },100)
-                    return resultFromServer;
-                }
-            }
-
-            });
-            // $j("#autocomplete-input").autocomplete({
-            //     source: function(request, response) {
-            //         $j.ajax({
-            //             url: "/customer-groups/customerlist",
-            //             dataType: "json",
-            //             data: {
-            //                 term: request.term
-            //             },
-            //             success: function(data) {
-            //                 response(data);
-            //             }
-            //         });
-            //     },
-            //     minLength: 2 // Minimum characters before autocomplete suggestions appear
-            // });
-        });
-=======
-    <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
-
+    <script src="{{ asset('js/select2/dist/js/select2.min.js') }}"></script>
 
     <script type="text/javascript">
         var $j = jQuery.noConflict();
@@ -382,7 +299,7 @@
             $j("select[name='category_id']").bind("change",function(evt){
                 data="categoryid="+$j(this).val();
                 $j.ajax({
-                    url:"{{ route('customer-groups.categorylist') }}",
+                    url:"{{action('App\Http\Controllers\CustomerGroupsController@categorylist')}}",
                     data: data,
                     dataType: "json"
                 }).done(function( data ) {
@@ -390,18 +307,39 @@
                     $j("input[name='categorycode']").val(data.categorycode);
                 })
             })
-            $j('.customerAutoSelect').autoComplete({minLength:2,
-                events: {
-                    searchPost: function (resultFromServer) {
-                        setTimeout(function(){
-                            if(!$j('.customerAutoSelect').next().find('a').eq(0).hasClass("disabled")){
-                                $j('.customerAutoSelect').next().find('a').eq(0).addClass("active");
-                            }
-                        },100)
-                        return resultFromServer;
-                    }
+            // $j('.customerAutoSelect').autoComplete({minLength:2,
+            //     events: {
+            //         searchPost: function (resultFromServer) {
+            //             setTimeout(function(){
+            //                 if(!$j('.customerAutoSelect').next().find('a').eq(0).hasClass("disabled")){
+            //                     $j('.customerAutoSelect').next().find('a').eq(0).addClass("active");
+            //                 }
+            //             },100)
+            //             return resultFromServer;
+            //         }
+            //     }
+            // });
+            const customers = @json($customers);
+            $j('.customerAutoSelect').select2({
+                data: customers,
+                placeholder: 'Select a customer',
+                allowClear: true, // Adds a clear button
+                multiple: false   // Ensures single select behavior
+            });
+
+            // Event listener for the change event of the select element
+            $j('.customerAutoSelect').on('change', function () {
+                const selectedCustomerId = $j(this).val();
+
+                // Replace 'customers' with the actual data source containing the customer details
+                const datum = customers.find(customer => customer.id === selectedCustomerId);
+
+                if (datum) {
+
                 }
             });
+
+
             $j('.customerAutoSelect').keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
@@ -414,10 +352,11 @@
                 }
             })
             $j('.customerAutoSelect').on('change', function (e, datum) {
+                const selectedCustomerId = $j(this).val();
                 if($j("input[name='customerid']").val()!=""){
-                    var data="categoryid="+$j("select[name='category_id']").val()+"&customerid="+$j("input[name='customerid']").val();
+                    var data="categoryid="+$j("select[name='category_id']").val()+"&customerid="+selectedCustomerId;
                     $j.ajax({
-                        url: "{{action('App\Http\Controllers\CustomerGroupsController@custservice')}}",
+                        url: "{{ route('customer-groups.custservice') }}",
                         type:'get',
                         dataType: 'json',
                         data:data,
@@ -491,16 +430,16 @@
                     return false;
                 });
             })
-            $j('.agentAutoSelect').autoComplete({minLength:2,
-                events: {
-                    searchPost: function (resultFromServer) {
-                        setTimeout(function(){
-                            $j('.agentAutoSelect').next().find('a').eq(0).addClass("active");
-                        },100)
-                        return resultFromServer;
-                    }
-                }
-            });
+            // $j('.agentAutoSelect').autoComplete({minLength:2,
+            //     events: {
+            //         searchPost: function (resultFromServer) {
+            //             setTimeout(function(){
+            //                 $j('.agentAutoSelect').next().find('a').eq(0).addClass("active");
+            //             },100)
+            //             return resultFromServer;
+            //         }
+            //     }
+            // });
             $j('.agentAutoSelect').keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
@@ -643,6 +582,26 @@
                     return false;
                 }
             })
+            /*$j("input[name='inc_hw']").keydown(function(event){
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if(keycode==13){
+                    $j("label[for='pay_before']").focus();
+                    return false;
+                } else if(keycode==38){
+                    $j("select[name='amount']").select();
+                    return false;
+                }
+            })
+            $j("input[name='pay_before']").keydown(function(event){
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if(keycode==13){
+                    $j("input[name='start_date']").select();
+                    return false;
+                } else if(keycode==38){
+                    $j("label[for='inc_hw']").focus();
+                    return false;
+                }
+            })*/
             $j("input[name='start_date']").keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
@@ -797,7 +756,7 @@
             if(id!=""){
                 var data="serviceid="+id;
                 $j.ajax({
-                    url: "{{action('App\Http\Controllers\CustomerGroupsController@custservice')}}",
+                    url: "route('customer-groups.custservice')",
                     type:'get',
                     dataType: 'json',
                     data:data,
@@ -1092,6 +1051,5 @@
         function js_print_page(){
             window.open("{{url('/')}}/customergroup/printpdffile/{{$customer_group->id}}"+"?"+Math.random().toString(36).substring(7));
         }
->>>>>>> Stashed changes
     </script>
 @endsection

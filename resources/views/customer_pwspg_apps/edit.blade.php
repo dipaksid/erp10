@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('styles')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
+@endsection
+
 @section('content')
     <div class="container-fluid">
         <div class="container">
@@ -69,9 +73,13 @@
                 <div class="row form-group">
                     <div class="col-6">
                         <label for="title">Customers:</label>
+{{--                        <select class="form-control customerAutoSelect enterseq overflow-ellipsis" seq="8" name="customerid"--}}
+{{--                                placeholder="Customer search"--}}
+{{--                                autocomplete="off">--}}
+
                         <select class="form-control customerAutoSelect enterseq overflow-ellipsis" seq="8" name="customerid"
                                 placeholder="Customer search"
-                                autocomplete="off">
+                                autocomplete="off"></select>
                         </select>
                     </div>
                     <div class="col-4">
@@ -141,11 +149,16 @@
 
 @section('scripts')
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-autocomplete.min.js') }}"></script>
+
+    <!-- Add these lines after your other JavaScript includes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     <script type="text/javascript">
         var bsubmit = false;
-        if ($("#pwspgappform").length > 0) {
-            $("#pwspgappform").validate({
+        var $j = jQuery.noConflict();
+
+        if ($j("#pwspgappform").length > 0) {
+            $j("#pwspgappform").validate({
                 rules: {
                     username: {
                         required: true,
@@ -183,88 +196,88 @@
                     }
                 },
             })
-            $("#pwspgappform").submit(function(evt){
-                if($("input[name='cust[]']").length==0) {
+            $j("#pwspgappform").submit(function(evt){
+                if($j("input[name='cust[]']").length==0) {
                     alert("Customer are compulsory!");
-                    $(".customerAutoSelect").focus();
+                    $j(".customerAutoSelect").focus();
                     return false;
                 }
             })
         }
-        $(document).ready(function(evt){
-            $("#username").blur(function(evt){
-                if($(this).val().length>0){
-                    for(var ss=0; ss<$(this).val().length; ss++){
-                        if(!js_valid_alpha($(this).val()[ss])){
-                            $(this).val('{{$customerpwspgapp->username}}');
-                            $(this).select();
+        $j(document).ready(function(evt){
+            $j("#username").blur(function(evt){
+                if($j(this).val().length>0){
+                    for(var ss=0; ss<$j(this).val().length; ss++){
+                        if(!js_valid_alpha($j(this).val()[ss])){
+                            $j(this).val('{{$customerpwspgapp->username}}');
+                            $j(this).select();
                             return false;
                         }
                     }
                 }
                 return false;
             })
-            $(".enterseq").each(function(i){
-                $(this).keydown(function(event){
+            $j(".enterseq").each(function(i){
+                $j(this).keydown(function(event){
                     var keycode = (event.keyCode ? event.keyCode : event.which);
                     switch(keycode) {
                         case 13:
-                            if($(this).is("input") && $(this).attr("name")=="username"){
-                                for(var ss=0; ss<$(this).val().length; ss++){
-                                    if(!js_valid_alpha($(this).val()[ss])){
-                                        $(this).val('');
-                                        $(this).select();
+                            if($j(this).is("input") && $j(this).attr("name")=="username"){
+                                for(var ss=0; ss<$j(this).val().length; ss++){
+                                    if(!js_valid_alpha($j(this).val()[ss])){
+                                        $j(this).val('');
+                                        $j(this).select();
                                         return false;
                                     }
                                 }
-                                $(this).val($(this).val().toUpperCase());
-                            } else if($(this).attr("name")=="tapiurl"){
-                                js_add_customer($("input[name='customerid']").val(),$('.customerAutoSelect').val());
-                                $("#vpnaddress").html('')
+                                $j(this).val($j(this).val().toUpperCase());
+                            } else if($j(this).attr("name")=="tapiurl"){
+                                js_add_customer($j("input[name='customerid']").val(),$j('.customerAutoSelect').val());
+                                $j("#vpnaddress").html('')
                                 return false;
-                            } else if($(this).is("input") && $(this).attr("name")!="password") {
-                                $(this).val($(this).val().toUpperCase());
-                            } else if($(this).is("button[type='submit']")) {
-                                $(this).click();
+                            } else if($j(this).is("input") && $j(this).attr("name")!="password") {
+                                $j(this).val($j(this).val().toUpperCase());
+                            } else if($j(this).is("button[type='submit']")) {
+                                $j(this).click();
                                 return false;
                             }
-                            if($(this).attr("name")=="first_name"){
-                                $(".customerAutoSelect").select();
+                            if($j(this).attr("name")=="first_name"){
+                                $j(".customerAutoSelect").select();
                             } else {
-                                var dd = parseInt($(this).attr("seq"),10)+1;
-                                if( $(".enterseq").filter("[seq='"+dd+"']").length>0){
-                                    if($(".enterseq").filter("[seq='"+dd+"']").is("input[type='text']")) {
-                                        $("input[type='text']").filter("[seq='"+dd+"']").select();
-                                    } else if($(".enterseq").filter("[seq='"+dd+"']").is("input[type='number']")) {
-                                        $("input[type='number']").filter("[seq='"+dd+"']").select();
-                                    } else if($(".enterseq").filter("[seq='"+dd+"']").is("select")){
-                                        $("select").filter("[seq='"+dd+"']").focus();
-                                    } else if($(".enterseq").filter("[seq='"+dd+"']").is("checkbox")){
-                                        $("checkbox").filter("[seq='"+dd+"']").select();
-                                    } else if($(".enterseq").filter("[seq='"+dd+"']").is("button")){
-                                        $("button").filter("[seq='"+dd+"']").focus();
-                                    } else if($(".enterseq").filter("[seq='"+dd+"']").is("label")){
-                                        $("label").filter("[seq='"+dd+"']").focus();
-                                    } else if($(".enterseq").filter("[seq='"+dd+"']").is("a")){
-                                        $("a").filter("[seq='"+dd+"']").focus();
+                                var dd = parseInt($j(this).attr("seq"),10)+1;
+                                if( $j(".enterseq").filter("[seq='"+dd+"']").length>0){
+                                    if($j(".enterseq").filter("[seq='"+dd+"']").is("input[type='text']")) {
+                                        $j("input[type='text']").filter("[seq='"+dd+"']").select();
+                                    } else if($j(".enterseq").filter("[seq='"+dd+"']").is("input[type='number']")) {
+                                        $j("input[type='number']").filter("[seq='"+dd+"']").select();
+                                    } else if($j(".enterseq").filter("[seq='"+dd+"']").is("select")){
+                                        $j("select").filter("[seq='"+dd+"']").focus();
+                                    } else if($j(".enterseq").filter("[seq='"+dd+"']").is("checkbox")){
+                                        $j("checkbox").filter("[seq='"+dd+"']").select();
+                                    } else if($j(".enterseq").filter("[seq='"+dd+"']").is("button")){
+                                        $j("button").filter("[seq='"+dd+"']").focus();
+                                    } else if($j(".enterseq").filter("[seq='"+dd+"']").is("label")){
+                                        $j("label").filter("[seq='"+dd+"']").focus();
+                                    } else if($j(".enterseq").filter("[seq='"+dd+"']").is("a")){
+                                        $j("a").filter("[seq='"+dd+"']").focus();
                                     }
                                 }
                             }
                             return false;
                             break;
                         case 38:
-                            var ded = ($(this).is("input[type='checkbox']"))?2:1;
-                            var dd = (parseInt($(this).attr("seq"),10)>0)?(parseInt($(this).attr("seq"),10)-ded):parseInt($(this).attr("seq"),10);
+                            var ded = ($j(this).is("input[type='checkbox']"))?2:1;
+                            var dd = (parseInt($j(this).attr("seq"),10)>0)?(parseInt($j(this).attr("seq"),10)-ded):parseInt($j(this).attr("seq"),10);
 
                             while(dd>0){
-                                if($("input[type='text']").filter("[seq='"+dd+"']").length>0){
-                                    $("input[type='text']").filter("[seq='"+dd+"']").select();
+                                if($j("input[type='text']").filter("[seq='"+dd+"']").length>0){
+                                    $j("input[type='text']").filter("[seq='"+dd+"']").select();
                                     dd=0;
-                                } else if($("select").filter("[seq='"+dd+"']").length>0){
-                                    $("select").filter("[seq='"+dd+"']").focus();
+                                } else if($j("select").filter("[seq='"+dd+"']").length>0){
+                                    $j("select").filter("[seq='"+dd+"']").focus();
                                     dd=0;
-                                } else if($(".enterseq").filter("[seq='"+dd+"']").is("label")){
-                                    $("label").filter("[seq='"+dd+"']").focus();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']").is("label")){
+                                    $j("label").filter("[seq='"+dd+"']").focus();
                                     dd=0;
                                 }
                                 dd--;
@@ -272,60 +285,69 @@
                     }
                 })
             })
-            if($(".enterseq").filter("[seq='1']").is("input")) {
-                $("input[type='text']").filter("[seq='1']").select();
-            } else if($(".enterseq").filter("[seq='1']").is("select")){
-                $("select").filter("[seq='1']").focus();
-            } else if($(".enterseq").filter("[seq='1']").is("checkbox")){
-                $("checkbox").filter("[seq='1']").select();
-            } else if($(".enterseq").filter("[seq='1']").is("button")){
-                $("button").filter("[seq='1']").focus();
+            if($j(".enterseq").filter("[seq='1']").is("input")) {
+                $j("input[type='text']").filter("[seq='1']").select();
+            } else if($j(".enterseq").filter("[seq='1']").is("select")){
+                $j("select").filter("[seq='1']").focus();
+            } else if($j(".enterseq").filter("[seq='1']").is("checkbox")){
+                $j("checkbox").filter("[seq='1']").select();
+            } else if($j(".enterseq").filter("[seq='1']").is("button")){
+                $j("button").filter("[seq='1']").focus();
             }
-            $('.customerAutoSelect').autoComplete({minLength:2,
-                events: {
-                    searchPost: function (resultFromServer) {
-                        setTimeout(function(){
-                            $('.customerAutoSelect').next().find('a').eq(0).addClass("active");
-                        },100)
-                        return resultFromServer;
-                    }
-                }
+            // $j('.customerAutoSelect').autoComplete({minLength:2,
+            //     events: {
+            //         searchPost: function (resultFromServer) {
+            //             setTimeout(function(){
+            //                 $j('.customerAutoSelect').next().find('a').eq(0).addClass("active");
+            //             },100)
+            //             return resultFromServer;
+            //         }
+            //     }
+            // });
+
+            const customers = @json($customers);
+            $j('.customerAutoSelect').select2({
+                data: customers,
+                placeholder: 'Select a customer',
+                allowClear: true, // Adds a clear button
+                multiple: false   // Ensures single select behavior
             });
-            $('.customerAutoSelect').keydown(function(event){
+
+            $j('.customerAutoSelect').keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
                     return false;
                 }
             })
-            $('.customerAutoSelect').on('change', function (e, datum) {
+            $j('.customerAutoSelect').on('change', function (e, datum) {
                 setTimeout(function(){
-                    $('#tapiurl').select();
+                    $j('#tapiurl').select();
                 },300);
                 return false;
             });
-            $('.customerAutoSelect').on('autocomplete.select', function (e, datum) {
-                $('.customerAutoSelect').parent().find("div.dropdown-menu").empty();
-                $("#vpnaddress").html(datum.vpnaddress);
-                $(this).change();
+            $j('.customerAutoSelect').on('autocomplete.select', function (e, datum) {
+                $j('.customerAutoSelect').parent().find("div.dropdown-menu").empty();
+                $j("#vpnaddress").html(datum.vpnaddress);
+                $j(this).change();
                 return false;
             })
         })
 
         function js_add_customer(id,name){
 
-            var apiurl = "http://"+$("#vpnaddress").html()+"/"+$("input[name='tapiurl']").val()+"/pgapp";
+            var apiurl = "http://"+$j("#vpnaddress").html()+"/"+$j("input[name='tapiurl']").val()+"/pgapp";
             if(name!="" && id!=""){
-                if( $("table#tblcust tbody tr.empty").length>0){
-                    $("table#tblcust tbody tr.empty").remove();
+                if( $j("table#tblcust tbody tr.empty").length>0){
+                    $j("table#tblcust tbody tr.empty").remove();
                 }
                 var bcheck=false;
-                $("input[name='cust[]']").each(function(i){
-                    if($(this).val()==id){
+                $j("input[name='cust[]']").each(function(i){
+                    if($j(this).val()==id){
                         bcheck=true;
                     }
                 })
                 if(!bcheck) {
-                    var ncount=$("table#tblcust tbody tr").length;
+                    var ncount=$j("table#tblcust tbody tr").length;
                     var trrow="<tr>";
                     trrow+="<td scope=\"row\"><input type='hidden' name='cust[]' value='"+id+"'><span>"+(ncount+1)+"</span></td>";
                     trrow+="<td>"+name+"</td>";
@@ -334,29 +356,29 @@
                     trrow+="<button class=\"btn btn-danger\" type=\"button\" onclick=\"js_delete(this);\">Delete</button>";
                     trrow+="</td>";
                     trrow+="</tr>";
-                    $("table#tblcust tbody").append(trrow);
+                    $j("table#tblcust tbody").append(trrow);
                 } else {
                     alert("Duplicated!");
                 }
-                $("#vpnaddress").html('');
-                $(".customerAutoSelect").val('');
-                $("input[name='customerid']").val('');
-                $("#tapiurl").val("pws");
-                $(".customerAutoSelect").focus();
+                $j("#vpnaddress").html('');
+                $j(".customerAutoSelect").val('');
+                $j("input[name='customerid']").val('');
+                $j("#tapiurl").val("pws");
+                $j(".customerAutoSelect").focus();
             }
             return false;
         }
         function js_delete(obj){
-            $(obj).parent().parent().remove();
-            if($("table#tblcust tbody tr").length>0){
-                $("table#tblcust tbody tr").each(function(i){
-                    $(this).find("td").eq(0).find('span').html((i+1));
+            $j(obj).parent().parent().remove();
+            if($j("table#tblcust tbody tr").length>0){
+                $j("table#tblcust tbody tr").each(function(i){
+                    $j(this).find("td").eq(0).find('span').html((i+1));
                 })
             } else {
                 var trrow = "<tr class=\"empty\">";
                 trrow += "<td class=\"text-center\" colspan=\"4\">No Record Found</td>";
                 trrow += "</tr>";
-                $("table#tblcust tbody").append(trrow);
+                $j("table#tblcust tbody").append(trrow);
             }
             return false;
         }

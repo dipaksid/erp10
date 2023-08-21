@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('styles')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
+@endsection
+
 @section('content')
     <div class="container-fluid">
         <div>
@@ -272,15 +276,18 @@
 
 @section('scripts')
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-autocomplete.min.js') }}"></script>
+    <!-- Add these lines after your other JavaScript includes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     <script type="text/javascript">
+        var $j = jQuery.noConflict();
         var bsubmit = false;
-        if ($("#serviceform").length > 0) {
-            $("#serviceform").submit(function(evt){
+        if ($j("#serviceform").length > 0) {
+            $j("#serviceform").submit(function(evt){
                 if(!bsubmit){
                     return false;
                 }
-                $("#serviceform").validate({
+                $j("#serviceform").validate({
                     rules: {
                         groupcode: {
                             required: true,
@@ -302,120 +309,120 @@
                         }
                     },
                 })
-                $("input[type='text']").each(function(i){
-                    $(this).val($(this).val().toUpperCase());
+                $j("input[type='text']").each(function(i){
+                    $j(this).val($j(this).val().toUpperCase());
                 })
             })
         }
-        $(document).ready(function(evt){
-            $(".enterseq").each(function(i){
-                $(this).keydown(function(event){
+        $j(document).ready(function(evt){
+            $j(".enterseq").each(function(i){
+                $j(this).keydown(function(event){
                     var keycode = (event.keyCode ? event.keyCode : event.which);
                     switch(keycode) {
                         case 13:
-                            if($(this).is("input")) {
-                                $(this).val($(this).val().toUpperCase());
-                            } else if($(this).is("button[type='submit']")) {
+                            if($j(this).is("input")) {
+                                $j(this).val($j(this).val().toUpperCase());
+                            } else if($j(this).is("button[type='submit']")) {
                                 bsubmit=true;
-                                $(this).click();
+                                $j(this).click();
                                 return false;
-                            } else if($(this).is("a")) {
-                                $(this).click();
+                            } else if($j(this).is("a")) {
+                                $j(this).click();
                                 return false;
                             }
-                            var dd = parseInt($(this).attr("seq"),10)+1;
-                            if( $(".enterseq").filter("[seq='"+dd+"']:not(:disabled)").length>0){
-                                if($(".enterseq").filter("[seq='"+dd+"']").is("input[type='text']")) {
-                                    $("input[type='text']").filter("[seq='"+dd+"']").select();
-                                } else if($(".enterseq").filter("[seq='"+dd+"']").is("input[type='number']")) {
-                                    $("input[type='number']").filter("[seq='"+dd+"']").select();
-                                } else if($(".enterseq").filter("[seq='"+dd+"']").is("select")){
-                                    $("select").filter("[seq='"+dd+"']").focus();
-                                } else if($(".enterseq").filter("[seq='"+dd+"']").is("checkbox")){
-                                    $("checkbox").filter("[seq='"+dd+"']").select();
-                                } else if($(".enterseq").filter("[seq='"+dd+"']").is("button")){
-                                    $("button").filter("[seq='"+dd+"']").focus();
-                                } else if($(".enterseq").filter("[seq='"+dd+"']").is("label")){
-                                    $("label").filter("[seq='"+dd+"']").focus();
-                                } else if($(".enterseq").filter("[seq='"+dd+"']").is("a")){
-                                    $("a").filter("[seq='"+dd+"']").focus();
+                            var dd = parseInt($j(this).attr("seq"),10)+1;
+                            if( $j(".enterseq").filter("[seq='"+dd+"']:not(:disabled)").length>0){
+                                if($j(".enterseq").filter("[seq='"+dd+"']").is("input[type='text']")) {
+                                    $j("input[type='text']").filter("[seq='"+dd+"']").select();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']").is("input[type='number']")) {
+                                    $j("input[type='number']").filter("[seq='"+dd+"']").select();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']").is("select")){
+                                    $j("select").filter("[seq='"+dd+"']").focus();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']").is("checkbox")){
+                                    $j("checkbox").filter("[seq='"+dd+"']").select();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']").is("button")){
+                                    $j("button").filter("[seq='"+dd+"']").focus();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']").is("label")){
+                                    $j("label").filter("[seq='"+dd+"']").focus();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']").is("a")){
+                                    $j("a").filter("[seq='"+dd+"']").focus();
                                 }
                             } else {
                                 ww=2;
-                                dd =  parseInt($(this).attr("seq"),10)+ww;
-                                while($(".enterseq").filter("[seq='"+dd+"']:not(:disabled)").length==0){
+                                dd =  parseInt($j(this).attr("seq"),10)+ww;
+                                while($j(".enterseq").filter("[seq='"+dd+"']:not(:disabled)").length==0){
                                     ww++;
-                                    dd =  parseInt($(this).attr("seq"),10)+ww;
+                                    dd =  parseInt($j(this).attr("seq"),10)+ww;
                                 }
-                                if($(".enterseq").filter("[seq='"+dd+"']").is("input[type='text']")) {
-                                    $("input[type='text']").filter("[seq='"+dd+"']").select();
-                                } else if($(".enterseq").filter("[seq='"+dd+"']").is("input[type='number']")) {
-                                    $("input[type='number']").filter("[seq='"+dd+"']").select();
-                                } else if($(".enterseq").filter("[seq='"+dd+"']").is("select")){
-                                    $("select").filter("[seq='"+dd+"']").focus();
-                                } else if($(".enterseq").filter("[seq='"+dd+"']").is("checkbox")){
-                                    $("checkbox").filter("[seq='"+dd+"']").select();
-                                } else if($(".enterseq").filter("[seq='"+dd+"']").is("button")){
-                                    $("button").filter("[seq='"+dd+"']").focus();
-                                } else if($(".enterseq").filter("[seq='"+dd+"']").is("label")){
-                                    $("label").filter("[seq='"+dd+"']").focus();
-                                } else if($(".enterseq").filter("[seq='"+dd+"']").is("a")){
-                                    $("a").filter("[seq='"+dd+"']").focus();
+                                if($j(".enterseq").filter("[seq='"+dd+"']").is("input[type='text']")) {
+                                    $j("input[type='text']").filter("[seq='"+dd+"']").select();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']").is("input[type='number']")) {
+                                    $j("input[type='number']").filter("[seq='"+dd+"']").select();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']").is("select")){
+                                    $j("select").filter("[seq='"+dd+"']").focus();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']").is("checkbox")){
+                                    $j("checkbox").filter("[seq='"+dd+"']").select();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']").is("button")){
+                                    $j("button").filter("[seq='"+dd+"']").focus();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']").is("label")){
+                                    $j("label").filter("[seq='"+dd+"']").focus();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']").is("a")){
+                                    $j("a").filter("[seq='"+dd+"']").focus();
                                 }
                             }
 
-                            if($(this).attr("name").substr(0,11)=="start_date_"){
-                                js_date_format($(this));
-                                if($(this).val()!=""){
-                                    if($("select[name='contract_typ_"+$(this).attr("name").substr(11)+"']").val()=="1") {
-                                        var dt = new Date($(this).val().substr(6,4),(parseInt($(this).val().substr(3,2),10)-1),$(this).val().substr(0,2) );
+                            if($j(this).attr("name").substr(0,11)=="start_date_"){
+                                js_date_format($j(this));
+                                if($j(this).val()!=""){
+                                    if($j("select[name='contract_typ_"+$j(this).attr("name").substr(11)+"']").val()=="1") {
+                                        var dt = new Date($j(this).val().substr(6,4),(parseInt($j(this).val().substr(3,2),10)-1),$j(this).val().substr(0,2) );
                                         var ndt = add_years(dt,1);
-                                        $("input[name='end_date_"+$(this).attr("name").substr(11)+"']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
-                                    } else if($("select[name='contract_typ_"+$(this).attr("name").substr(11)+"']").val()=="2") {
-                                        var dt = new Date($(this).val().substr(6,4),(parseInt($(this).val().substr(3,2),10)-1),$(this).val().substr(0,2) );
+                                        $j("input[name='end_date_"+$j(this).attr("name").substr(11)+"']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
+                                    } else if($j("select[name='contract_typ_"+$j(this).attr("name").substr(11)+"']").val()=="2") {
+                                        var dt = new Date($j(this).val().substr(6,4),(parseInt($j(this).val().substr(3,2),10)-1),$j(this).val().substr(0,2) );
                                         var ndt = add_months(dt,1);
-                                        $("input[name='end_date_"+$(this).attr("name").substr(11)+"']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
-                                    } else if($("select[name='contract_typ_"+$(this).attr("name").substr(11)+"']").val()=="3") {
-                                        var dt = new Date($(this).val().substr(6,4),(parseInt($(this).val().substr(3,2),10)-1),$(this).val().substr(0,2) );
+                                        $j("input[name='end_date_"+$j(this).attr("name").substr(11)+"']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
+                                    } else if($j("select[name='contract_typ_"+$j(this).attr("name").substr(11)+"']").val()=="3") {
+                                        var dt = new Date($j(this).val().substr(6,4),(parseInt($j(this).val().substr(3,2),10)-1),$j(this).val().substr(0,2) );
                                         var ndt = add_months(dt,2);
-                                        $("input[name='end_date_"+$(this).attr("name").substr(11)+"']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
-                                    } else if($("select[name='contract_typ_"+$(this).attr("name").substr(11)+"']").val()=="4") {
-                                        var dt = new Date($(this).val().substr(6,4),(parseInt($(this).val().substr(3,2),10)-1),$(this).val().substr(0,2) );
+                                        $j("input[name='end_date_"+$j(this).attr("name").substr(11)+"']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
+                                    } else if($j("select[name='contract_typ_"+$j(this).attr("name").substr(11)+"']").val()=="4") {
+                                        var dt = new Date($j(this).val().substr(6,4),(parseInt($j(this).val().substr(3,2),10)-1),$j(this).val().substr(0,2) );
                                         var ndt = add_months(dt,6);
-                                        $("input[name='end_date_"+$(this).attr("name").substr(11)+"']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
-                                    } else if($("select[name='contract_typ_"+$(this).attr("name").substr(11)+"']").val()=="5") {
-                                        var dt = new Date($(this).val().substr(6,4),(parseInt($(this).val().substr(3,2),10)-1),$(this).val().substr(0,2) );
+                                        $j("input[name='end_date_"+$j(this).attr("name").substr(11)+"']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
+                                    } else if($j("select[name='contract_typ_"+$j(this).attr("name").substr(11)+"']").val()=="5") {
+                                        var dt = new Date($j(this).val().substr(6,4),(parseInt($j(this).val().substr(3,2),10)-1),$j(this).val().substr(0,2) );
                                         var ndt = add_months(dt,3);
-                                        $("input[name='end_date_"+$(this).attr("name").substr(11)+"']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
+                                        $j("input[name='end_date_"+$j(this).attr("name").substr(11)+"']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
                                     }
                                 }
-                                if($("input[name='pay_before_"+$(this).attr("name").substr(11)+"']").val()=="Y"){
-                                    //var dt = new Date($(this).val().substr(6,4),(parseInt($(this).val().substr(3,2),10)-1),$(this).val().substr(0,2) );
+                                if($j("input[name='pay_before_"+$j(this).attr("name").substr(11)+"']").val()=="Y"){
+                                    //var dt = new Date($j(this).val().substr(6,4),(parseInt($j(this).val().substr(3,2),10)-1),$j(this).val().substr(0,2) );
                                     //var ndt = add_dates(dt,1);
-                                    $("input[name='service_date_"+$(this).attr("name").substr(11)+"']").val($(this).val());
+                                    $j("input[name='service_date_"+$j(this).attr("name").substr(11)+"']").val($j(this).val());
                                 } else {
-                                    var dt = new Date($("input[name='end_date_"+$(this).attr("name").substr(11)+"']").val().substr(6,4),(parseInt($("input[name='end_date_"+$(this).attr("name").substr(11)+"']").val().substr(3,2),10)-1),$("input[name='end_date_"+$(this).attr("name").substr(11)+"']").val().substr(0,2));
+                                    var dt = new Date($j("input[name='end_date_"+$j(this).attr("name").substr(11)+"']").val().substr(6,4),(parseInt($j("input[name='end_date_"+$j(this).attr("name").substr(11)+"']").val().substr(3,2),10)-1),$j("input[name='end_date_"+$j(this).attr("name").substr(11)+"']").val().substr(0,2));
                                     var ndt = add_dates(dt,1);
-                                    $("input[name='service_date_"+$(this).attr("name").substr(11)+"']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
+                                    $j("input[name='service_date_"+$j(this).attr("name").substr(11)+"']").val(ndt.getDate().toString().padStart(2,"0")+"/"+(ndt.getMonth()+1).toString().padStart(2,"0")+"/"+ndt.getFullYear());
                                 }
-                            } else if($(this).attr("name").substr(0,9)=="end_date_" || $(this).attr("name").substr(0,13)=="service_date_"){
-                                js_date_format($(this));
+                            } else if($j(this).attr("name").substr(0,9)=="end_date_" || $j(this).attr("name").substr(0,13)=="service_date_"){
+                                js_date_format($j(this));
                             }
                             return false;
                             break;
                         case 38:
-                            var ded = ($(this).is("input[type='checkbox']"))?2:1;
-                            var dd = (parseInt($(this).attr("seq"),10)>0)?(parseInt($(this).attr("seq"),10)-ded):parseInt($(this).attr("seq"),10);
+                            var ded = ($j(this).is("input[type='checkbox']"))?2:1;
+                            var dd = (parseInt($j(this).attr("seq"),10)>0)?(parseInt($j(this).attr("seq"),10)-ded):parseInt($j(this).attr("seq"),10);
 
                             while(dd>0){
-                                if($("input[type='text']").filter("[seq='"+dd+"']:not(:disabled)").length>0){
-                                    $("input[type='text']").filter("[seq='"+dd+"']:not(:disabled)").select();
+                                if($j("input[type='text']").filter("[seq='"+dd+"']:not(:disabled)").length>0){
+                                    $j("input[type='text']").filter("[seq='"+dd+"']:not(:disabled)").select();
                                     dd=0;
-                                } else if($("select").filter("[seq='"+dd+"']:not(:disabled)").length>0){
-                                    $("select").filter("[seq='"+dd+"']:not(:disabled)").focus();
+                                } else if($j("select").filter("[seq='"+dd+"']:not(:disabled)").length>0){
+                                    $j("select").filter("[seq='"+dd+"']:not(:disabled)").focus();
                                     dd=0;
-                                } else if($(".enterseq").filter("[seq='"+dd+"']:not(:disabled)").is("label")){
-                                    $("label").filter("[seq='"+dd+"']:not(:disabled)").focus();
+                                } else if($j(".enterseq").filter("[seq='"+dd+"']:not(:disabled)").is("label")){
+                                    $j("label").filter("[seq='"+dd+"']:not(:disabled)").focus();
                                     dd=0;
                                 }
                                 dd--;
@@ -423,25 +430,25 @@
                     }
                 })
             })
-            if($(".enterseq").filter("[seq='1']").is("input")) {
-                $("input[type='text']").filter("[seq='1']").select();
-            } else if($(".enterseq").filter("[seq='1']").is("select")){
-                $("select").filter("[seq='1']").focus();
-            } else if($(".enterseq").filter("[seq='1']").is("checkbox")){
-                $("checkbox").filter("[seq='1']").select();
-            } else if($(".enterseq").filter("[seq='1']").is("button")){
-                $("button").filter("[seq='1']").focus();
+            if($j(".enterseq").filter("[seq='1']").is("input")) {
+                $j("input[type='text']").filter("[seq='1']").select();
+            } else if($j(".enterseq").filter("[seq='1']").is("select")){
+                $j("select").filter("[seq='1']").focus();
+            } else if($j(".enterseq").filter("[seq='1']").is("checkbox")){
+                $j("checkbox").filter("[seq='1']").select();
+            } else if($j(".enterseq").filter("[seq='1']").is("button")){
+                $j("button").filter("[seq='1']").focus();
             }
 
-            $("input[name='fileupload']").bind("change",function(evt){
+            $j("input[name='fileupload']").bind("change",function(evt){
                 var formd = new FormData();
-                formd.append("_token", $("input[name='_token']").val());
+                formd.append("_token", $j("input[name='_token']").val());
                 formd.append("hidAction", "uploadcfg");
-                formd.append("catg", $("input[name='system_id']").val());
-                formd.append("id", $("input[name='companycode']").val());
-                formd.append("compnam", $("input[name='companyname']").val());
-                formd.append("cfg_file",$(this).get(0).files[0]);
-                $.ajax({
+                formd.append("catg", $j("input[name='system_id']").val());
+                formd.append("id", $j("input[name='companycode']").val());
+                formd.append("compnam", $j("input[name='companyname']").val());
+                formd.append("cfg_file",$j(this).get(0).files[0]);
+                $j.ajax({
                     url: "{{action('App\Http\Controllers\CustomerServicesController@store')}}",
                     type: "POST",
                     data: formd,
@@ -450,211 +457,220 @@
                 }).done(function( data ) {
                     if(data.msg!=undefined){
                         alert(data.msg);
-                        //$("input[name='serial_no']").val("");
-                        $("input[name='curpassword']").val("");
-                        $("input[name='exp_dat']").val("");
-                        $(".agentAutoSelect").val("");
-                        $(".agentAutoSelect").prop("readOnly",false);
+                        //$j("input[name='serial_no']").val("");
+                        $j("input[name='curpassword']").val("");
+                        $j("input[name='exp_dat']").val("");
+                        $j(".agentAutoSelect").val("");
+                        $j(".agentAutoSelect").prop("readOnly",false);
                     } else {
-                        $("input[name='exp_dat']").val(data.exp_dat);
-                        $("input[name='serial_no']").val(data.serial_no);
-                        $("input[name='curpassword']").val(data.curpassword);
-                        $("input[name='newpassword']").val(data.curpassword);
-                        $(".agentAutoSelect").val("");
-                        $(".agentAutoSelect").prop("readOnly",false);
-                        $("input[name='newpassword']").prop("readOnly",false);
-                        $(".agentAutoSelect").focus();
+                        $j("input[name='exp_dat']").val(data.exp_dat);
+                        $j("input[name='serial_no']").val(data.serial_no);
+                        $j("input[name='curpassword']").val(data.curpassword);
+                        $j("input[name='newpassword']").val(data.curpassword);
+                        $j(".agentAutoSelect").val("");
+                        $j(".agentAutoSelect").prop("readOnly",false);
+                        $j("input[name='newpassword']").prop("readOnly",false);
+                        $j(".agentAutoSelect").focus();
                     }
-                    $("input[name='fileupload']").val('');
+                    $j("input[name='fileupload']").val('');
                     return false;
                 });
             })
-            $('.agentAutoSelect').autoComplete({minLength:2,
-                events: {
-                    searchPost: function (resultFromServer) {
-                        setTimeout(function(){
-                            $('.agentAutoSelect').next().find('a').eq(0).addClass("active");
-                        },100)
-                        return resultFromServer;
-                    }
-                }
+            // $j('.agentAutoSelect').autoComplete({minLength:2,
+            //     events: {
+            //         searchPost: function (resultFromServer) {
+            //             setTimeout(function(){
+            //                 $j('.agentAutoSelect').next().find('a').eq(0).addClass("active");
+            //             },100)
+            //             return resultFromServer;
+            //         }
+            //     }
+            // });
+
+            const customers = @json($customers);
+            $j('.agentAutoSelect').select2({
+                data: customers,
+                placeholder: 'Select a customer',
+                allowClear: true, // Adds a clear button
+                multiple: false   // Ensures single select behavior
             });
-            $('.agentAutoSelect').keydown(function(event){
+
+            $j('.agentAutoSelect').keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
-                    if(!$("input[name='newpassword']").prop("readOnly")){
-                        $("input[name='newpassword']").select();
+                    if(!$j("input[name='newpassword']").prop("readOnly")){
+                        $j("input[name='newpassword']").select();
                     } else {
-                        $('#btnSaveSerial').focus();
+                        $j('#btnSaveSerial').focus();
                     }
 
                     return false;
                 } else if(keycode==38){
-                    $("input[name='exp_dat']").select();
+                    $j("input[name='exp_dat']").select();
                     return false;
                 }
             })
-            $('.agentAutoSelect').on('change', function (e, datum) {
+            $j('.agentAutoSelect').on('change', function (e, datum) {
                 setTimeout(function(){
-                    if($('.agentAutoSelect').val()==""){
-                        $('.agentAutoSelect').focus();
+                    if($j('.agentAutoSelect').val()==""){
+                        $j('.agentAutoSelect').focus();
                     } else {
-                        if($("input[name='newpassword']").prop('readonly')){
-                            $('#btnSaveSerial').focus();
+                        if($j("input[name='newpassword']").prop('readonly')){
+                            $j('#btnSaveSerial').focus();
                         } else {
-                            $("input[name='newpassword']").select();
+                            $j("input[name='newpassword']").select();
                         }
                     }
                 },300);
                 return false;
             });
-            $('.agentAutoSelect').on('autocomplete.select', function (e, datum) {
-                $(this).change();
+            $j('.agentAutoSelect').on('autocomplete.select', function (e, datum) {
+                $j(this).change();
                 return false;
             })
-            $("input[name='serial_no']").keydown(function(event){
+            $j("input[name='serial_no']").keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
-                    $("input[name='exp_dat']").select();
+                    $j("input[name='exp_dat']").select();
                     return false;
                 }
             })
-            $("input[name='exp_dat']").keydown(function(event){
+            $j("input[name='exp_dat']").keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
-                    js_date_format($(this));
-                    $('.agentAutoSelect').focus();
+                    js_date_format($j(this));
+                    $j('.agentAutoSelect').focus();
                     return false;
                 } else if(keycode==38){
-                    $("input[name='serial_no']").select();
+                    $j("input[name='serial_no']").select();
                     return false;
                 }
             })
-            $("input[name='newpassword']").keydown(function(event){
+            $j("input[name='newpassword']").keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
-                    $('#btnSaveSerial').focus();
+                    $j('#btnSaveSerial').focus();
                     return false;
                 } else if(keycode==38){
-                    if(!$(".agentAutoSelect").prop("readOnly")){
-                        $(".agentAutoSelect").select();
+                    if(!$j(".agentAutoSelect").prop("readOnly")){
+                        $j(".agentAutoSelect").select();
                     }
                     return false;
                 }
             })
-            $('#btnSaveSerial').keydown(function(event){
+            $j('#btnSaveSerial').keydown(function(event){
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if(keycode==13){
-                    $(this).click();
+                    $j(this).click();
                     return false;
                 }
             })
-            $('#btnSaveSerial').click(function(event){
-                data = "_token="+$("input[name='_token']").val();
+            $j('#btnSaveSerial').click(function(event){
+                data = "_token="+$j("input[name='_token']").val();
                 data +="&hidAction=savecfg";
-                data +="&service_id="+encodeURIComponent($("input[name='service_id']").val());
-                data +="&category_id="+encodeURIComponent($("input[name='category_id']").val());
-                data +="&companycode="+encodeURIComponent($("input[name='companycode']").val());
-                data +="&system_id="+encodeURIComponent($("input[name='system_id']").val());
-                data +="&serial_no="+encodeURIComponent($("input[name='serial_no']").val());
-                data +="&exp_dat="+encodeURIComponent($("input[name='exp_dat']").val());
-                data +="&agentid="+encodeURIComponent($("input[name='agentid']").val());
-                data +="&curpassword="+encodeURIComponent($("input[name='curpassword']").val());
-                data +="&newpassword="+encodeURIComponent($("input[name='newpassword']").val());
-                data +="&companyname="+encodeURIComponent($("input[name='companyname']").val());
-                data +="&soft_license="+encodeURIComponent($("input[name='soft_license_"+$("input[name='category_id']").val()+"']").val());
-                if($("input[name='serial_no']").val()==""){
-                    $("input[name='serial_no']").select();
+                data +="&service_id="+encodeURIComponent($j("input[name='service_id']").val());
+                data +="&category_id="+encodeURIComponent($j("input[name='category_id']").val());
+                data +="&companycode="+encodeURIComponent($j("input[name='companycode']").val());
+                data +="&system_id="+encodeURIComponent($j("input[name='system_id']").val());
+                data +="&serial_no="+encodeURIComponent($j("input[name='serial_no']").val());
+                data +="&exp_dat="+encodeURIComponent($j("input[name='exp_dat']").val());
+                data +="&agentid="+encodeURIComponent($j("input[name='agentid']").val());
+                data +="&curpassword="+encodeURIComponent($j("input[name='curpassword']").val());
+                data +="&newpassword="+encodeURIComponent($j("input[name='newpassword']").val());
+                data +="&companyname="+encodeURIComponent($j("input[name='companyname']").val());
+                data +="&soft_license="+encodeURIComponent($j("input[name='soft_license_"+$j("input[name='category_id']").val()+"']").val());
+                if($j("input[name='serial_no']").val()==""){
+                    $j("input[name='serial_no']").select();
                     return false;
                 }
-                if($("input[name='exp_dat']").val()==""){
-                    $("input[name='exp_dat']").select();
+                if($j("input[name='exp_dat']").val()==""){
+                    $j("input[name='exp_dat']").select();
                     return false;
                 }
-                if($("input[name='agentid']").val()==""){
-                    $(".agentAutoSelect").focus();
+                if($j("input[name='agentid']").val()==""){
+                    $j(".agentAutoSelect").focus();
                     return false;
                 }
-                $.ajax({
+                $j.ajax({
                     url:"{{action('App\Http\Controllers\CustomerServicesController@store')}}",
                     type:'post',
                     dataType: 'json',
                     data:data,
                     beforeSend: function(){
-                        $('#modalLoading').modal('show');
+                        $j('#modalLoading').modal('show');
                     },
                     success: function(json){
-                        setTimeout(function(){ $("#modalLoading .close").click(); },100);
+                        setTimeout(function(){ $j("#modalLoading .close").click(); },100);
                         alert(json.msg);
-                        $("input[name='curpassword']").val(json.newpassword);
-                        $("input[name='newpassword']").val(json.newpassword);
+                        $j("input[name='curpassword']").val(json.newpassword);
+                        $j("input[name='newpassword']").val(json.newpassword);
                         if(json.cfgfile!=undefined){
                             js_openfile("{{ url('/') }}"+json.cfgfile);
                         }
-                        $("span#cfgpf_"+$("input[name='service_id']").val()).html(json.newpassword+"<br><a href=\"javascript:void(0);\" onclick=\"js_openfile('{{ url('/') }}"+json.cfgfile+"');\" class=\"btn btn-primary\">CFG</a><br><a href=\"javascript:void(0);\" onclick=\"js_remove_cfg('"+$("input[name='service_id']").val()+"','"+json.lastrunno+"','"+json.category_id+"')\" class=\"btn btn-danger\">Remove</a>");
-                        $("input[name='newpassword']").prop("readOnly",false);
-                        $("input[name='serial_no']").prop("readOnly",true);
-                        $("input[name='exp_dat']").prop("readOnly",true);
-                        $(".agentAutoSelect").prop("readOnly",true);
-                        $("input[name='agentid']").prop("readOnly",true);
-                        $("input[name='newpassword']").select();
-                        $("a#serialclick_"+$("input[name='service_id']").val()).attr("onclick","");
-                        $("a#serialclick_"+$("input[name='service_id']").val()).click(function(){
-                            js_serial_act(this,$("input[name='service_id']").val(),$("input[name='serial_no']").val(),$("input[name='exp_dat']").val(),$("input[name='agentid']").val(),$(".agentAutoSelect").val(),$("input[name='newpassword']").val(),'',$("input[name='category_id']").val());
+                        $j("span#cfgpf_"+$j("input[name='service_id']").val()).html(json.newpassword+"<br><a href=\"javascript:void(0);\" onclick=\"js_openfile('{{ url('/') }}"+json.cfgfile+"');\" class=\"btn btn-primary\">CFG</a><br><a href=\"javascript:void(0);\" onclick=\"js_remove_cfg('"+$j("input[name='service_id']").val()+"','"+json.lastrunno+"','"+json.category_id+"')\" class=\"btn btn-danger\">Remove</a>");
+                        $j("input[name='newpassword']").prop("readOnly",false);
+                        $j("input[name='serial_no']").prop("readOnly",true);
+                        $j("input[name='exp_dat']").prop("readOnly",true);
+                        $j(".agentAutoSelect").prop("readOnly",true);
+                        $j("input[name='agentid']").prop("readOnly",true);
+                        $j("input[name='newpassword']").select();
+                        $j("a#serialclick_"+$j("input[name='service_id']").val()).attr("onclick","");
+                        $j("a#serialclick_"+$j("input[name='service_id']").val()).click(function(){
+                            js_serial_act(this,$j("input[name='service_id']").val(),$j("input[name='serial_no']").val(),$j("input[name='exp_dat']").val(),$j("input[name='agentid']").val(),$j(".agentAutoSelect").val(),$j("input[name='newpassword']").val(),'',$j("input[name='category_id']").val());
                             return false;
                         });
                         return false;
                     }
                 });
             })
-            /*$("input.datepicker").datepicker({
+            /*$j("input.datepicker").datepicker({
                 autoclose: true,
                 format: 'dd/mm/yyyy'
             }).on('changeDate', function(e){
-                $(this).datepicker('hide');
+                $j(this).datepicker('hide');
                 var e = jQuery.Event("keydown");
                 e.which = 13; // # Some key code value
-                $(this).trigger(e);
+                $j(this).trigger(e);
             });*/
         })
 
         function js_downloadpkpb_qr(serviceid) {
-            data = "_token="+$("input[name='_token']").val();
+            data = "_token="+$j("input[name='_token']").val();
             data +="&hidAction=dwpkpbqr";
             data +="&service_id="+serviceid;
-            $.ajax({
+            $j.ajax({
                 url:"{{action('App\Http\Controllers\CustomerServicesController@store')}}",
                 type:'post',
                 dataType: 'json',
                 data:data,
                 beforeSend: function(){
-                    $('#modalLoading').modal('show');
+                    $j('#modalLoading').modal('show');
                 },
                 success: function(json){
-                    setTimeout(function(){ $("#modalLoading .close").click(); },500);
+                    setTimeout(function(){ $j("#modalLoading .close").click(); },500);
                     window.open("{{ url('/') }}"+json.qrcode,'qrcodefile');
                     return false;
                 }
             });
         }
         function js_remove_cfg(service_id,lastrunno,catgid){
-            data = "_token="+$("input[name='_token']").val();
+            data = "_token="+$j("input[name='_token']").val();
             data +="&hidAction=deletecfg";
             data +="&service_id="+service_id;
-            $.ajax({
+            $j.ajax({
                 url:"{{action('App\Http\Controllers\CustomerServicesController@store')}}",
                 type:'post',
                 dataType: 'json',
                 data:data,
                 beforeSend: function(){
-                    $('#modalLoading').modal('show');
+                    $j('#modalLoading').modal('show');
                 },
                 success: function(json){
-                    setTimeout(function(){ $("#modalLoading .close").click(); },100);
+                    setTimeout(function(){ $j("#modalLoading .close").click(); },100);
                     alert(json.msg);
-                    $("span#cfgpf_"+service_id).html('');
-                    $("a#serialclick_"+service_id).attr("onclick","");
-                    $("a#serialclick_"+service_id).click(function(evt){
+                    $j("span#cfgpf_"+service_id).html('');
+                    $j("a#serialclick_"+service_id).attr("onclick","");
+                    $j("a#serialclick_"+service_id).click(function(evt){
                         js_serial_act(this,service_id,"","","","","",lastrunno,catgid);
                         return false;
                     });
@@ -667,110 +683,110 @@
         }
 
         function js_add(obj){
-            $(obj).closest("tr").find("input").attr( "disabled", false );
-            $(obj).closest("tr").find("label").attr( "disabled", false );
-            $(obj).closest("tr").find("select").attr( "disabled", false );
-            $(obj).closest("tr").find(".enterseq").filter("[seq='1']").focus();
-            $(obj).closest("span").hide();
-            $(obj).closest("td").find("span.action").removeClass("d-none");
-            if($(obj).closest("tr").next().attr("class")=="additional"){
-                $(obj).closest("tr").next().find("input").attr( "disabled", false );
+            $j(obj).closest("tr").find("input").attr( "disabled", false );
+            $j(obj).closest("tr").find("label").attr( "disabled", false );
+            $j(obj).closest("tr").find("select").attr( "disabled", false );
+            $j(obj).closest("tr").find(".enterseq").filter("[seq='1']").focus();
+            $j(obj).closest("span").hide();
+            $j(obj).closest("td").find("span.action").removeClass("d-none");
+            if($j(obj).closest("tr").next().attr("class")=="additional"){
+                $j(obj).closest("tr").next().find("input").attr( "disabled", false );
             }
         }
         function js_click(obj){
-            if($(obj).prop("checked")){
-                $(obj).closest("td").find("input[type='hidden']").val("Y");
+            if($j(obj).prop("checked")){
+                $j(obj).closest("td").find("input[type='hidden']").val("Y");
             } else {
-                $(obj).closest("td").find("input[type='hidden']").val("N");
+                $j(obj).closest("td").find("input[type='hidden']").val("N");
             }
         }
         function js_cancel(obj,categoryid){
-            $(obj).closest("tr").find("input").attr( "disabled", true );
-            $(obj).closest("tr").find("label").attr( "disabled", true );
-            $(obj).closest("tr").find("select").attr( "disabled", true );
-            $(obj).closest("span").addClass("d-none");
-            $(obj).closest("td").find("span.addmodify").show();
-            if($(obj).closest("tr").find("input[name='amount_"+categoryid+"']").length>0) {
-                $(obj).closest("tr").find("input[name='amount_"+categoryid+"']").val($(obj).closest("tr").find("input[name='keepamount_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input").attr( "disabled", true );
+            $j(obj).closest("tr").find("label").attr( "disabled", true );
+            $j(obj).closest("tr").find("select").attr( "disabled", true );
+            $j(obj).closest("span").addClass("d-none");
+            $j(obj).closest("td").find("span.addmodify").show();
+            if($j(obj).closest("tr").find("input[name='amount_"+categoryid+"']").length>0) {
+                $j(obj).closest("tr").find("input[name='amount_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='keepamount_"+categoryid+"']").val());
             }
-            /*if($(obj).closest("tr").find("input[name='rmk_"+categoryid+"']").length>0) {
-              $(obj).closest("tr").find("input[name='rmk_"+categoryid+"']").val($(obj).closest("tr").find("input[name='keeprmk_"+categoryid+"']").val());
+            /*if($j(obj).closest("tr").find("input[name='rmk_"+categoryid+"']").length>0) {
+              $j(obj).closest("tr").find("input[name='rmk_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='keeprmk_"+categoryid+"']").val());
             }*/
-            if($(obj).closest("tr").next().attr("class")=="additional" && $(obj).closest("tr").next().find("input[name='rmk_"+categoryid+"']").length>0){
-                $(obj).closest("tr").next().find("input[name='rmk_"+categoryid+"']").val($(obj).closest("tr").find("input[name='keeprmk_"+categoryid+"']").val());
+            if($j(obj).closest("tr").next().attr("class")=="additional" && $j(obj).closest("tr").next().find("input[name='rmk_"+categoryid+"']").length>0){
+                $j(obj).closest("tr").next().find("input[name='rmk_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='keeprmk_"+categoryid+"']").val());
             }
-            $(obj).closest("tr").find("select[name='contract_typ_"+categoryid+"']").val($(obj).closest("tr").find("input[name='keepcontract_typ_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='inc_hw_"+categoryid+"']").val($(obj).closest("tr").find("input[name='keepinc_hw_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='pay_before_"+categoryid+"']").val($(obj).closest("tr").find("input[name='keeppay_before_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='start_date_"+categoryid+"']").val($(obj).closest("tr").find("input[name='keepstart_date_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='end_date_"+categoryid+"']").val($(obj).closest("tr").find("input[name='keepend_date_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='service_date_"+categoryid+"']").val($(obj).closest("tr").find("input[name='keepservice_date_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='soft_license_"+categoryid+"']").val($(obj).closest("tr").find("input[name='keepsoft_license_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='pos_license_"+categoryid+"']").val($(obj).closest("tr").find("input[name='keeppos_license_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='vpnaddress_"+categoryid+"']").val($(obj).closest("tr").find("input[name='keevpnaddress_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='active_"+categoryid+"']").val($(obj).closest("tr").find("input[name='keepactive_"+categoryid+"']").val());
-            if($(obj).closest("tr").find("input[name='keepinc_hw_"+categoryid+"']").val()=="Y"){
-                $(obj).closest("tr").find("#inc_hw_"+categoryid).prop("checked",true);
+            $j(obj).closest("tr").find("select[name='contract_typ_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='keepcontract_typ_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='inc_hw_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='keepinc_hw_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='pay_before_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='keeppay_before_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='start_date_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='keepstart_date_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='end_date_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='keepend_date_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='service_date_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='keepservice_date_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='soft_license_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='keepsoft_license_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='pos_license_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='keeppos_license_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='vpnaddress_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='keevpnaddress_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='active_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='keepactive_"+categoryid+"']").val());
+            if($j(obj).closest("tr").find("input[name='keepinc_hw_"+categoryid+"']").val()=="Y"){
+                $j(obj).closest("tr").find("#inc_hw_"+categoryid).prop("checked",true);
             } else {
-                $(obj).closest("tr").find("#inc_hw_"+categoryid).prop("checked",false);
+                $j(obj).closest("tr").find("#inc_hw_"+categoryid).prop("checked",false);
             }
-            if($(obj).closest("tr").find("input[name='keeppay_before_"+categoryid+"']").val()=="Y"){
-                $(obj).closest("tr").find("#pay_before_"+categoryid).prop("checked",true);
+            if($j(obj).closest("tr").find("input[name='keeppay_before_"+categoryid+"']").val()=="Y"){
+                $j(obj).closest("tr").find("#pay_before_"+categoryid).prop("checked",true);
             } else {
-                $(obj).closest("tr").find("#pay_before_"+categoryid).prop("checked",false);
+                $j(obj).closest("tr").find("#pay_before_"+categoryid).prop("checked",false);
             }
-            if($(obj).closest("tr").find("input[name='keepactive_"+categoryid+"']").val()=="Y"){
-                $(obj).closest("tr").find("#active_"+categoryid).prop("checked",true);
+            if($j(obj).closest("tr").find("input[name='keepactive_"+categoryid+"']").val()=="Y"){
+                $j(obj).closest("tr").find("#active_"+categoryid).prop("checked",true);
             } else {
-                $(obj).closest("tr").find("#active_"+categoryid).prop("checked",false);
+                $j(obj).closest("tr").find("#active_"+categoryid).prop("checked",false);
             }
-            if($(obj).closest("tr").next().attr("class")=="additional"){
-                $(obj).closest("tr").next().find("input").attr( "disabled", true );
+            if($j(obj).closest("tr").next().attr("class")=="additional"){
+                $j(obj).closest("tr").next().find("input").attr( "disabled", true );
             }
         }
         function js_save(obj, categoryid){
-            serviceid=$(obj).closest("tr").find("input[name='keepserviceid_"+categoryid+"']").val();
-            data = "_token="+$("input[name='_token']").val();
-            if($(obj).closest("tr").find("input[name='amount_"+categoryid+"']").length>0) {
-                data +="&amount="+$(obj).closest("tr").find("input[name='amount_"+categoryid+"']").val();
+            serviceid=$j(obj).closest("tr").find("input[name='keepserviceid_"+categoryid+"']").val();
+            data = "_token="+$j("input[name='_token']").val();
+            if($j(obj).closest("tr").find("input[name='amount_"+categoryid+"']").length>0) {
+                data +="&amount="+$j(obj).closest("tr").find("input[name='amount_"+categoryid+"']").val();
             }
-            if($(obj).closest("tr").next().attr("class")=="additional" && $(obj).closest("tr").next().find("input[name='rmk_"+categoryid+"']").length>0){
-                data +="&rmk="+$(obj).closest("tr").next().find("input[name='rmk_"+categoryid+"']").val();
+            if($j(obj).closest("tr").next().attr("class")=="additional" && $j(obj).closest("tr").next().find("input[name='rmk_"+categoryid+"']").length>0){
+                data +="&rmk="+$j(obj).closest("tr").next().find("input[name='rmk_"+categoryid+"']").val();
             }
-            data +="&contract_typ="+$(obj).closest("tr").find("select[name='contract_typ_"+categoryid+"']").val();
-            data +="&inc_hw="+$(obj).closest("tr").find("input[name='inc_hw_"+categoryid+"']").val();
-            data +="&pay_before="+$(obj).closest("tr").find("input[name='pay_before_"+categoryid+"']").val();
-            data +="&start_date="+$(obj).closest("tr").find("input[name='start_date_"+categoryid+"']").val();
-            data +="&end_date="+$(obj).closest("tr").find("input[name='end_date_"+categoryid+"']").val();
-            data +="&service_date="+$(obj).closest("tr").find("input[name='service_date_"+categoryid+"']").val();
-            data +="&soft_license="+$(obj).closest("tr").find("input[name='soft_license_"+categoryid+"']").val();
-            data +="&pos_license="+$(obj).closest("tr").find("input[name='pos_license_"+categoryid+"']").val();
-            data +="&vpnaddress="+$(obj).closest("tr").find("input[name='vpnaddress_"+categoryid+"']").val();
-            data +="&active="+$(obj).closest("tr").find("input[name='active_"+categoryid+"']").val();
-            data += "&customerid="+$("input[name='customerid']").val();
+            data +="&contract_typ="+$j(obj).closest("tr").find("select[name='contract_typ_"+categoryid+"']").val();
+            data +="&inc_hw="+$j(obj).closest("tr").find("input[name='inc_hw_"+categoryid+"']").val();
+            data +="&pay_before="+$j(obj).closest("tr").find("input[name='pay_before_"+categoryid+"']").val();
+            data +="&start_date="+$j(obj).closest("tr").find("input[name='start_date_"+categoryid+"']").val();
+            data +="&end_date="+$j(obj).closest("tr").find("input[name='end_date_"+categoryid+"']").val();
+            data +="&service_date="+$j(obj).closest("tr").find("input[name='service_date_"+categoryid+"']").val();
+            data +="&soft_license="+$j(obj).closest("tr").find("input[name='soft_license_"+categoryid+"']").val();
+            data +="&pos_license="+$j(obj).closest("tr").find("input[name='pos_license_"+categoryid+"']").val();
+            data +="&vpnaddress="+$j(obj).closest("tr").find("input[name='vpnaddress_"+categoryid+"']").val();
+            data +="&active="+$j(obj).closest("tr").find("input[name='active_"+categoryid+"']").val();
+            data += "&customerid="+$j("input[name='customerid']").val();
             data += "&categoryid="+categoryid;
             if(serviceid==""){
-                $.ajax({
+                $j.ajax({
                     url:"{{action('App\Http\Controllers\CustomerServicesController@store')}}",
                     type:'post',
                     dataType: 'json',
                     data:data,
                     beforeSend: function(){
-                        $('#modalLoading').modal('show');
+                        $j('#modalLoading').modal('show');
                     },
                     success: function(json){
-                        setTimeout(function(){ $("#modalLoading .close").click(); alert(json.msg); },500);
+                        setTimeout(function(){ $j("#modalLoading .close").click(); alert(json.msg); },500);
 
-                        $(obj).closest("tr").find("input[name='keepserviceid_"+categoryid+"']").val(json.id);
-                        $(obj).closest("tr").find("input").attr( "disabled", true );
-                        $(obj).closest("tr").find("label").attr( "disabled", true );
-                        $(obj).closest("tr").find("select").attr( "disabled", true );
-                        $(obj).closest("span").addClass("d-none");
-                        $(obj).closest("td").find("span.addmodify").show();
-                        $(obj).closest("td").find("span.addmodify a").html('Edit');
-                        $(obj).closest("td").find("span.addmodify").append('<a href="javascript:void(0);" onclick="js_delete(this, \''+categoryid+'\');" class="btn btn-danger">Delete</a>');
-                        if($(obj).closest("tr").next().attr("class")=="additional"){
-                            $(obj).closest("tr").next().find("input").attr( "disabled", true );
+                        $j(obj).closest("tr").find("input[name='keepserviceid_"+categoryid+"']").val(json.id);
+                        $j(obj).closest("tr").find("input").attr( "disabled", true );
+                        $j(obj).closest("tr").find("label").attr( "disabled", true );
+                        $j(obj).closest("tr").find("select").attr( "disabled", true );
+                        $j(obj).closest("span").addClass("d-none");
+                        $j(obj).closest("td").find("span.addmodify").show();
+                        $j(obj).closest("td").find("span.addmodify a").html('Edit');
+                        $j(obj).closest("td").find("span.addmodify").append('<a href="javascript:void(0);" onclick="js_delete(this, \''+categoryid+'\');" class="btn btn-danger">Delete</a>');
+                        if($j(obj).closest("tr").next().attr("class")=="additional"){
+                            $j(obj).closest("tr").next().find("input").attr( "disabled", true );
                         }
                         js_keep_value(obj,categoryid);
                         window.location.reload();
@@ -779,25 +795,25 @@
                 });
             } else {
                 data+="&_method=PUT";
-                $.ajax({
+                $j.ajax({
                     url:"{{action('App\Http\Controllers\CustomerServicesController@update','')}}/"+serviceid,
                     type:'put',
                     dataType: 'json',
                     data:data,
                     beforeSend: function(){
-                        $('#modalLoading').modal('show');
+                        $j('#modalLoading').modal('show');
                     },
                     success: function(json){
-                        setTimeout(function(){ $("#modalLoading .close").click(); alert(json.msg); },500);
+                        setTimeout(function(){ $j("#modalLoading .close").click(); alert(json.msg); },500);
 
-                        $(obj).closest("tr").find("input").attr( "disabled", true );
-                        $(obj).closest("tr").find("label").attr( "disabled", true );
-                        $(obj).closest("tr").find("select").attr( "disabled", true );
-                        if($(obj).closest("tr").next().attr("class")=="additional"){
-                            $(obj).closest("tr").next().find("input").attr( "disabled", true );
+                        $j(obj).closest("tr").find("input").attr( "disabled", true );
+                        $j(obj).closest("tr").find("label").attr( "disabled", true );
+                        $j(obj).closest("tr").find("select").attr( "disabled", true );
+                        if($j(obj).closest("tr").next().attr("class")=="additional"){
+                            $j(obj).closest("tr").next().find("input").attr( "disabled", true );
                         }
-                        $(obj).closest("span").addClass("d-none");
-                        $(obj).closest("td").find("span.addmodify").show();
+                        $j(obj).closest("span").addClass("d-none");
+                        $j(obj).closest("td").find("span.addmodify").show();
                         js_keep_value(obj,categoryid);
                         return false;
                     }
@@ -805,90 +821,90 @@
             }
         }
         function js_delete(obj,categoryid){
-            var serviceid=$(obj).closest("tr").find("input[name='keepserviceid_"+categoryid+"']").val();
-            var data = "_token="+$("input[name='_token']").val();
+            var serviceid=$j(obj).closest("tr").find("input[name='keepserviceid_"+categoryid+"']").val();
+            var data = "_token="+$j("input[name='_token']").val();
             data+="&_method=DELETE";
-            $.ajax({
+            $j.ajax({
                 url:"{{action('App\Http\Controllers\CustomerServicesController@destroy','')}}/"+serviceid,
                 type:'delete',
                 dataType: 'json',
                 data:data,
                 beforeSend: function(){
-                    $('#modalLoading').modal('show');
+                    $j('#modalLoading').modal('show');
                 },
                 success: function(json){
-                    setTimeout(function(){ $("#modalLoading .close").click(); },100);
+                    setTimeout(function(){ $j("#modalLoading .close").click(); },100);
                     alert(json.msg);
-                    $(obj).closest("tr").find("input").val('');
-                    $(obj).closest("tr").find("select").val('');
-                    $(obj).closest("tr").find("#inc_hw_"+categoryid).prop("checked",false);
-                    $(obj).closest("tr").find("#pay_before_"+categoryid).prop("checked",false);
-                    $(obj).closest("tr").find("#active_"+categoryid).prop("checked",false);
-                    $(obj).closest("tr").find("input").attr( "disabled", true );
-                    $(obj).closest("tr").find("label").attr( "disabled", true );
-                    $(obj).closest("tr").find("select").attr( "disabled", true );
-                    if($(obj).closest("tr").next().attr("class")=="additional"){
-                        $(obj).closest("tr").next().find("input").attr( "disabled", false );
+                    $j(obj).closest("tr").find("input").val('');
+                    $j(obj).closest("tr").find("select").val('');
+                    $j(obj).closest("tr").find("#inc_hw_"+categoryid).prop("checked",false);
+                    $j(obj).closest("tr").find("#pay_before_"+categoryid).prop("checked",false);
+                    $j(obj).closest("tr").find("#active_"+categoryid).prop("checked",false);
+                    $j(obj).closest("tr").find("input").attr( "disabled", true );
+                    $j(obj).closest("tr").find("label").attr( "disabled", true );
+                    $j(obj).closest("tr").find("select").attr( "disabled", true );
+                    if($j(obj).closest("tr").next().attr("class")=="additional"){
+                        $j(obj).closest("tr").next().find("input").attr( "disabled", false );
                     }
-                    $(obj).closest("td").find("span.addmodify a.btn-primary").html('Add');
-                    $(obj).closest("td").find("span.addmodify a.btn-danger").remove();
-                    $(obj).closest("td").find("span.addmodify").show();
+                    $j(obj).closest("td").find("span.addmodify a.btn-primary").html('Add');
+                    $j(obj).closest("td").find("span.addmodify a.btn-danger").remove();
+                    $j(obj).closest("td").find("span.addmodify").show();
                     return false;
                 }
             });
         }
         function js_keep_value(obj,categoryid){
-            if($(obj).closest("tr").find("input[name='amount_"+categoryid+"']").length>0){
-                $(obj).closest("tr").find("input[name='keepamount_"+categoryid+"']").val($(obj).closest("tr").find("input[name='amount_"+categoryid+"']").val());
+            if($j(obj).closest("tr").find("input[name='amount_"+categoryid+"']").length>0){
+                $j(obj).closest("tr").find("input[name='keepamount_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='amount_"+categoryid+"']").val());
             }
-            /*if($(obj).closest("tr").find("input[name='rmk_"+categoryid+"']").length>0){
-              $(obj).closest("tr").find("input[name='keeprmk_"+categoryid+"']").val($(obj).closest("tr").find("input[name='rmk_"+categoryid+"']").val());
+            /*if($j(obj).closest("tr").find("input[name='rmk_"+categoryid+"']").length>0){
+              $j(obj).closest("tr").find("input[name='keeprmk_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='rmk_"+categoryid+"']").val());
             }*/
-            if($(obj).closest("tr").next().attr("class")=="additional" && $(obj).closest("tr").next().find("input[name='rmk_"+categoryid+"']").length>0){
-                $(obj).closest("tr").find("input[name='keeprmk_"+categoryid+"']").val($(obj).closest("tr").next().find("input[name='rmk_"+categoryid+"']").val());
+            if($j(obj).closest("tr").next().attr("class")=="additional" && $j(obj).closest("tr").next().find("input[name='rmk_"+categoryid+"']").length>0){
+                $j(obj).closest("tr").find("input[name='keeprmk_"+categoryid+"']").val($j(obj).closest("tr").next().find("input[name='rmk_"+categoryid+"']").val());
             }
-            $(obj).closest("tr").find("input[name='keepcontract_typ_"+categoryid+"']").val($(obj).closest("tr").find("select[name='contract_typ_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='keepinc_hw_"+categoryid+"']").val($(obj).closest("tr").find("input[name='inc_hw_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='keeppay_before_"+categoryid+"']").val($(obj).closest("tr").find("input[name='pay_before_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='keepstart_date_"+categoryid+"']").val($(obj).closest("tr").find("input[name='start_date_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='keepend_date_"+categoryid+"']").val($(obj).closest("tr").find("input[name='end_date_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='keepservice_date_"+categoryid+"']").val($(obj).closest("tr").find("input[name='service_date_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='keepsoft_license_"+categoryid+"']").val($(obj).closest("tr").find("input[name='soft_license_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='keeppos_license_"+categoryid+"']").val($(obj).closest("tr").find("input[name='pos_license_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='keepvpnaddress_"+categoryid+"']").val($(obj).closest("tr").find("input[name='vpnaddress_"+categoryid+"']").val());
-            $(obj).closest("tr").find("input[name='keepactive_"+categoryid+"']").val($(obj).closest("tr").find("input[name='active_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='keepcontract_typ_"+categoryid+"']").val($j(obj).closest("tr").find("select[name='contract_typ_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='keepinc_hw_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='inc_hw_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='keeppay_before_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='pay_before_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='keepstart_date_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='start_date_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='keepend_date_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='end_date_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='keepservice_date_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='service_date_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='keepsoft_license_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='soft_license_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='keeppos_license_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='pos_license_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='keepvpnaddress_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='vpnaddress_"+categoryid+"']").val());
+            $j(obj).closest("tr").find("input[name='keepactive_"+categoryid+"']").val($j(obj).closest("tr").find("input[name='active_"+categoryid+"']").val());
         }
         function js_serial_act(obj, serviceid, serial_no, exp_dat, agentid, agentname, curpassword, lastrunno, category_id){
-            $("input[name='customername']").val($("input[name='companyname']").val());
-            $("input[name='system_id']").val($(obj).html());
-            $("input[name='service_id']").val(serviceid);
-            $("input[name='category_id']").val(category_id);
-            $("#serializationModal").modal("show");
+            $j("input[name='customername']").val($j("input[name='companyname']").val());
+            $j("input[name='system_id']").val($j(obj).html());
+            $j("input[name='service_id']").val(serviceid);
+            $j("input[name='category_id']").val(category_id);
+            $j("#serializationModal").modal("show");
             if(serial_no!="") {
-                $("input[name='serial_no']").val(serial_no);
-                $("input[name='exp_dat']").val(exp_dat);
-                $("input[name='agentid']").val(agentid);
-                $(".agentAutoSelect").val(agentname);
-                $("input[name='serial_no']").prop("readOnly",true);
-                $("input[name='exp_dat']").prop("readOnly",true);
-                $("input[name='agentid']").prop("readOnly",true);
-                $(".agentAutoSelect").prop("readOnly",true);
-                $("input[name='curpassword']").val(curpassword);
-                $("input[name='newpassword']").val(curpassword);
-                $("input[name='newpassword']").prop("readOnly",false);
-                setTimeout(function(){ $("input[name='newpassword']").select(); },1000);
+                $j("input[name='serial_no']").val(serial_no);
+                $j("input[name='exp_dat']").val(exp_dat);
+                $j("input[name='agentid']").val(agentid);
+                $j(".agentAutoSelect").val(agentname);
+                $j("input[name='serial_no']").prop("readOnly",true);
+                $j("input[name='exp_dat']").prop("readOnly",true);
+                $j("input[name='agentid']").prop("readOnly",true);
+                $j(".agentAutoSelect").prop("readOnly",true);
+                $j("input[name='curpassword']").val(curpassword);
+                $j("input[name='newpassword']").val(curpassword);
+                $j("input[name='newpassword']").prop("readOnly",false);
+                setTimeout(function(){ $j("input[name='newpassword']").select(); },1000);
             } else {
-                $("input[name='serial_no']").val(parseInt(lastrunno,10)+1);
-                $("input[name='serial_no']").prop("readOnly",false);
-                $("input[name='exp_dat']").prop("readOnly",false);
-                $("input[name='agentid']").prop("readOnly",false);
-                $(".agentAutoSelect").prop("readOnly",false);
-                $("input[name='newpassword']").prop("readOnly",true);
-                $("input[name='curpassword']").val('');
-                $("input[name='newpassword']").val('');
-                $("input[name='agentid']").val('');
-                $(".agentAutoSelect").val('');
-                setTimeout(function(){ $("input[name='serial_no']").select(); },1000);
+                $j("input[name='serial_no']").val(parseInt(lastrunno,10)+1);
+                $j("input[name='serial_no']").prop("readOnly",false);
+                $j("input[name='exp_dat']").prop("readOnly",false);
+                $j("input[name='agentid']").prop("readOnly",false);
+                $j(".agentAutoSelect").prop("readOnly",false);
+                $j("input[name='newpassword']").prop("readOnly",true);
+                $j("input[name='curpassword']").val('');
+                $j("input[name='newpassword']").val('');
+                $j("input[name='agentid']").val('');
+                $j(".agentAutoSelect").val('');
+                setTimeout(function(){ $j("input[name='serial_no']").select(); },1000);
             }
         }
         function add_years(dt,n) {
@@ -905,56 +921,56 @@
         function js_validate_amt_dec(e){
             if( e.which!=8 && e.which!=0 && e.which!=46 && (e.which<48 || e.which>57))
                 return false;
-            //if( e.keyCode=="46" && $(e.target).val().substr($(e.target).getCursorPosition(),1)=="." )
+            //if( e.keyCode=="46" && $j(e.target).val().substr($j(e.target).getCursorPosition(),1)=="." )
             //return false;
             setTimeout(function() {
-                js_delay_validate_amt_dec($(e.target),e.keyCode,e.which);
+                js_delay_validate_amt_dec($j(e.target),e.keyCode,e.which);
             }, 100)
-            //setTimeout("js_delay_validate_amt_dec('"+$(e.target)+"','"+e.keyCode+"','"+e.which+"');",100);
+            //setTimeout("js_delay_validate_amt_dec('"+$j(e.target)+"','"+e.keyCode+"','"+e.which+"');",100);
             if(e.which==46)
                 return false;
         }
         function js_delay_validate_amt_dec(nam,keycode,keywhich,dec_point) {
             dec_point=(dec_point==undefined)?2:dec_point;
-            var ss = $(nam).val().split(".");
-            if( (keycode=="46" || keycode=="8" || keycode=="0") && $(nam).val()=="" ) {
-                $(nam).val("0.00");
-                ss = $(nam).val().split(".");
+            var ss = $j(nam).val().split(".");
+            if( (keycode=="46" || keycode=="8" || keycode=="0") && $j(nam).val()=="" ) {
+                $j(nam).val("0.00");
+                ss = $j(nam).val().split(".");
             }
             if(ss[1]==undefined || ss[1].length<dec_point){
-                $(nam).val((isNaN(parseFloat($(nam).val()).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat($(nam).val()).toFixed(dec_point));
-                $(nam).selectRange(ss[0].length);
+                $j(nam).val((isNaN(parseFloat($j(nam).val()).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat($j(nam).val()).toFixed(dec_point));
+                $j(nam).selectRange(ss[0].length);
             } else if(ss[1].length>=dec_point) {
-                if( ($(nam)[0].selectionStart>ss[0].length && keycode!="37") || ($(nam)[0].selectionStart-1)>ss[0].length){
+                if( ($j(nam)[0].selectionStart>ss[0].length && keycode!="37") || ($j(nam)[0].selectionStart-1)>ss[0].length){
                     if(keycode=="37") {
-                        $(nam).selectRange( ($(nam)[0].selectionStart-1), ($(nam)[0].selectionStart) );
+                        $j(nam).selectRange( ($j(nam)[0].selectionStart-1), ($j(nam)[0].selectionStart) );
                     }else if(keycode=="110" || keycode=="190"){
 
                     } else {
                         if(ss[1].length>=dec_point) {
-                            var ssdd = $(nam).val().split(".");
+                            var ssdd = $j(nam).val().split(".");
                             if(dec_point=="1") {
-                                $(nam).val( (isNaN(parseFloat(Math.floor($(nam).val()*100)/100).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat((Math.floor($(nam).val())+String(ssdd[1])+"0")/100).toFixed(dec_point) );
+                                $j(nam).val( (isNaN(parseFloat(Math.floor($j(nam).val()*100)/100).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat((Math.floor($j(nam).val())+String(ssdd[1])+"0")/100).toFixed(dec_point) );
                             } else {
-                                $(nam).val( (isNaN(parseFloat(Math.floor($(nam).val()*100)/100).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat(Math.floor($(nam).val())+String(ssdd[1])/100).toFixed(dec_point) );
+                                $j(nam).val( (isNaN(parseFloat(Math.floor($j(nam).val()*100)/100).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat(Math.floor($j(nam).val())+String(ssdd[1])/100).toFixed(dec_point) );
                             }
-                            $(nam).selectRange(($(nam).val().length-1),$(nam).val().length);
+                            $j(nam).selectRange(($j(nam).val().length-1),$j(nam).val().length);
                         } else {
-                            $(nam).selectRange($(nam)[0].selectionStart, ($(nam)[0].selectionStart+1) );
+                            $j(nam).selectRange($j(nam)[0].selectionStart, ($j(nam)[0].selectionStart+1) );
                         }
                     }
-                } else if(keycode=="37" && $(nam)[0].selectionStart>ss[0].length) {
-                    $(nam).selectRange(ss[0].length);
+                } else if(keycode=="37" && $j(nam)[0].selectionStart>ss[0].length) {
+                    $j(nam).selectRange(ss[0].length);
                 } else if(ss[1].length>dec_point) {
-                    $(nam).val( (isNaN(parseFloat(Math.floor($(nam).val()*100)/100).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat(Math.floor($(nam).val()*100)/100).toFixed(dec_point) );
-                    $(nam).selectRange($(nam).val().length);
+                    $j(nam).val( (isNaN(parseFloat(Math.floor($j(nam).val()*100)/100).toFixed(dec_point)))?parseFloat("0").toFixed(dec_point):parseFloat(Math.floor($j(nam).val()*100)/100).toFixed(dec_point) );
+                    $j(nam).selectRange($j(nam).val().length);
                 }
             }
             if(keywhich=="46"){
-                $(nam).selectRange(ss[0].length+1, (ss[0].length+2) );
+                $j(nam).selectRange(ss[0].length+1, (ss[0].length+2) );
             }
         }
-        $.fn.selectRange = function(start, end) {
+        $j.fn.selectRange = function(start, end) {
             if(!end) end = start;
             return this.each(function() {
                 if (this.setSelectionRange) {
@@ -974,27 +990,27 @@
         /*******************************************************************************************/
         function js_date_format(obj,check18) {
             check18 = (check18==undefined)?"N":check18;
-            if($(obj).val().length>=1){
-                if($(obj).val().length==8){
-                    $(obj).val($(obj).val().substr(0,2)+"/"+$(obj).val().substr(2,2)+"/"+$(obj).val().substr(4,4));
+            if($j(obj).val().length>=1){
+                if($j(obj).val().length==8){
+                    $j(obj).val($j(obj).val().substr(0,2)+"/"+$j(obj).val().substr(2,2)+"/"+$j(obj).val().substr(4,4));
                 }
-                if(!checkdate($(obj).val()) && $(obj).val()!="") {
-                    $(obj).parent().find("label.error").empty().text('Please enter a correct date');
-                    setTimeout(function(){$(obj).select();},500);
+                if(!checkdate($j(obj).val()) && $j(obj).val()!="") {
+                    $j(obj).parent().find("label.error").empty().text('Please enter a correct date');
+                    setTimeout(function(){$j(obj).select();},500);
                 } else {
-                    $(obj).parent().find("label.error").empty();
+                    $j(obj).parent().find("label.error").empty();
                 }
-                if ($(obj).val().length!=10){
-                    $(obj).val('');
+                if ($j(obj).val().length!=10){
+                    $j(obj).val('');
                 }
             }
             if(check18=="Y"){
-                var age = system_datetime.substr(6,4)-$(obj).val().substr(6,4);
-                var age_mth = system_datetime.substr(3,2)-$(obj).val().substr(3,2);
-                var age_day = system_datetime.substr(0,2)-$(obj).val().substr(0,2);
+                var age = system_datetime.substr(6,4)-$j(obj).val().substr(6,4);
+                var age_mth = system_datetime.substr(3,2)-$j(obj).val().substr(3,2);
+                var age_day = system_datetime.substr(0,2)-$j(obj).val().substr(0,2);
                 if(age<P_Blkag || (age==P_Blkag && age_mth<0) || (age==P_Blkag && age_mth==0 && age_day<0) ){
                     if(!alert("Customer Under Age !!!")) {
-                        ddd = $(obj);
+                        ddd = $j(obj);
                         setTimeout("ddd.select()",500);
                         return false;
                     }

@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Agent;
 use App\Serialization;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\LabelAlignment;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Response\QrCodeResponse;
+use PDF;
 
 class CustomerService extends Model
 {
