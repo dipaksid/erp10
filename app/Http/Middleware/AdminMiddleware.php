@@ -84,6 +84,10 @@ class AdminMiddleware
                     $classname = "App\\Models\\CustomerTotalPayApp";
                     $method = "getModule";
                     break;
+                case 'supplier':
+                    $classname = "App\\Models\\Supplier";
+                    $method = "getModule";
+                    break;
                 default:
                     $classname = "App\\Models\\" . ucfirst($singularSegment);
                     $method = "getModule";
