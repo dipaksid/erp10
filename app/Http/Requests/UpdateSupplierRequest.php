@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SupplierRequest extends FormRequest
+class UpdateSupplierRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class SupplierRequest extends FormRequest
             'companyname' => 'required',
             'companycode' => 'required',
             'areas_id' => 'required',
-            'email' => 'nullable|email',
+            'email' => 'required|nullable|email',
             'email2' => 'nullable|email',
             'homepage' => 'nullable|url',
             'startdate' => 'date|date_format:Y-m-d H:i:s'

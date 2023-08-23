@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SupplierRequest;
+use App\Http\Requests\UpdateSupplierRequest;
 use App\Models\Supplier;
 use App\Models\Area;
 use App\Models\Term;
@@ -21,16 +22,15 @@ class SuppliersController extends Controller
     public function index(Request $request)
     {
         $searchValue = $request->input('searchvalue');
+        $page = $request->input('page') ?? 1;
 
         $suppliers = Supplier::with('areas')
-            ->when($searchValue, function ($query) use ($searchValue) {
-                $query->search($searchValue);
-            })
+            ->search($searchValue)
             ->paginate(self::ITEMS_PER_PAGE);
 
         $suppliers->withPath('?searchvalue=' . ($searchValue ?: ''));
 
-        return view('suppliers.index', compact('suppliers', 'searchValue'));
+        return view('suppliers.index', compact('suppliers', 'searchValue', 'page'));
     }
 
     /**
@@ -55,31 +55,106 @@ class SuppliersController extends Controller
     {
         $validatedData = $request->validated();
 
-        dd($validatedData);
-
         $supplier = new Supplier();
 
         if (empty($validatedData['companycode'])) {
             $prefixName = substr($validatedData['companyname'], 0, 1);
             $lastCode = Supplier::whereRaw('substr(companyname, 1, 1) = ?', $prefixName)->max('companycode');
-
-            if ($lastCode !== null) {
-                $lastCode = (int) substr($lastCode, -4) + 1;
-            } else {
-                $lastCode = 1;
-            }
-
+            $lastCode = $lastCode !== null ? (int) substr($lastCode, -4) + 1 : 1;
             $validatedData['companycode'] = $prefixName . sprintf("%04d", $lastCode);
         }
 
-        // Temporary hardcode for currency control (1=MYR)
-        $validatedData['currencyid'] = 1;
+        $extraFields = [
+            'currencies_id', 'registrationno', 'registrationno2', 'startdate','status',
+            'homepage', 'terms_id', 'address1', 'address2', 'address3', 'address4',
+             'zipcode', 'contactperson', 'email', 'phoneno1', 'phoneno2', 'faxno1', 'faxno2', 'email2'
+        ];
+
+        foreach ($extraFields as $field) {
+            $validatedData[$field] = $request->get($field);
+        }
 
         $supplier->fill(array_filter($validatedData, 'strlen'))->save();
 
         return redirect('/supplier')->with('success', 'New Supplier Code (' . $supplier->companycode . ') has been created!');
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  Supplier  $supplier
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Supplier $supplier)
+    {
+        $supplier->formatStartDate();
+
+        $data = $this->getData();
+
+        return view('suppliers.show', compact('data', 'supplier'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  Supplier  $supplier
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Supplier $supplier)
+    {
+        $supplier->formatStartDate();
+
+        $data = $this->getData();
+
+        return view('suppliers.edit', compact('data', 'supplier'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  UpdateSupplierRequest  $request
+     * @param  Supplier  $supplier
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateSupplierRequest $request, Supplier $supplier)
+    {
+        $data = $request->validated();
+        $extraFields = [
+            'currencies_id', 'registrationno', 'registrationno2', 'startdate', 'status',
+            'homepage', 'terms_id', 'address1', 'address2', 'address3', 'address4',
+            'zipcode', 'contactperson', 'email', 'phoneno1', 'phoneno2', 'faxno1', 'faxno2', 'email2'
+        ];
+        foreach ($extraFields as $field) {
+            $data[$field] = $request->get($field);
+        }
+        $data["currencies_id"] = 1;
+
+        $fillableAttributes = $supplier->getFillable();
+
+        foreach ($fillableAttributes as $key) {
+            if (isset($data[$key]) && $data[$key] != '') {
+                $supplier->$key = $data[$key];
+            } else {
+                $supplier->$key = null;
+            }
+        }
+        $supplier->save();
+
+        return redirect('/supplier')->with('success', 'Supplier Code (' . $supplier->companycode . ') has been updated!!');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  App\Models\Supplier $supplier
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Supplier $supplier)
+    {
+        $supplier->delete();
+
+        return redirect('/supplier')->with('success', 'Supplier Code ('.$supplier->companycode.') has been deleted!!');
+    }
 
     /**
      * Get the Area and Term data
@@ -92,5 +167,4 @@ class SuppliersController extends Controller
 
         return $data;
     }
-
 }

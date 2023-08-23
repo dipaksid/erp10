@@ -10,7 +10,7 @@ class Supplier extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['companyname', 'companycode', 'registrationno', 'registrationno2', 'address1', 'address2', 'address3', 'address4', 'contactperson', 'phoneno1', 'phoneno2', 'faxno1', 'faxno2', 'email', 'email2', 'homepage', 'areaid', 'termid', 'status', 'startdate', 'zipcode', 'currencyid'];
+    protected $fillable = ['companyname', 'companycode', 'registrationno', 'registrationno2', 'address1', 'address2', 'address3', 'address4', 'contactperson', 'phoneno1', 'phoneno2', 'faxno1', 'faxno2', 'email', 'email2', 'homepage', 'areas_id', 'terms_id', 'status', 'startdate', 'zipcode', 'currencies_id'];
     public function saveSupplier($data)
     {
         foreach($data as $key => $val){
@@ -40,15 +40,25 @@ class Supplier extends Model
     }
 
     public function areas(){
-        return $this->belongsToMany('App\Models\Area', 'suppliers', 'id', 'areas_id');
-    }
+        return $this->belongsTo(Area::class, 'areas_id');
 
-    public function area1(){
-        return $this->belongsTo('App\Area', 'areaid', 'id');
     }
 
     public function term(){
-        return $this->belongsToMany('App\Term', 'suppliers', 'id', 'termid');
+        return $this->belongsToMany('App\Term', 'suppliers', 'terms_id', 'id');
+    }
+
+    public function formatStartDate()
+    {
+        if ($this->startdate !== null && !empty($this->startdate)) {
+            if (is_string($this->startdate)) {
+                $this->startdate = date('d/m/Y', strtotime($this->startdate));
+            } elseif ($this->startdate instanceof \DateTime) {
+                $this->startdate = $this->startdate->format('d/m/Y');
+            }
+        } else {
+            $this->startdate = null;
+        }
     }
 
     public static function getModule($request){
@@ -69,7 +79,7 @@ class Supplier extends Model
     public function scopeSearch(Builder $query, $searchValue)
     {
         return $query->select('suppliers.id', 'suppliers.companyname', 'areas.description', 'suppliers.companycode', 'suppliers.registrationno', 'suppliers.registrationno2', 'suppliers.contactperson', 'suppliers.phoneno1', 'suppliers.phoneno2', 'suppliers.email')
-            ->join('areas', 'suppliers.areaid', '=', 'areas.id')
+            ->join('areas', 'suppliers.areas_id', '=', 'areas.id')
             ->where(function ($q) use ($searchValue) {
                 $q->where('areas.description', 'like', '%' . $searchValue . '%')
                     ->orWhere('suppliers.companyname', 'like', '%' . $searchValue . '%')
@@ -82,4 +92,5 @@ class Supplier extends Model
                     ->orWhere('suppliers.email', 'like', '%' . $searchValue . '%');
             });
     }
+
 }

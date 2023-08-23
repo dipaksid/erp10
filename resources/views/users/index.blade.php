@@ -59,7 +59,9 @@
 
                                     @can('DELETE USER')
                                         <form action="{{action('App\Http\Controllers\UsersController@destroy', $ruser->id)}}" method="post" id="deleteForm_{{ $ruser->id }}">
-                                            {{ csrf_field() }}
+                                            @csrf
+                                            @method('DELETE')
+
                                             <input name="_method" type="hidden" value="DELETE">
                                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" onclick="showConfirmDeleteModal({{ $ruser->id }})">
                                                 Delete

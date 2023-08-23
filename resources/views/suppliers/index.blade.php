@@ -20,12 +20,12 @@
 
             @include('partials/messages')
 
-            <div class="d-flex">
+            <div class="d-flex pb-2">
                 {{ $suppliers->links("pagination::bootstrap-4") }}
-                @if($suppliers->hasMorePages() || (isset($input['searchvalue']) && $input["searchvalue"]!=""))
+                @if($suppliers->hasMorePages() || (isset($searchValue) && $searchValue != ""))
                     <form action="{{ action('App\Http\Controllers\SuppliersController@index') }}">
                         <div class="col-12">
-                            <input class="form-control" placeholder="Search" name="searchvalue" value="{{((isset($input['searchvalue']))?$input['searchvalue']:'')}}">
+                            <input class="form-control" placeholder="Search" name="searchvalue" value="{{((isset($searchValue)) ? $searchValue : '')}}">
                         </div>
                     </form>
                 @endif
@@ -64,19 +64,21 @@
                             <td class="text-center col-2">
                                 <div class="d-flex">
                                     @can('VIEW SUPPLIER')
-                                        <a href="{{action('App\Http\Controllers\SuppliersController@show',$rsup->id)}}?searchvalue={{((isset($input['searchvalue']))?$input['searchvalue']:'')}}&page={{((isset($input['page']))?$input['page']:'')}}"  class="btn btn-primary ">View</a>&nbsp;
+                                        <a href="{{action('App\Http\Controllers\SuppliersController@show',$rsup->id)}}?searchvalue={{((isset($searchValue))?$searchValue:'')}}&page={{((isset($page))?$page:'')}}"  class="btn btn-primary ">View</a>&nbsp;
                                     @endcan
 
                                     @can('EDIT SUPPLIER')
-                                        <a href="{{action('App\Http\Controllers\SuppliersController@edit',$rsup->id)}}?searchvalue={{((isset($input['searchvalue']))?$input['searchvalue']:'')}}&page={{((isset($input['page']))?$input['page']:'')}}"  class="btn btn-primary ">Edit</a>&nbsp;
+                                        <a href="{{action('App\Http\Controllers\SuppliersController@edit',$rsup->id)}}?searchvalue={{((isset($searchValue))?$searchValue:'')}}&page={{((isset($page))?$page:'')}}"  class="btn btn-primary ">Edit</a>&nbsp;
                                     @endcan
 
                                     @can('DELETE SUPPLIER')
-                                        <form action="{{action('App\Http\Controllers\SuppliersController@destroy', $rsup->id)}}" method="post">
+                                        <form action="{{action('App\Http\Controllers\SuppliersController@destroy', $rsup->id)}}" method="post" id="deleteForm_{{ $rsup->id }}">
                                             @csrf
                                             @method('DELETE')
 
-                                            <button class="btn btn-danger" type="submit">Delete</button>
+                                            <button class="btn btn-danger" type="submit" onclick="showConfirmDeleteModal(event, {{ $rsup->id }})" >
+                                                Delete
+                                            </button>
                                         </form>
                                     @endcan
                                 </div>
@@ -91,5 +93,10 @@
                 </tbody>
             </table>
         </div>
+        @include('partials/delete-confirm', ['title' => 'Supplier'])
     </div>
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('js/common.js') }}"></script>
 @endsection
