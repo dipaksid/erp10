@@ -74,8 +74,9 @@ Route::group(['middleware' => 'auth', 'middleware' => 'isAdmin'], function()
     Route::resource('trainingform','TrainingFormController');
     Route::post('/evaluationform/{id}', 'EvaluationFormController@update')->name('evaluationform.update');
     Route::resource('evaluationform','EvaluationFormController');
-    Route::post('/leaveform/{id}', 'LeaveFormController@update')->name('leaveform.update');
-    Route::resource('leaveform','LeaveFormController');
+    Route::post('/leaveform/{id}', 'App\Http\Controllers\LeaveFormsController@update')->name('leaveform.update');
+    Route::resource('leaveform',App\Http\Controllers\LeaveFormsController::class);
+    Route::get('/leaveformpdf/{id}', 'App\Http\Controllers\LeaveFormsController@leaveformpdf');
 
     # SALES INVOICES
     Route::get('/salesinvoice', 'SalesInvoiceController@index')->name('salesinvoice.index');

@@ -83,4 +83,17 @@ class User extends Authenticatable
         }
         return $result;
     }
+
+    public function scopeUserStaffInfo(Builder $query, $userId)
+    {
+        return $query->select('staffs.name', 'staffs.staffcode', 'staffs.designation', 'staffs.department')
+            ->leftJoin('model_has_roles', function ($join) {
+                $join->on('users.id', '=', 'model_has_roles.model_id')
+                    ->where('model_has_roles.model_type', '=', 'App\Models\User');
+            })
+            ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->leftJoin('staffs', 'users.staff_id', '=', 'staffs.id')
+            ->where('users.id', $userId)
+            ->first();
+    }
 }

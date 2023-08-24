@@ -88,6 +88,10 @@ class AdminMiddleware
                     $classname = "App\\Models\\Supplier";
                     $method = "getModule";
                     break;
+                case 'leaveformpdf':
+                    $classname = "App\\Models\\LeaveForm";
+                    $method = "getModule";
+                    break;
                 default:
                     $classname = "App\\Models\\" . ucfirst($singularSegment);
                     $method = "getModule";
