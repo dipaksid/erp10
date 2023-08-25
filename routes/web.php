@@ -77,6 +77,7 @@ Route::group(['middleware' => 'auth', 'middleware' => 'isAdmin'], function()
     Route::post('/leaveform/{id}', 'App\Http\Controllers\LeaveFormsController@update')->name('leaveform.update');
     Route::resource('leaveform',App\Http\Controllers\LeaveFormsController::class);
     Route::get('/leaveformpdf/{id}', 'App\Http\Controllers\LeaveFormsController@leaveformpdf');
+    Route::get('/leaveform/docdelete', 'App\Http\Controllers\LeaveFormsController@docdelete');
 
     # SALES INVOICES
     Route::get('/salesinvoice', 'SalesInvoiceController@index')->name('salesinvoice.index');
