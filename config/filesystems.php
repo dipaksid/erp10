@@ -56,6 +56,40 @@ return [
             'throw' => false,
         ],
 
+        'serviceform' => [
+            'driver' => 'local',
+            'root' => "/mnt/data/appfiles/SCANNING-DOC/CUSTOMER SERVICE FORMS",
+            'url' => env('APP_URL').'/storage/serviceform',
+            'visibility' => 'public',
+        ],
+
+        'uploaddo' => [
+            'driver' => 'local',
+            'root' => "/mnt/data/appfiles/SCANNING-DOC/UPLOAD DO",
+            'url' => env('APP_URL').'/storage/uploaddo',
+            'visibility' => 'public',
+        ],
+
+        'uploadpv' => [
+            'driver' => 'local',
+            'root' => "/mnt/data/appfiles/SCANNING-DOC/UPLOAD INV & PAYMENT VOUCHER",
+            'url' => env('APP_URL').'/storage/uploadpv',
+            'visibility' => 'public',
+        ],
+
+        'uploadbankdoc' => [
+            'driver' => 'local',
+            'root' => "/mnt/data/appfiles/SCANNING-DOC/UPLOAD BANKDOC",
+            'url' => env('APP_URL').'/storage/uploadbankdoc',
+            'visibility' => 'public',
+        ],
+
+        'app' => [
+            'driver' => 'local',
+            'root' => "/mnt/data/appfiles/APP",
+            'url' => env('APP_URL').'/storage/apps',
+            'visibility' => 'public',
+        ],
     ],
 
     /*

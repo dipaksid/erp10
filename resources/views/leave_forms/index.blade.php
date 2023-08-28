@@ -91,11 +91,14 @@
                                     @endcan
 
                                     @can('DELETE LEAVE FORM')
-                                        <form action="{{action('App\Http\Controllers\LeaveFormsController@destroy', $rrow->id)}}" method="post">
+                                        <form action="{{action('App\Http\Controllers\LeaveFormsController@destroy', $rrow->id)}}" method="post" id="deleteForm_{{ $rrow->id }}">
                                             @csrf
                                             @method('DELETE')
 
-                                            <button class="btn btn-danger" type="submit">Delete</button>
+                                            <button class="btn btn-danger" type="submit" onclick="showConfirmDeleteModal(event, {{ $rrow->id }})">
+                                                Delete
+                                            </button>
+
                                         </form>
                                     @endcan
                                     <span class="pl-1">
@@ -114,5 +117,10 @@
             </table>
 
         </div>
+        @include('partials/delete-confirm', ['title' => 'Leave Form'])
     </div>
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('js/common.js') }}"></script>
 @endsection

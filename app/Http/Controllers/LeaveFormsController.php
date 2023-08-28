@@ -12,13 +12,16 @@ use App\Http\Requests\UpdateLeaveFormRequest;
 use App\Bwlibs\FileDocManage;
 use App\Bwlibs\Printfile;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use File;
-use TCPDF;
 use PDF;
-
+use LynX39\LaraPdfMerger\Facades\PdfMerger;
+use TCPDF;
 class LeaveFormsController extends Controller
 {
     const ITEMS_PER_PAGE = 15;
@@ -253,9 +256,8 @@ class LeaveFormsController extends Controller
         return $data;
     }
 
-    protected function handleStatusOne($leaveform, $request)
+    protected function handleStatusOne(LeaveForm $leaveform, $request)
     {
-        $arr_data = $leaveform->get();
         $companysetting = CompanySetting::where("b_default", "Y")->first();
         $getapply_user = Staff::where('name', $leaveform->staff_name)->first();
         $companyid = $getapply_user ? $getapply_user->comp_id : $companysetting->id;
@@ -278,42 +280,67 @@ class LeaveFormsController extends Controller
                 }
             }
         }
-        view()->share('data', $arr_data);
-        view()->share('leaveform', $leaveform);
-        view()->share('compid', $companyid);
-        view()->share('date_now', $date_now);
-        view()->share('request', $request);
-        PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
-        $pdf = PDF::loadView('leaveform.leaveformpdf');
-        $pdf->getDomPDF()->set_option("enable_php", true);
-        $pdf->save(public_path() . '/pdf/lf_' . $leaveform->id . '.pdf');
 
+        $pdfOptions = new Options();
+        $pdfOptions->set('dpi', 150);
+        $pdfOptions->set('defaultFont', 'sans-serif');
+        $dompdf = new Dompdf($pdfOptions);
+
+        // Render the Blade template into HTML content
+        $viewHtml = View::make('leave_forms.leaveformpdf2', [
+            'data' => $leaveform->toArray(),
+            'leaveform' => $leaveform,
+            'compid' => $companyid,
+            'date_now' => $date_now,
+            'request' => $request
+        ])->render();
+
+        $dompdf->loadHtml($viewHtml);
+        $dompdf->set_option("isHtml5ParserEnabled", true);
+        $dompdf->set_option("isPhpEnabled", true);
+        $dompdf->render();
+        $pdfContent = $dompdf->output();
+
+        $pdfPath = public_path() . '/pdf/lf_' . $leaveform->id . '_2.pdf';
+        file_put_contents($pdfPath, $pdfContent);
+
+        // Rest of your code...
         if (count($images) > 0 || count($pdffile) > 0) {
             $mergepdfs = PDFMerger::init();
             $pdfFile1Paths = public_path() . '/pdf/lf_' . $leaveform->id . '.pdf';
             $mergepdfs->addPDF($pdfFile1Paths, 'all');
+
             if (count($pdffile) > 0) {
                 foreach ($pdffile as $rpdffl) {
                     $mergepdfs->addPDF($rpdffl, 'all');
                 }
             }
+
             if (count($images) > 0) {
-                view()->share('leaveform', $leaveform);
-                view()->share('compid', $companyid);
-                view()->share('imgs', $images);
-                PDF::setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif']);
-                $pdf = PDF::loadView('leaveform.leaveformpdf2');
-                $pdf->getDomPDF()->set_option("enable_php", true);
-                $pdf->save(public_path() . '/pdf/lf_' . $leaveform->id . '_2.pdf');
-                $pdfFile2Paths = public_path() . '/pdf/lf_' . $leaveform->id . '_2.pdf';
-                $mergepdfs->addPDF($pdfFile2Paths, 'all');
+                $dompdf2 = new Dompdf($pdfOptions);
+                $viewHtml2 = View::make('leave_forms.leaveformpdf2', [
+                    'leaveform' => $leaveform,
+                    'compid' => $companyid,
+                    'imgs' => $images
+                ])->render();
+
+                $dompdf2->loadHtml($viewHtml2);
+                $dompdf2->set_option("isHtml5ParserEnabled", true);
+                $dompdf2->set_option("isPhpEnabled", true);
+                $dompdf2->render();
+
+                $pdfFile2Path = public_path() . '/pdf/lf_' . $leaveform->id . '_2.pdf';
+                file_put_contents($pdfFile2Path, $dompdf2->output());
+
+                $mergepdfs->addPDF($pdfFile2Path, 'all');
             }
+
             $pathForTheMergedPdfs = public_path() . '/pdf/lf_' . $leaveform->id . '.pdf';
             $mergepdfs->merge();
             $mergepdfs->save($pathForTheMergedPdfs);
         }
-        $filedocmanage = new FileDocManage();
 
+        $filedocmanage = new FileDocManage();
         $filedocmanage->savefile("LF", $leaveform->id, false, false, "", "", url("pdf/lf_" . $leaveform->id . ".pdf"));
     }
 
@@ -337,7 +364,6 @@ class LeaveFormsController extends Controller
         @unlink($leaveformpdffile);
     }
 
-
     protected function handleFileUploads($files, $doc_no)
     {
         $destinationPath = public_path("leave_form/{$doc_no}");
@@ -350,6 +376,20 @@ class LeaveFormsController extends Controller
             $name = $file->getClientOriginalName();
             $file->move($destinationPath, $name);
         }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  LeaveForm  $leaveform
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(LeaveForm $leaveform)
+    {
+        $docNo = $leaveform->doc_no;
+        $leaveform->delete();
+
+        return redirect('/leaveform')->with('success', "Leave Form ($docNo) has been deleted!!");
     }
 
     /**

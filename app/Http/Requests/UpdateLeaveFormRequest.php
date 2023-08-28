@@ -23,7 +23,7 @@ class UpdateLeaveFormRequest extends FormRequest
     {
         return [
             'leave_dat_frm' => 'required',
-            'leave_dat_to' => 'required|date|after:leave_dat_frm',
+            'leave_dat_to' => 'required|date_format:d/m/Y|after_or_equal:leave_dat_frm',
             'leave_duration' => 'required',
             'leave_reason' => 'required',
             'designation' => 'required',
