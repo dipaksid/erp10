@@ -237,8 +237,8 @@
         <div id="collapseMaintenance" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Code:</h6>
-                @can('AREA LIST') <a class="collapse-item" href="{{ route('area.index') }}">Area</a> @elsecan('ADD AREA') <a class="collapse-item" href="{{ route('area.create') }}">Area</a> @endcan
-                @can('TERM LIST') <a class="collapse-item" href="{{ route('term.index') }}">Term</a> @elsecan('ADD TERM') <a class="collapse-item" href="{{ route('term.create') }}">Term</a> @endcan
+                @can('AREA LIST') <a class="collapse-item" href="{{ route('areas.index') }}">Area</a> @elsecan('ADD AREA') <a class="collapse-item" href="{{ route('areas.create') }}">Area</a> @endcan
+                @can('TERM LIST') <a class="collapse-item" href="{{ route('terms.index') }}">Term</a> @elsecan('ADD TERM') <a class="collapse-item" href="{{ route('terms.create') }}">Term</a> @endcan
                 @can('CUSTOMER CATEGORY LIST') <a class="collapse-item" href="{{ route('customercategory.index') }}">Customer Category</a> @elsecan('ADD CUSTOMER CATEGORY') <a class="collapse-item" href="{{ route('customercategory.create') }}">Customer Category</a> @endcan
                 @can('BANK LIST') <a class="collapse-item" href="{{ route('bank.index') }}">Bank</a> @elsecan('ADD BANK') <a class="collapse-item" href="{{ route('bank.create') }}">Bank</a> @endcan
                 @can('AGENT LIST') <a class="collapse-item" href="{{ route('agent.index') }}">Agent</a> @elsecan('ADD AGENT') <a class="collapse-item" href="{{ route('agent.create') }}">Agent</a> @endcan

@@ -32,8 +32,8 @@ Route::group(['middleware' => 'auth', 'middleware' => 'isAdmin'], function()
     Route::post('/stock/updseq2', 'StockController@updseq2')->name('stock.updseq2');
     Route::resource('serviceform','ServiceFormController');
     Route::resource('stock', 'StockController');
-    Route::resource('area', 'AreaController');
-    Route::resource('term', 'TermController');
+    Route::resource('areas', App\Http\Controllers\AreasController::class);
+    Route::resource('terms', App\Http\Controllers\TermsController::class);
     Route::get('customercategory/uploadsystem/{customercategory}', 'CustomerCategoryController@uploadsystem')->name('customercategory.uploadsystem');
     Route::put('customercategory/uploadsystem/{customercategory}', 'CustomerCategoryController@uploadsystemfile')->name('customercategory.uploadsystem');
     Route::patch('customercategory/uploadsystem/{customercategory}', 'CustomerCategoryController@uploadsystemfile')->name('customercategory.uploadsystem');

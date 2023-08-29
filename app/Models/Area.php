@@ -26,4 +26,11 @@ class Area extends Model
 
         return $result;
     }
+
+    public function scopeSearchByValue($query, $searchValue)
+    {
+        return $query->where('areacode', 'like', '%' . $searchValue . '%')
+                    ->orWhere('description', 'like', '%' . $searchValue . '%')
+                    ->orderBy('seq');
+    }
 }
