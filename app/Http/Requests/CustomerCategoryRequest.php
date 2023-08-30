@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCustomerCategoryRequest extends FormRequest
+class CustomerCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,10 +21,8 @@ class UpdateCustomerCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('customercategory'); // Assumes the route parameter is named 'customer_category'
-
         return [
-            'categorycode' => "required|unique:customer_categories,categorycode,{$id}|max:20",
+            'categorycode' => 'required|unique:customer_categories|max:20',
             'description' => 'required|max:200',
             'lastrunno' => 'required|max:10',
             'b_rmk' => 'required|max:1',

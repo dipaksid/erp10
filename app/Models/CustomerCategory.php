@@ -9,34 +9,10 @@ class CustomerCategory extends Model
 {
     use HasFactory;
 
+    const ITEM_PER_PAGES = 15;
+
     protected $fillable = ['categorycode', 'description','lastrunno','b_rmk','b_mobapp','b_adrmk','stockcatgid'];
-    public function saveCustomerCategory($data)
-    {
-        $this->categorycode = $data['categorycode'];
-        $this->description = $data['description'];
-        $this->lastrunno = $data['lastrunno'];
-        $this->b_rmk = $data['b_rmk'];
-        $this->b_mobapp = $data['b_mobapp'];
-        $this->b_adrmk = $data['b_adrmk'];
-        $this->stockcatgid = $data['stockcatgid'];
-        $this->save();
 
-        return 1;
-    }
-    public function updateCustomerCategory($data)
-    {
-        $customercategory = $this->find($data['id']);
-        $customercategory->categorycode = $data['categorycode'];
-        $customercategory->description = $data['description'];
-        $customercategory->lastrunno = $data['lastrunno'];
-        $customercategory->b_rmk = $data['b_rmk'];
-        $customercategory->b_mobapp = $data['b_mobapp'];
-        $customercategory->b_adrmk = $data['b_adrmk'];
-        $customercategory->stockcatgid = $data['stockcatgid'];
-        $customercategory->save();
-
-        return 1;
-    }
     public static function getModule($request){
         if($request->segment(2)=="create"){
             $result='ADD CUSTOMER CATEGORY';
@@ -51,5 +27,18 @@ class CustomerCategory extends Model
         }
 
         return $result;
+    }
+
+    public function scopeSearch($query, $searchValue)
+    {
+        if ($searchValue) {
+
+            return $query->where(function ($subQuery) use ($searchValue) {
+                $subQuery->where('categorycode', 'like', '%' . $searchValue . '%')
+                    ->orWhere('description', 'like', '%' . $searchValue . '%');
+            })->paginate(self::ITEM_PER_PAGES);
+        }
+
+        return $query->paginate(self::ITEM_PER_PAGES);
     }
 }

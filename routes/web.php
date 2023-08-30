@@ -34,10 +34,10 @@ Route::group(['middleware' => 'auth', 'middleware' => 'isAdmin'], function()
     Route::resource('stock', 'StockController');
     Route::resource('areas', App\Http\Controllers\AreasController::class);
     Route::resource('terms', App\Http\Controllers\TermsController::class);
-    Route::get('customercategory/uploadsystem/{customercategory}', 'CustomerCategoryController@uploadsystem')->name('customercategory.uploadsystem');
-    Route::put('customercategory/uploadsystem/{customercategory}', 'CustomerCategoryController@uploadsystemfile')->name('customercategory.uploadsystem');
-    Route::patch('customercategory/uploadsystem/{customercategory}', 'CustomerCategoryController@uploadsystemfile')->name('customercategory.uploadsystem');
-    Route::resource('customercategory', 'CustomerCategoryController');
+    Route::get('customercategory/uploadsystem/{customercategory}', 'App\Http\Controllers\CustomerCategoriesController@uploadsystem')->name('customercategory.uploadsystem');
+    Route::put('customercategory/uploadsystem/{customercategory}', 'App\Http\Controllers\CustomerCategoriesController@uploadsystemfile')->name('customercategory.uploadsystem');
+    Route::patch('customercategory/uploadsystem/{customercategory}', 'App\Http\Controllers\CustomerCategoriesController@uploadsystemfile')->name('customercategory.uploadsystem');
+    Route::resource('customercategory', App\Http\Controllers\CustomerCategoriesController::class);
     Route::get('customer-groups/customerlist', 'App\Http\Controllers\CustomerGroupsController@customerList')->name('customer-groups.customerlist');
     Route::get('customer-groups/categorylist', 'App\Http\Controllers\CustomerGroupsController@categorylist')->name('customer-groups.categorylist');
     Route::get('customer-groups/agentlist', 'App\Http\Controllers\CustomerGroupsController@agentlist')->name('customer-groups.agentlist');

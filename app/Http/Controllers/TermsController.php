@@ -99,7 +99,6 @@ class TermsController extends Controller
      */
     public function destroy(Term $term)
     {
-        $termTitle =
         $term->delete();
 
         return redirect('/terms')->with('success', 'Term ('.$term->term.') has been deleted!!');
